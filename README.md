@@ -23,4 +23,4 @@ import fastvpinns
 - [**Sashikumaar Ganesan**](https://cds.iisc.ac.in/faculty/sashi)
 
 ## License
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
