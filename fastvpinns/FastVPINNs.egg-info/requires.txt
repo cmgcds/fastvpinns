@@ -1,0 +1,17 @@
+numpy
+pandas
+matplotlib
+seaborn
+tensorflow
+pytest
+pygmsh
+pyDOE
+tqdm
+scipy
+gmsh
+wandb
+pyyaml
+vtk
+pyvista
+sympy
+numba

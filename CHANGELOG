@@ -1,0 +1,11 @@
+# Changelog
+
+## [1.0.0] - 2024-04-22
+
+### Added
+- Tensor based loss computations for Variational PINNs
+- Support for External complex meshes
+
+### Known Issues
+- Currently supports only 2D problems with Dirichlet boundary conditions
+- Currently supports only 2D problems with Quadrilateral elements

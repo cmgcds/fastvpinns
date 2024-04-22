@@ -1,0 +1,14 @@
+numpy==1.21.4
+pandas
+matplotlib
+seaborn
+tensorflow==2.9.1
+pytest
+pygmsh
+pyDOE
+tqdm
+scipy
+gmsh
+pyyaml
+vtk
+rich==12.5.1
