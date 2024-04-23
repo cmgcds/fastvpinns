@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 100
-target-version = ['py37']
-include = '\.pyi?$'
+target-version = ['py39']
+include = '\.pyi?$|\.py$'
 exclude = '''
 /(
     \.git
