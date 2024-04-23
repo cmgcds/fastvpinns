@@ -249,7 +249,7 @@ def test_helmholtz_accuracy_external(helmholtz_test_data_circle):
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(bilinear_params)
 
     # Get the learning rate dictionary
-    lr_dict = poisson_learning_rate_static_data()
+    lr_dict = helmholtz_learning_rate_static_data()
 
     # Generate a model 
     model = DenseModel(layer_dims=[2,50,50,50,1], 
