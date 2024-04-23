@@ -21,12 +21,7 @@ class FE2DSetupMain:
     """
 
     def __init__(
-        self,
-        cell_type: str,
-        fe_order: int,
-        fe_type: str,
-        quad_order: int,
-        quad_type: str,
+        self, cell_type: str, fe_order: int, fe_type: str, quad_order: int, quad_type: str
     ):
         self.cell_type = cell_type
         self.fe_order = fe_order
@@ -68,9 +63,7 @@ class FE2DSetupMain:
                     'FE order should be one of the : "legendre" , "jacobi", "legendre_special", "chebyshev_2", "jacobi_plain"'
                 )
 
-        print(
-            f"Invalid cell type {self.cell_type} in {self.__class__.__name__} from {__name__}."
-        )
+        print(f"Invalid cell type {self.cell_type} in {self.__class__.__name__} from {__name__}.")
 
     def assign_quadrature_rules(self):
         """
@@ -92,9 +85,7 @@ class FE2DSetupMain:
                 raise ValueError("Quad order should be between 1 and 9999.")
 
         if self.cell_type == "triangle":
-            weights, xi, eta = Quadratureformulas_Tri2D(
-                self.quad_order
-            ).get_quad_values()
+            weights, xi, eta = Quadratureformulas_Tri2D(self.quad_order).get_quad_values()
             return weights, xi, eta
 
         raise ValueError(

@@ -17,7 +17,6 @@ from .quadratureformulas_quad2d import *
 from .fe2d_setup_main import *
 
 
-
 class FE2D_Cell:
     """
     This class is used to Store the FE Values, Such as Coordinates, Basis Functions, Quadrature Rules, etc. for a given cell.
@@ -126,9 +125,7 @@ class FE2D_Cell:
         """
         The function will assign the quadrature points and weights based on the cell type and the quadrature order.
         """
-        self.quad_weight, self.quad_xi, self.quad_eta = (
-            self.fe_setup.assign_quadrature_rules()
-        )
+        self.quad_weight, self.quad_xi, self.quad_eta = self.fe_setup.assign_quadrature_rules()
 
     def assign_fe_transformation(self) -> None:
         """
@@ -141,9 +138,9 @@ class FE2D_Cell:
         self.fetransformation.set_cell()
 
         # obtains the Jacobian of the transformation
-        self.jacobian = self.fetransformation.get_jacobian(
-            self.quad_xi, self.quad_eta
-        ).reshape(-1, 1)
+        self.jacobian = self.fetransformation.get_jacobian(self.quad_xi, self.quad_eta).reshape(
+            -1, 1
+        )
 
     def assign_basis_values_at_quadrature_points(self) -> None:
         """

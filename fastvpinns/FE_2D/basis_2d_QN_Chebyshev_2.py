@@ -56,9 +56,7 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         for n in range(1, N_test + 1):
             test = self.Jacobi(n + 1, -1 / 2, -1 / 2, x) / self.Jacobi(
                 n + 1, -1 / 2, -1 / 2, 1
-            ) - self.Jacobi(n - 1, -1 / 2, -1 / 2, x) / self.Jacobi(
-                n - 1, -1 / 2, -1 / 2, 1
-            )
+            ) - self.Jacobi(n - 1, -1 / 2, -1 / 2, x) / self.Jacobi(n - 1, -1 / 2, -1 / 2, 1)
             test_total.append(test)
         return np.asarray(test_total, np.float64)
 
@@ -77,9 +75,7 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         for n in range(1, N_test + 1):
             test = self.Jacobi(n + 1, -1 / 2, -1 / 2, y) / self.Jacobi(
                 n + 1, -1 / 2, -1 / 2, 1
-            ) - self.Jacobi(n - 1, -1 / 2, -1 / 2, y) / self.Jacobi(
-                n - 1, -1 / 2, -1 / 2, 1
-            )
+            ) - self.Jacobi(n - 1, -1 / 2, -1 / 2, y) / self.Jacobi(n - 1, -1 / 2, -1 / 2, 1)
             test_total.append(test)
         return np.asarray(test_total, np.float64)
 
@@ -121,9 +117,7 @@ class Basis2DQNChebyshev2(BasisFunction2D):
                 )
                 d2test = ((n + 2) * (n + 1) / (2 * 2)) * self.Jacobi(
                     n - 1, 3 / 2, 3 / 2, x
-                ) / self.Jacobi(n + 1, -1 / 2, -1 / 2, 1) - (
-                    (n) * (n - 1) / (2 * 2)
-                ) * self.Jacobi(
+                ) / self.Jacobi(n + 1, -1 / 2, -1 / 2, 1) - ((n) * (n - 1) / (2 * 2)) * self.Jacobi(
                     n - 3, 3 / 2, 3 / 2, x
                 ) / self.Jacobi(
                     n - 1, -1 / 2, -1 / 2, 1

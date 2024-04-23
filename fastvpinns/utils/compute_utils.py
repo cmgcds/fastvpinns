@@ -10,6 +10,7 @@ changelog: 02/11/2023 - file created
 
 known_issues: None
 """
+
 # Importing the required libraries
 import numpy as np
 
@@ -59,7 +60,7 @@ def compute_l1_error(u_exact, u_approx):
 
 def compute_linf_error(u_exact, u_approx):
     """This function will compute the L_inf error between the exact solution and the approximate solution.
-    The L_inf error is defined as 
+    The L_inf error is defined as
         ..math::
             \\max_{i=1}^{N} |u_{exact} - u_{approx}|
     :param u_exact: numpy array containing the exact solution

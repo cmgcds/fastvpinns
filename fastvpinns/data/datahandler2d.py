@@ -73,8 +73,7 @@ class DataHandler2D:
                 self.fespace.get_shape_function_grad_y(cell_index), dtype=self.dtype
             )
             x_pde = tf.constant(
-                self.fespace.get_quadrature_actual_coordinates(cell_index),
-                dtype=self.dtype,
+                self.fespace.get_quadrature_actual_coordinates(cell_index), dtype=self.dtype
             )
             forcing_function = tf.constant(
                 self.fespace.get_forcing_function_values(cell_index), dtype=self.dtype
@@ -116,9 +115,7 @@ class DataHandler2D:
         - actual_dirichlet (tf.Tensor): The actual Dirichlet boundary data
 
         """
-        input_dirichlet, actual_dirichlet = (
-            self.fespace.generate_dirichlet_boundary_data()
-        )
+        input_dirichlet, actual_dirichlet = self.fespace.generate_dirichlet_boundary_data()
 
         # convert to tensors
         input_dirichlet = tf.constant(input_dirichlet, dtype=self.dtype)
@@ -158,9 +155,7 @@ class DataHandler2D:
 
         # loop over all keys and convert the values to tensors
         for key in bilinear_params_dict.keys():
-            bilinear_params_dict[key] = tf.constant(
-                bilinear_params_dict[key], dtype=self.dtype
-            )
+            bilinear_params_dict[key] = tf.constant(bilinear_params_dict[key], dtype=self.dtype)
 
         return bilinear_params_dict
 
@@ -182,9 +177,7 @@ class DataHandler2D:
         print(f"mesh_type = {mesh_type}")
         if mesh_type == "internal":
             # Call the method to get the sensor data
-            points, sensor_values = self.fespace.get_sensor_data(
-                exact_sol, num_sensor_points
-            )
+            points, sensor_values = self.fespace.get_sensor_data(exact_sol, num_sensor_points)
         elif mesh_type == "external":
             # Call the method to get the sensor data
             points, sensor_values = self.fespace.get_sensor_data_external(
@@ -215,8 +208,6 @@ class DataHandler2D:
         inverse_params_dict = inverse_params_dict_function()
 
         for key in inverse_params_dict.keys():
-            inverse_params_dict[key] = tf.constant(
-                inverse_params_dict[key], dtype=self.dtype
-            )
+            inverse_params_dict[key] = tf.constant(inverse_params_dict[key], dtype=self.dtype)
 
         return inverse_params_dict

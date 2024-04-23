@@ -128,9 +128,7 @@ class QuadBilinear(FETransforamtion2D):
 
         return gradx_orig, grady_orig
 
-    def get_orig_from_ref_second_derivative(
-        self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta
-    ):
+    def get_orig_from_ref_second_derivative(self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta):
         """
         This method returns the second derivatives of the original co-ordinates with respect to the reference co-ordinates.
 

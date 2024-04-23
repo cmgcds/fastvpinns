@@ -107,18 +107,12 @@ class QuadAffin(FETransforamtion2D):
         grady_orig = np.zeros(ref_grady.shape)
 
         for i in range(ref_gradx.shape[0]):
-            gradx_orig[i] = (
-                self.yc2 * ref_gradx[i] - self.yc1 * ref_grady[i]
-            ) * self.rec_detjk
-            grady_orig[i] = (
-                -self.xc2 * ref_gradx[i] + self.xc1 * ref_grady[i]
-            ) * self.rec_detjk
+            gradx_orig[i] = (self.yc2 * ref_gradx[i] - self.yc1 * ref_grady[i]) * self.rec_detjk
+            grady_orig[i] = (-self.xc2 * ref_gradx[i] + self.xc1 * ref_grady[i]) * self.rec_detjk
 
         return gradx_orig, grady_orig
 
-    def get_orig_from_ref_second_derivative(
-        self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta
-    ):
+    def get_orig_from_ref_second_derivative(self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta):
         """
         Returns the second derivatives (xx, xy, yy) of the original co-ordinates with respect to the reference co-ordinates.
 
@@ -157,14 +151,8 @@ class QuadAffin(FETransforamtion2D):
             r11 = grad_xy_ref[j]
             r02 = grad_yy_ref[j]
 
-            grad_xx_orig[j] = (
-                solution[0, 0] * r20 + solution[0, 1] * r11 + solution[0, 2] * r02
-            )
-            grad_xy_orig[j] = (
-                solution[1, 0] * r20 + solution[1, 1] * r11 + solution[1, 2] * r02
-            )
-            grad_yy_orig[j] = (
-                solution[2, 0] * r20 + solution[2, 1] * r11 + solution[2, 2] * r02
-            )
+            grad_xx_orig[j] = solution[0, 0] * r20 + solution[0, 1] * r11 + solution[0, 2] * r02
+            grad_xy_orig[j] = solution[1, 0] * r20 + solution[1, 1] * r11 + solution[1, 2] * r02
+            grad_yy_orig[j] = solution[2, 0] * r20 + solution[2, 1] * r11 + solution[2, 2] * r02
 
         return grad_xx_orig, grad_xy_orig, grad_yy_orig

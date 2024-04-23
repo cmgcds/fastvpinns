@@ -57,12 +57,8 @@ class DenseModel_Inverse_Domain(tf.keras.Model):
 
         self.orig_factor_matrices = orig_factor_matrices
         self.shape_function_mat_list = copy.deepcopy(orig_factor_matrices[0])
-        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[1]
-        )
-        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[2]
-        )
+        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(orig_factor_matrices[1])
+        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(orig_factor_matrices[2])
 
         self.force_function_list = force_function_list
 
@@ -212,9 +208,7 @@ class DenseModel_Inverse_Domain(tf.keras.Model):
             # Predict the values for dirichlet boundary conditions
             predicted_values_dirichlet = self(self.dirichlet_input)
             # reshape the predicted values to (, 1)
-            predicted_values_dirichlet = tf.reshape(
-                predicted_values_dirichlet[:, 0], [-1, 1]
-            )
+            predicted_values_dirichlet = tf.reshape(predicted_values_dirichlet[:, 0], [-1, 1])
 
             # predict the sensor values
             predicted_sensor_values = self(self.sensor_points)
@@ -238,9 +232,7 @@ class DenseModel_Inverse_Domain(tf.keras.Model):
             gradients = tape1.gradient(predicted_values, self.input_tensor)
 
             # obtain inverse param gradients
-            inverse_param_gradients = tape1.gradient(
-                inverse_param_values, self.input_tensor
-            )
+            inverse_param_gradients = tape1.gradient(inverse_param_values, self.input_tensor)
 
             # Split the gradients into x and y components and reshape them to (-1, 1)
             # the reshaping is done for the tensorial operations purposes (refer Notebook)

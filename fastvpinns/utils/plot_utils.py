@@ -99,13 +99,7 @@ def plot_array(array, output_path, filename, title, x_label="Epochs", y_label="L
 
 # general utility to plot multiple parameters
 def plot_multiple_loss_function(
-    loss_function_list,
-    output_path,
-    filename,
-    legend_labels,
-    y_label,
-    title,
-    x_label="Epochs",
+    loss_function_list, output_path, filename, legend_labels, y_label, title, x_label="Epochs"
 ):
     """This function will plot the loss function in log scale for multiple parameters.
     :param loss_function_list: list of loss values for multiple parameters

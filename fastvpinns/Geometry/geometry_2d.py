@@ -35,7 +35,7 @@ class Geometry_2D:
         mesh_generation_method: str,
         n_test_points_x: int,
         n_test_points_y: int,
-        output_folder: str
+        output_folder: str,
     ):
         """
         Constructor for Geometry_2D class.
@@ -95,7 +95,7 @@ class Geometry_2D:
         #     cells = self.mesh.cells_dict["triangle"]
         else:
             raise ValueError("Mesh type should be quadrilateral only")
-            # Changed by thivin -- Does not support triangular cells as of now. 
+            # Changed by thivin -- Does not support triangular cells as of now.
             # Since domain is the Entry point, this will ensure that the program terminates immediately
 
         num_cells = cells.shape[0]
@@ -146,9 +146,7 @@ class Geometry_2D:
 
             if bd_sampling_method == "uniform":
                 # take the current point and next point and then perform a uniform sampling
-                new_points = np.linspace(
-                    p1, p2, pow(2, boundary_point_refinement_level) + 1
-                )
+                new_points = np.linspace(p1, p2, pow(2, boundary_point_refinement_level) + 1)
             elif bd_sampling_method == "lhs":
                 # take the current point and next point and then perform a uniform sampling
                 new_points = lhs(2, pow(2, boundary_point_refinement_level) + 1)
@@ -259,9 +257,7 @@ class Geometry_2D:
             cells[i] = cell[np.argsort(angles)]
 
         # generate a meshio mesh object using the cells
-        self.mesh = meshio.Mesh(
-            points=cells.reshape(-1, 2), cells=[("quad", cells.reshape(-1, 4))]
-        )
+        self.mesh = meshio.Mesh(points=cells.reshape(-1, 2), cells=[("quad", cells.reshape(-1, 4))])
 
         # lets generate the boundary points, this function will return a dictionary of boundary points
         # the keys will be the boundary tags and values will be the list of boundary points
@@ -282,30 +278,22 @@ class Geometry_2D:
             return bd_pts.reshape(-1)
 
         # bottom boundary
-        y_bottom = (
-            np.ones(num_bound_per_side, dtype=np.float64) * y_limits[0]
-        ).reshape(-1)
+        y_bottom = (np.ones(num_bound_per_side, dtype=np.float64) * y_limits[0]).reshape(-1)
         x_bottom = _temp_bd_func(x_limits[0], x_limits[1], num_bound_per_side)
         bd_points[1000] = np.vstack([x_bottom, y_bottom]).T
 
         # right boundary
-        x_right = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[1]).reshape(
-            -1
-        )
+        x_right = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[1]).reshape(-1)
         y_right = _temp_bd_func(y_limits[0], y_limits[1], num_bound_per_side)
         bd_points[1001] = np.vstack([x_right, y_right]).T
 
         # top boundary
-        y_top = (np.ones(num_bound_per_side, dtype=np.float64) * y_limits[1]).reshape(
-            -1
-        )
+        y_top = (np.ones(num_bound_per_side, dtype=np.float64) * y_limits[1]).reshape(-1)
         x_top = _temp_bd_func(x_limits[0], x_limits[1], num_bound_per_side)
         bd_points[1002] = np.vstack([x_top, y_top]).T
 
         # left boundary
-        x_left = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[0]).reshape(
-            -1
-        )
+        x_left = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[0]).reshape(-1)
         y_left = _temp_bd_func(y_limits[0], y_limits[1], num_bound_per_side)
         bd_points[1003] = np.vstack([x_left, y_left]).T
 
@@ -390,10 +378,7 @@ class Geometry_2D:
             mesh = meshio.gmsh.read(str(mesh_file_name))
             meshio.vtk.write(str(vtk_file_name), mesh, binary=False, fmt_version="4.2")
 
-            print(
-                "[INFO] : VTK file for internal mesh file generated at ",
-                str(mesh_file_name),
-            )
+            print("[INFO] : VTK file for internal mesh file generated at ", str(mesh_file_name))
 
         elif self.mesh_generation_method == "external":
 
@@ -403,10 +388,7 @@ class Geometry_2D:
             mesh = meshio.read(str(self.mesh_file_name))
             meshio.vtk.write(str(vtk_file_name), mesh, binary=False, fmt_version="4.2")
 
-            print(
-                "[INFO] : VTK file for external mesh file generated at ",
-                str(vtk_file_name),
-            )
+            print("[INFO] : VTK file for external mesh file generated at ", str(vtk_file_name))
 
         else:
             # print the file name and function name
@@ -518,8 +500,7 @@ class Geometry_2D:
 
         # normalise colors
         norm = mcolors.Normalize(
-            vmin=np.min(area_averaged_cell_loss_list),
-            vmax=np.max(area_averaged_cell_loss_list),
+            vmin=np.min(area_averaged_cell_loss_list), vmax=np.max(area_averaged_cell_loss_list)
         )
 
         # Create a colormap
@@ -560,5 +541,3 @@ class Geometry_2D:
         output_filename = Path(f"{self.output_folder}/{filename}_{epoch}.png")
         plt.title(f"Cell Residual")
         plt.savefig(str(output_filename), dpi=300)
-
-

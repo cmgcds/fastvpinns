@@ -71,12 +71,8 @@ class DenseModel_Inverse(tf.keras.Model):
 
         self.orig_factor_matrices = orig_factor_matrices
         self.shape_function_mat_list = copy.deepcopy(orig_factor_matrices[0])
-        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[1]
-        )
-        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[2]
-        )
+        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(orig_factor_matrices[1])
+        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(orig_factor_matrices[2])
 
         self.force_function_list = force_function_list
 

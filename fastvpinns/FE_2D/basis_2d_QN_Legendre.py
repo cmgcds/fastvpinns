@@ -95,16 +95,16 @@ class Basis2DQNLegendre(BasisFunction2D):
                 d1test_total.append(d1test)
                 d2test_total.append(d2test)
             elif n == 2:
-                d1test = ((n + 2) / 2) * self.Jacobi(n, 1, 1, x) - (
-                    (n) / 2
-                ) * self.Jacobi(n - 2, 1, 1, x)
+                d1test = ((n + 2) / 2) * self.Jacobi(n, 1, 1, x) - ((n) / 2) * self.Jacobi(
+                    n - 2, 1, 1, x
+                )
                 d2test = ((n + 2) * (n + 3) / (2 * 2)) * self.Jacobi(n - 1, 2, 2, x)
                 d1test_total.append(d1test)
                 d2test_total.append(d2test)
             else:
-                d1test = ((n + 2) / 2) * self.Jacobi(n, 1, 1, x) - (
-                    (n) / 2
-                ) * self.Jacobi(n - 2, 1, 1, x)
+                d1test = ((n + 2) / 2) * self.Jacobi(n, 1, 1, x) - ((n) / 2) * self.Jacobi(
+                    n - 2, 1, 1, x
+                )
                 d2test = ((n + 2) * (n + 3) / (2 * 2)) * self.Jacobi(n - 1, 2, 2, x) - (
                     (n) * (n + 1) / (2 * 2)
                 ) * self.Jacobi(n - 3, 2, 2, x)

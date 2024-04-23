@@ -87,12 +87,8 @@ class DenseModel(tf.keras.Model):
 
         self.orig_factor_matrices = orig_factor_matrices
         self.shape_function_mat_list = copy.deepcopy(orig_factor_matrices[0])
-        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[1]
-        )
-        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(
-            orig_factor_matrices[2]
-        )
+        self.shape_function_grad_x_factor_mat_list = copy.deepcopy(orig_factor_matrices[1])
+        self.shape_function_grad_y_factor_mat_list = copy.deepcopy(orig_factor_matrices[2])
 
         self.force_function_list = force_function_list
 
@@ -195,10 +191,10 @@ class DenseModel(tf.keras.Model):
 
         # print the summary of the model
         self.summary()
-    
+
     # def build(self, input_shape):
     #     super(DenseModel, self).build(input_shape)
-    
+
     def call(self, inputs):
         x = inputs
 
@@ -306,8 +302,4 @@ class DenseModel(tf.keras.Model):
         self.gradients = tape.gradient(total_loss, trainable_vars)
         self.optimizer.apply_gradients(zip(self.gradients, trainable_vars))
 
-        return {
-            "loss_pde": total_pde_loss,
-            "loss_dirichlet": boundary_loss,
-            "loss": total_loss,
-        }
+        return {"loss_pde": total_pde_loss, "loss_dirichlet": boundary_loss, "loss": total_loss}

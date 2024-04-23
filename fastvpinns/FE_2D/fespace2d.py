@@ -85,8 +85,10 @@ class Fespace2D:
         self.fe_transformation_type = fe_transformation_type
 
         if cell_type == "triangle":
-            raise ValueError("Triangle Mesh is not supported yet")  # added by thivin - to remove support for triangular mesh
-        
+            raise ValueError(
+                "Triangle Mesh is not supported yet"
+            )  # added by thivin - to remove support for triangular mesh
+
         self.output_path = output_path
         self.bound_function_dict = bound_function_dict
         self.bound_condition_dict = bound_condition_dict
@@ -247,9 +249,7 @@ class Fespace2D:
             total_quad += x_quad.shape[0]
 
             if not label_set:
-                plt.scatter(
-                    x_quad, y_quad, marker="x", color="b", s=2, label="Quad Pts"
-                )
+                plt.scatter(x_quad, y_quad, marker="x", color="b", s=2, label="Quad Pts")
                 label_set = True
             else:
                 plt.scatter(x_quad, y_quad, marker="x", color="b", s=2)
@@ -271,9 +271,7 @@ class Fespace2D:
 
             bound_dof += x.shape[0]
 
-            plt.scatter(
-                x, y, marker=marker_list[i + 1], s=2, label=f"Bd-id : {bound_id}"
-            )
+            plt.scatter(x, y, marker=marker_list[i + 1], s=2, label=f"Bd-id : {bound_id}")
 
         self.total_boundary_dofs = bound_dof
 
@@ -329,8 +327,7 @@ class Fespace2D:
                 pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
                 x.append(pt_new)
                 val = np.array(
-                    self.bound_function_dict[bound_id](pt[0], pt[1])[component],
-                    dtype=np.float64,
+                    self.bound_function_dict[bound_id](pt[0], pt[1])[component], dtype=np.float64
                 ).reshape(-1, 1)
                 y.append(val)
 
@@ -363,9 +360,7 @@ class Fespace2D:
         """
         shape_func_grad_x_list = []
         for cell_index in range(self.n_cells):
-            shape_func_grad_x_list.append(
-                self.fe_cell[cell_index].basis_gradx_at_quad.copy()
-            )
+            shape_func_grad_x_list.append(self.fe_cell[cell_index].basis_gradx_at_quad.copy())
 
         return np.array(shape_func_grad_x_list)
 
@@ -375,9 +370,7 @@ class Fespace2D:
         """
         shape_func_grad_y_list = []
         for cell_index in range(self.n_cells):
-            shape_func_grad_y_list.append(
-                self.fe_cell[cell_index].basis_grady_at_quad.copy()
-            )
+            shape_func_grad_y_list.append(self.fe_cell[cell_index].basis_grady_at_quad.copy())
 
         return np.array(shape_func_grad_y_list)
 
@@ -555,9 +548,9 @@ class Fespace2D:
             main_data_x.append(x)
             main_data_y.append(y)
 
-        return tf.convert_to_tensor(
-            main_data_x, dtype=tf.float64
-        ), tf.convert_to_tensor(main_data_y, dtype=tf.float64)
+        return tf.convert_to_tensor(main_data_x, dtype=tf.float64), tf.convert_to_tensor(
+            main_data_y, dtype=tf.float64
+        )
 
     def get_forcing_data_for_training(self) -> None:
         """

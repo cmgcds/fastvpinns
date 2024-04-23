@@ -51,9 +51,7 @@ class Quadratureformulas_Quad2D:
             #     nodes_1d = np.array([-1, 1])
             #     weights_1d = np.array([1, 1])
             # else:
-            nodes_1d, weights_1d = np.polynomial.legendre.leggauss(
-                quad_order
-            )  # Interior points
+            nodes_1d, weights_1d = np.polynomial.legendre.leggauss(quad_order)  # Interior points
             # nodes_1d = np.concatenate(([-1, 1], nodes_1d))
             # weights_1d = np.concatenate(([1, 1], weights_1d))
 
@@ -152,9 +150,7 @@ class Quadratureformulas_Quad2D:
             self.quad_weights = quad_weights
 
         else:
-            print(
-                "Supported quadrature types are: gauss-legendre, gauss-jacobi"
-            )
+            print("Supported quadrature types are: gauss-legendre, gauss-jacobi")
             print(
                 f"Invalid quadrature type {quad_type} in {self.__class__.__name__} from {__name__}."
             )

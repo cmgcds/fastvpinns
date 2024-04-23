@@ -6,6 +6,7 @@
 from rich.console import Console
 from rich.table import Table
 
+
 def print_table(title, columns, col_1_values, col_2_values):
     """This function prints a table with two columns to the console.
     :param title: Title of the table
@@ -19,7 +20,7 @@ def print_table(title, columns, col_1_values, col_2_values):
     :return: None
     :rtype: None
     """
-    
+
     # Create a console object
     console = Console()
 

@@ -44,9 +44,7 @@ def pde_loss_cd2d(
 
     # reaction term
     # ∫c.u.v dΩ
-    reaction = bilinear_params["c"] * tf.transpose(
-        tf.linalg.matvec(test_shape_val_mat, pred_nn)
-    )
+    reaction = bilinear_params["c"] * tf.transpose(tf.linalg.matvec(test_shape_val_mat, pred_nn))
 
     residual_matrix = (pde_diffusion + conv + reaction) - forcing_function
 
