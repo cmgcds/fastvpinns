@@ -12,3 +12,5 @@ gmsh
 pyyaml
 vtk
 rich==12.5.1
+black
+pre-commit

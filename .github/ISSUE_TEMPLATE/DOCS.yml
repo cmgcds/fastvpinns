@@ -1,0 +1,23 @@
+---
+name: Documentation bug report
+about: Create a report to help us improve the documentation
+title: ''
+labels: 'documentation'
+assignees: ''
+
+---
+
+**Describe the bug**
+A clear and concise description of what the bug is.
+
+**Location**
+Please link to or describe where in the documentation you saw the issue.
+
+**Expected behavior**
+A clear and concise description of what you expected to see in the documentation.
+
+**Screenshots**
+If applicable, add screenshots to help explain the problem.
+
+**Additional context**
+Add any other context about the problem here.
