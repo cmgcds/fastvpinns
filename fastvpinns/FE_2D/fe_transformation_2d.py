@@ -19,10 +19,14 @@
 # History: First version -  20-Sep-2023 - Thivin Anandh
 
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 
 class FETransforamtion2D:
+    """
+    This class represents a 2D finite element transformation.
+    """
+
     def __init__(self):
         pass
 

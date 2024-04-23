@@ -84,9 +84,9 @@ class FE2DSetupMain:
                 )
                 raise ValueError("Quad order should be between 1 and 9999.")
 
-        if self.cell_type == "triangle":
-            weights, xi, eta = Quadratureformulas_Tri2D(self.quad_order).get_quad_values()
-            return weights, xi, eta
+        # if self.cell_type == "triangle":
+        #     weights, xi, eta = Quadratureformulas_Tri2D(self.quad_order).get_quad_values()
+        #     return weights, xi, eta
 
         raise ValueError(
             f"Invalid cell type {self.cell_type} in {self.__class__.__name__} from {__name__}."

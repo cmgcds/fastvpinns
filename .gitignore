@@ -7,6 +7,10 @@ fastvpinns.egg-info
 # tests/test_dump
 test_dump/
 
+# add vtk and mesh files
+*.vtk
+*.msh
+
 fastvpinns.egg-info/
 
 # pytest 

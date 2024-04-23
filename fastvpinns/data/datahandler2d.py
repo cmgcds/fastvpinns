@@ -94,6 +94,9 @@ class DataHandler2D:
         self.grad_x_mat_list = tf.stack(self.grad_x_mat_list, axis=0)
         self.grad_y_mat_list = tf.stack(self.grad_y_mat_list, axis=0)
 
+        # test points
+        self.test_points = None
+
     def get_pde_input(self):
         """
         This function will return the input for the PDE training data

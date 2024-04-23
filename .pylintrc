@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
-disable=line-too-long,too-few-public-methods,wildcard-import
+disable=line-too-long,too-few-public-methods,wildcard-import, missing-module-docstring, useless-parent-delegation, f-string-without-interpolation
 
 [FORMAT]
 max-line-length=120

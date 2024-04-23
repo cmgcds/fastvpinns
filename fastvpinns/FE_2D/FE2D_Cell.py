@@ -199,7 +199,7 @@ class FE2D_Cell:
         # print("Shape functions grady : \n", self.basis_grady_at_quad)
 
         # Multiply each row with the quadrature weights
-        # Basis at Quad - N_test * N_quad
+        # Basis at Quad - n_test * N_quad
         self.basis_at_quad = self.basis_at_quad * self.mult
         self.basis_gradx_at_quad = self.basis_gradx_at_quad * self.mult
         self.basis_grady_at_quad = self.basis_grady_at_quad * self.mult

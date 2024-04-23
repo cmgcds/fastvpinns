@@ -77,7 +77,7 @@ class Quadratureformulas_Quad2D:
                 [X, W] = roots_jacobi(Q, a, b)
                 return [X, W]
 
-            def Jacobi(n, a, b, x):
+            def jacobi_wrapper(n, a, b, x):
 
                 x = np.array(x, dtype=np.float64)
 
@@ -88,9 +88,9 @@ class Quadratureformulas_Quad2D:
                 W = []
                 X = roots_jacobi(Q - 2, a + 1, b + 1)[0]
                 if a == 0 and b == 0:
-                    W = 2 / ((Q - 1) * (Q) * (Jacobi(Q - 1, 0, 0, X) ** 2))
-                    Wl = 2 / ((Q - 1) * (Q) * (Jacobi(Q - 1, 0, 0, -1) ** 2))
-                    Wr = 2 / ((Q - 1) * (Q) * (Jacobi(Q - 1, 0, 0, 1) ** 2))
+                    W = 2 / ((Q - 1) * (Q) * (jacobi_wrapper(Q - 1, 0, 0, X) ** 2))
+                    Wl = 2 / ((Q - 1) * (Q) * (jacobi_wrapper(Q - 1, 0, 0, -1) ** 2))
+                    Wr = 2 / ((Q - 1) * (Q) * (jacobi_wrapper(Q - 1, 0, 0, 1) ** 2))
                 else:
                     W = (
                         2 ** (a + b + 1)
@@ -100,7 +100,7 @@ class Quadratureformulas_Quad2D:
                             (Q - 1)
                             * gamma(Q)
                             * gamma(a + b + Q + 1)
-                            * (Jacobi(Q - 1, a, b, X) ** 2)
+                            * (jacobi_wrapper(Q - 1, a, b, X) ** 2)
                         )
                     )
                     Wl = (
@@ -112,7 +112,7 @@ class Quadratureformulas_Quad2D:
                             (Q - 1)
                             * gamma(Q)
                             * gamma(a + b + Q + 1)
-                            * (Jacobi(Q - 1, a, b, -1) ** 2)
+                            * (jacobi_wrapper(Q - 1, a, b, -1) ** 2)
                         )
                     )
                     Wr = (
@@ -124,7 +124,7 @@ class Quadratureformulas_Quad2D:
                             (Q - 1)
                             * gamma(Q)
                             * gamma(a + b + Q + 1)
-                            * (Jacobi(Q - 1, a, b, 1) ** 2)
+                            * (jacobi_wrapper(Q - 1, a, b, 1) ** 2)
                         )
                     )
                 W = np.append(W, Wr)

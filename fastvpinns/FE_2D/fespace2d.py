@@ -51,8 +51,26 @@ plt.rcParams["axes.prop_cycle"] = cycler(
 
 
 class Fespace2D:
+    """
+    This class represents a finite element space in 2D.
 
-    # constructor
+    Parameters:
+        mesh (Mesh): The mesh object.
+        cells (ndarray): The array of cell indices.
+        boundary_points (dict): The dictionary of boundary points.
+        cell_type (str): The type of cell.
+        fe_order (int): The order of the finite element.
+        fe_type (str): The type of finite element.
+        quad_order (int): The order of the quadrature.
+        quad_type (str): The type of quadrature.
+        fe_transformation_type (str): The type of finite element transformation.
+        bound_function_dict (dict): The dictionary of boundary functions.
+        bound_condition_dict (dict): The dictionary of boundary conditions.
+        forcing_function (function): The forcing function.
+        output_path (str): The output path.
+        generate_mesh_plot (bool, optional): Whether to generate a plot of the mesh. Defaults to False.
+    """
+
     def __init__(
         self,
         mesh,
@@ -71,7 +89,7 @@ class Fespace2D:
         generate_mesh_plot: bool = False,
     ) -> None:
         """
-        The constructor of the fespace2d class.
+        The constructor of the Fespace2D class.
         """
         self.mesh = mesh
         self.boundary_points = boundary_points
@@ -168,7 +186,7 @@ class Fespace2D:
                 )
             )
 
-            # obtain the shape of the basis function (N_test, N_quad)
+            # obtain the shape of the basis function (n_test, N_quad)
             dof += self.fe_cell[i].basis_at_quad.shape[1]
 
             progress_bar.update(1)
@@ -200,7 +218,6 @@ class Fespace2D:
         """
         This function will generate a plot of the mesh.
         """
-        num_cells = self.n_cells
         total_quad = 0
         marker_list = [
             "o",
@@ -253,7 +270,6 @@ class Fespace2D:
                 label_set = True
             else:
                 plt.scatter(x_quad, y_quad, marker="x", color="b", s=2)
-                pass
 
         self.total_dofs = total_quad
 
@@ -280,9 +296,6 @@ class Fespace2D:
         plt.axis("off")
         plt.tight_layout()
 
-        # join the output path and filename
-        outfile = Path(output_path) / "mesh.png"
-
         plt.savefig(str(Path(output_path) / "mesh.png"), bbox_inches="tight")
         plt.savefig(str(Path(output_path) / "mesh.svg"), bbox_inches="tight")
 
@@ -298,7 +311,7 @@ class Fespace2D:
         """
         x = []
         y = []
-        for i, (bound_id, bound_pts) in enumerate(self.boundary_points.items()):
+        for bound_id, bound_pts in self.boundary_points.items():
             # get the coordinates of the boundary points
             for pt in bound_pts:
                 pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
@@ -321,7 +334,7 @@ class Fespace2D:
         """
         x = []
         y = []
-        for i, (bound_id, bound_pts) in enumerate(self.boundary_points.items()):
+        for bound_id, bound_pts in self.boundary_points.items():
             # get the coordinates of the boundary points
             for pt in bound_pts:
                 pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
@@ -332,47 +345,6 @@ class Fespace2D:
                 y.append(val)
 
         return x, y
-
-    # def get_dirichlet_data_for_training_lambda(self,id) -> np.ndarray:
-    #     """
-    #     This function will return the boundary point and its value
-    #     for a specific boundary point( here id is just the index of the boundary point)
-    #     """
-    #     pt = np.array(self.dirichlet_boundary_data[0][id]).reshape(1,2)
-    #     val = np.array(self.dirichlet_boundary_data[1][id]).reshape(1,1)
-    #     pt = tf.convert_to_tensor(pt,dtype=tf.float64)
-    #     val = tf.convert_to_tensor(val,dtype=tf.float64)
-    #     return [pt, val]
-
-    def get_shape_function_val(self) -> np.ndarray:
-        """
-        This function will return the shape function reference values for All cells
-        """
-        shape_func_val_list = []
-        for cell_index in range(self.n_cells):
-            shape_func_val_list.append(self.fe_cell[cell_index].basis_at_quad.copy())
-
-        return np.array(shape_func_val_list)
-
-    def get_shape_function_grad_x(self) -> np.ndarray:
-        """
-        This function will return the shape function reference values for All cells
-        """
-        shape_func_grad_x_list = []
-        for cell_index in range(self.n_cells):
-            shape_func_grad_x_list.append(self.fe_cell[cell_index].basis_gradx_at_quad.copy())
-
-        return np.array(shape_func_grad_x_list)
-
-    def get_shape_function_grad_y(self) -> np.ndarray:
-        """
-        This function will return the shape function reference values for All cells
-        """
-        shape_func_grad_y_list = []
-        for cell_index in range(self.n_cells):
-            shape_func_grad_y_list.append(self.fe_cell[cell_index].basis_grady_at_quad.copy())
-
-        return np.array(shape_func_grad_y_list)
 
     def get_shape_function_val(self, cell_index) -> np.ndarray:
         """
@@ -492,9 +464,6 @@ class Fespace2D:
         if cell_index > self.n_cells:
             raise ValueError(f"cell_index should be less than {self.n_cells}")
 
-        # get number of shape functions
-        n_shape_functions = self.fe_cell[cell_index].basis_function.num_shape_functions
-
         # get the coordinates
         x = self.fe_cell[cell_index].quad_actual_coordinates[:, 0]
         y = self.fe_cell[cell_index].quad_actual_coordinates[:, 1]
@@ -514,8 +483,6 @@ class Fespace2D:
         This function will return one cell's data for training
         which will be used to generate the tf.data.Dataset object
         """
-
-        main_data = []
 
         # get the quadrature points
         x = self.fe_cell[cell_index].quad_actual_coordinates

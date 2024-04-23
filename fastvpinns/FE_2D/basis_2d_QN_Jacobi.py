@@ -6,14 +6,11 @@
 ## NOTE : TEST FUNCTIONS AND DERIVATIVES INFERED FROM https://github.com/ehsankharazmi/hp-VPINNs/
 ## Cite: hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition Ehsan Kharazmi et.al
 
+# import the jacobi polynomials
+from scipy.special import jacobi
+
 import numpy as np
 from .basis_function_2d import BasisFunction2D
-
-# import the legendre polynomials
-from scipy.special import eval_legendre, legendre
-from scipy.special import gamma
-from scipy.special import jacobi
-from scipy.special import roots_jacobi
 
 
 class Basis2DQNJacobi(BasisFunction2D):
@@ -24,7 +21,7 @@ class Basis2DQNJacobi(BasisFunction2D):
     def __init__(self, num_shape_functions: int):
         super().__init__(num_shape_functions)
 
-    def Jacobi(self, n, a, b, x):
+    def jacobi_wrapper(self, n, a, b, x):
         """
         Evaluate the Jacobi polynomial of degree n with parameters a and b at the given points x.
 
@@ -41,7 +38,7 @@ class Basis2DQNJacobi(BasisFunction2D):
         return jacobi(n, a, b)(x)
 
     # Derivative of the Jacobi polynomials
-    def DJacobi(self, n, a, b, x, k: int):
+    def djacobi(self, n, a, b, x, k: int):
         """
         Evaluate the k-th derivative of the Jacobi polynomial of degree n with parameters a and b at the given points x.
 
@@ -65,80 +62,80 @@ class Basis2DQNJacobi(BasisFunction2D):
             raise ValueError("Derivative order should be 1 or 2.")
 
     ## Helper Function
-    def Test_fcnx(self, N_test, x):
+    def test_fcnx(self, n_test, x):
         """
         Compute the x-component of the test functions for a given number of test functions and x-coordinates.
 
         Parameters:
-            N_test (int): Number of test functions.
+            n_test (int): Number of test functions.
             x (array_like): x-coordinates at which to evaluate the test functions.
 
         Returns:
             array_like: Values of the x-component of the test functions.
         """
         test_total = []
-        for n in range(1, N_test + 1):
-            test = self.Jacobi(n - 1, 0, 0, x)
+        for n in range(1, n_test + 1):
+            test = self.jacobi_wrapper(n - 1, 0, 0, x)
             test_total.append(test)
         return np.asarray(test_total, np.float64)
 
-    def Test_fcny(self, N_test, y):
+    def test_fcny(self, n_test, y):
         """
         Compute the y-component of the test functions for a given number of test functions and y-coordinates.
 
         Parameters:
-            N_test (int): Number of test functions.
+            n_test (int): Number of test functions.
             y (array_like): y-coordinates at which to evaluate the test functions.
 
         Returns:
             array_like: Values of the y-component of the test functions.
         """
         test_total = []
-        for n in range(1, N_test + 1):
-            test = self.Jacobi(n - 1, 0, 0, y)
+        for n in range(1, n_test + 1):
+            test = self.jacobi_wrapper(n - 1, 0, 0, y)
             test_total.append(test)
         return np.asarray(test_total, np.float64)
 
-    def dTest_fcn(self, N_test, x):
+    def dtest_fcn(self, n_test, x):
         """
         Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
 
         Parameters:
-            N_test (int): Number of test functions.
+            n_test (int): Number of test functions.
             x (array_like): x-coordinates at which to evaluate the test functions.
 
         Returns:
             array_like: Values of the x-derivatives of the test functions.
         """
         d1test_total = []
-        for n in range(1, N_test + 1):
-            d1test = self.DJacobi(n - 1, 0, 0, x, 1)
+        for n in range(1, n_test + 1):
+            d1test = self.djacobi(n - 1, 0, 0, x, 1)
             d1test_total.append(d1test)
         return np.asarray(d1test_total)
 
-    def ddTest_fcn(self, N_test, x):
+    def ddtest_fcn(self, n_test, x):
         """
         Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
 
         Parameters:
-            N_test (int): Number of test functions.
+            n_test (int): Number of test functions.
             x (array_like): x-coordinates at which to evaluate the test functions.
 
         Returns:
             array_like: Values of the x-derivatives of the test functions.
         """
         d1test_total = []
-        for n in range(1, N_test + 1):
-            d1test = self.DJacobi(n - 1, 0, 0, x, 2)
+        for n in range(1, n_test + 1):
+            d1test = self.djacobi(n - 1, 0, 0, x, 2)
             d1test_total.append(d1test)
         return np.asarray(d1test_total)
 
-    # def dTest_fcn(self, N_test,x):
+    # def dtest_fcn(self, n_test,x):
     #     """
     #     Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
 
     #     Parameters:
-    #         N_test (int): Number of test functions.
+    #         n_test (int): Number of test functions.
     #         x (array_like): x-coordinates at which to evaluate the test functions.
 
     #     Returns:
@@ -146,20 +143,20 @@ class Basis2DQNJacobi(BasisFunction2D):
     #     """
     #     d1test_total = []
     #     d2test_total = []
-    #     for n in range(1,N_test+1):
+    #     for n in range(1,n_test+1):
     #         if n==1:
-    #             d1test = ((n+2)/2)*Jacobi(n,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*Jacobi(n-1,2,2,x)
+    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x)
+    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x)
     #             d1test_total.append(d1test)
     #             d2test_total.append(d2test)
     #         elif n==2:
-    #             d1test = ((n+2)/2)*Jacobi(n,1,1,x) - ((n)/2)*Jacobi(n-2,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*Jacobi(n-1,2,2,x)
+    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x) - ((n)/2)*jacobi_wrapper(n-2,1,1,x)
+    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x)
     #             d1test_total.append(d1test)
     #             d2test_total.append(d2test)
     #         else:
-    #             d1test = ((n+2)/2)*Jacobi(n,1,1,x) - ((n)/2)*Jacobi(n-2,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*Jacobi(n-1,2,2,x) - ((n)*(n+1)/(2*2))*Jacobi(n-3,2,2,x)
+    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x) - ((n)/2)*jacobi_wrapper(n-2,1,1,x)
+    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x) - ((n)*(n+1)/(2*2))*jacobi_wrapper(n-3,2,2,x)
     #             d1test_total.append(d1test)
     #             d2test_total.append(d2test)
     #     return np.asarray(d1test_total), np.asarray(d2test_total)
@@ -176,8 +173,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        test_x = self.Test_fcnx(num_shape_func_in_1d, xi)
-        test_y = self.Test_fcny(num_shape_func_in_1d, eta)
+        test_x = self.test_fcnx(num_shape_func_in_1d, xi)
+        test_y = self.test_fcny(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
@@ -199,8 +196,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the x-derivatives of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        grad_test_x = self.dTest_fcn(num_shape_func_in_1d, xi)
-        test_y = self.Test_fcny(num_shape_func_in_1d, eta)
+        grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)
+        test_y = self.test_fcny(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
@@ -222,8 +219,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the y-derivatives of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        test_x = self.Test_fcnx(num_shape_func_in_1d, xi)
-        grad_test_y = self.dTest_fcn(num_shape_func_in_1d, eta)
+        test_x = self.test_fcnx(num_shape_func_in_1d, xi)
+        grad_test_y = self.dtest_fcn(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
@@ -245,8 +242,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the xx-derivatives of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        grad_grad_x = self.ddTest_fcn(num_shape_func_in_1d, xi)
-        test_y = self.Test_fcny(num_shape_func_in_1d, eta)
+        grad_grad_x = self.ddtest_fcn(num_shape_func_in_1d, xi)
+        test_y = self.test_fcny(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
@@ -268,8 +265,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the xy-derivatives of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        grad_test_x = self.dTest_fcn(num_shape_func_in_1d, xi)
-        grad_test_y = self.dTest_fcn(num_shape_func_in_1d, eta)
+        grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)
+        grad_test_y = self.dtest_fcn(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
@@ -291,8 +288,8 @@ class Basis2DQNJacobi(BasisFunction2D):
             array_like: Values of the yy-derivatives of the basis functions.
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
-        test_x = self.Test_fcnx(num_shape_func_in_1d, xi)
-        grad_grad_y = self.ddTest_fcn(num_shape_func_in_1d, eta)
+        test_x = self.test_fcnx(num_shape_func_in_1d, xi)
+        grad_grad_y = self.ddtest_fcn(num_shape_func_in_1d, eta)
         values = np.zeros((self.num_shape_functions, len(xi)), dtype=np.float64)
 
         for i in range(num_shape_func_in_1d):
