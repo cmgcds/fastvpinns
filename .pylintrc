@@ -1,0 +1,11 @@
+[MESSAGES CONTROL]
+disable=line-too-long,too-few-public-methods
+
+[FORMAT]
+max-line-length=120
+
+[MASTER]
+ignore=tests, model
+
+[DESIGN]
+min-similarity-lines=70
