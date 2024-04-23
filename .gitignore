@@ -7,3 +7,5 @@ fastvpinns.egg-info
 # tests/test_dump
 test_dump/
 
+fastvpinns.egg-info/
+
