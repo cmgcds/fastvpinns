@@ -10,17 +10,12 @@
 
 
 # Importing the required libraries
-from .basis_function_2d import *
+# from .basis_function_2d import *
 
 # import Quadrature rules
 from .quadratureformulas_quad2d import *
 from .fe2d_setup_main import *
 
-# import plotting
-import matplotlib.pyplot as plt
-
-# import tqdm
-from tqdm import tqdm
 
 
 class FE2D_Cell:

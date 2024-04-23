@@ -9,3 +9,8 @@ test_dump/
 
 fastvpinns.egg-info/
 
+# pytest 
+*.vtk
+*.msh
+.egg-info/
+

@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
-disable=line-too-long,too-few-public-methods
+disable=line-too-long,too-few-public-methods,wildcard-import
 
 [FORMAT]
 max-line-length=120
@@ -9,3 +9,5 @@ ignore=tests, model
 
 [DESIGN]
 min-similarity-lines=70
+max-args=12
+max-locals=20
