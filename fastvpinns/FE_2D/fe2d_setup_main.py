@@ -53,9 +53,6 @@ class FE2DSetupMain:
                 return Basis2DQNLegendreSpecial(self.fe_order**2)
 
             # ----- CHEBYSHEV ---- #
-            elif self.fe_type == "chebyshev_1":
-                return Basis2DQNChebyshev1(self.fe_order**2)
-
             elif self.fe_type == "chebyshev_2":
                 return Basis2DQNChebyshev2(self.fe_order**2)
 
@@ -68,7 +65,7 @@ class FE2DSetupMain:
                     f"Invalid FE order {self.fe_order} in {self.__class__.__name__} from {__name__}."
                 )
                 raise ValueError(
-                    'FE order should be one of the : "parmoon", "legendre" , "jacobi", "legendre_special", "chebyshev_1", "chebyshev_2", "jacobi_plain"'
+                    'FE order should be one of the : "legendre" , "jacobi", "legendre_special", "chebyshev_2", "jacobi_plain"'
                 )
 
         print(
