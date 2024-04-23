@@ -52,5 +52,4 @@ from .basis_2d_QN_Legendre_Special import *  # L(n) = L(n-1) - L(n+1)
 from .basis_2d_QN_Jacobi import *  # Normal Jacobi
 
 # ---------------- Chebyshev -------------------------- #
-from .basis_2d_QN_Chebyshev_1 import *  # Normal Chebyshev
 from .basis_2d_QN_Chebyshev_2 import *  # Normal Chebyshev
