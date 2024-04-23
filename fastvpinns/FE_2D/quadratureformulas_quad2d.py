@@ -35,7 +35,7 @@ class Quadratureformulas_Quad2D:
         self.num_quad_points = quad_order * quad_order
 
         if self.quad_order < 2:
-            raise Exception("Quadrature order should be greater than 1.")
+            raise ValueError("Quadrature order should be greater than 1.")
 
         # Calculate the Gauss-Legendre quadrature points and weights for 1D
         # nodes_1d, weights_1d = roots_jacobi(self.quad_order, 1, 1)
@@ -64,111 +64,6 @@ class Quadratureformulas_Quad2D:
 
             # Multiply the weights accordingly for 2D
             quad_weights = (weights_1d[:, np.newaxis] * weights_1d).flatten()
-
-            # Assign the values
-            self.xi_quad = xi_quad
-            self.eta_quad = eta_quad
-            self.quad_weights = quad_weights
-
-        elif quad_type == "gauss-lobatto":
-            """
-            This method returns the Gauss-Lobatto quadrature points and weights.
-            """
-
-            def lgP(n, xi):
-                """
-                Evaluates P_{n}(xi) using an iterative algorithm
-                """
-                obj1 = legendre(n + 1)
-                obj2 = legendre(n - 1)
-                test = obj1(xi) - obj2(xi)
-
-                return test
-
-            def dLgP(n, xi):
-                """
-                Evaluates the first derivative of P_{n}(xi)
-                """
-                obj1 = legendre(n + 1).deriv()
-                obj2 = legendre(n - 1).deriv()
-                test = obj1(xi) - obj2(xi)
-                return test
-
-            def d2LgP(n, xi):
-                """
-                Evaluates the second derivative of P_{n}(xi)
-                """
-                obj1 = legendre(n + 1).deriv().deriv()
-                obj2 = legendre(n - 1).deriv().deriv()
-                test = obj1(xi) - obj2(xi)
-                return test
-
-            def d3LgP(n, xi):
-                """
-                Evaluates the third derivative of P_{n}(xi)
-                """
-                obj1 = legendre(n + 1).deriv().deriv().deriv()
-                obj2 = legendre(n - 1).deriv().deriv().deriv()
-                test = obj1(xi) - obj2(xi)
-                return test
-
-            def gLLNodesAndWeights(n, epsilon=1e-15):
-                """
-                Computes the GLL nodes and weights
-                """
-                if n < 2:
-                    print("Error: n must be larger than 1")
-                else:
-                    x = np.empty(n)
-                    w = np.empty(n)
-
-                    x[0] = -1
-                    x[n - 1] = 1
-                    w[0] = w[0] = 2.0 / ((n * (n - 1)))
-                    w[n - 1] = w[0]
-
-                    n_2 = n // 2
-
-                    for i in range(1, n_2):
-                        xi = (1 - (3 * (n - 2)) / (8 * (n - 1) ** 3)) * np.cos(
-                            (4 * i + 1) * np.pi / (4 * (n - 1) + 1)
-                        )
-
-                        error = 1.0
-
-                        while error > epsilon:
-                            y = dLgP(n - 1, xi)
-                            y1 = d2LgP(n - 1, xi)
-                            y2 = d3LgP(n - 1, xi)
-
-                            dx = 2 * y * y1 / (2 * y1**2 - y * y2)
-
-                            xi -= dx
-                            error = abs(dx)
-
-                        x[i] = -xi
-                        x[n - i - 1] = xi
-
-                        w[i] = 2 / (n * (n - 1) * lgP(n - 1, x[i]) ** 2)
-                        w[n - i - 1] = w[i]
-
-                    if n % 2 != 0:
-                        x[n_2] = 0
-                        w[n_2] = 2.0 / (
-                            (n * (n - 1)) * lgP(n - 1, np.array(x[n_2])) ** 2
-                        )
-
-                    return x, w
-
-            x, w = gLLNodesAndWeights(self.quad_order)
-
-            # Generate the tensor outer product of the nodes
-            xi_quad, eta_quad = np.meshgrid(x, x)
-            xi_quad = xi_quad.flatten()
-            eta_quad = eta_quad.flatten()
-
-            # Multiply the weights accordingly for 2D
-            quad_weights = (w[:, np.newaxis] * w).flatten()
 
             # Assign the values
             self.xi_quad = xi_quad
@@ -258,12 +153,12 @@ class Quadratureformulas_Quad2D:
 
         else:
             print(
-                "Supported quadrature types are: gauss-legendre, gauss-lobatto and gauss-jacobi, gauss-lobatto-new"
+                "Supported quadrature types are: gauss-legendre, gauss-jacobi"
             )
             print(
                 f"Invalid quadrature type {quad_type} in {self.__class__.__name__} from {__name__}."
             )
-            raise Exception("Quadrature type not supported.")
+            raise ValueError("Quadrature type not supported.")
 
     def get_quad_values(self):
         """

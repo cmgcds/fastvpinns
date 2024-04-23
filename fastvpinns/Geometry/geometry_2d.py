@@ -78,7 +78,7 @@ class Geometry_2D:
 
         self.mesh_file_name = mesh_file
 
-        bd_sampling_method = "uniform"  # "uniform" or "lhs"
+        # bd_sampling_method = "uniform"  # "uniform" or "lhs"
 
         file_extension = Path(mesh_file).suffix
 
@@ -91,10 +91,12 @@ class Geometry_2D:
         if self.mesh_type == "quadrilateral":
             # Extract cell information
             cells = self.mesh.cells_dict["quad"]
-        elif self.mesh_type == "triangle":
-            cells = self.mesh.cells_dict["triangle"]
+        # elif self.mesh_type == "triangle":
+        #     cells = self.mesh.cells_dict["triangle"]
         else:
-            raise ValueError("Mesh type should be either quadrilateral or triangle.")
+            raise ValueError("Mesh type should be quadrilateral only")
+            # Changed by thivin -- Does not support triangular cells as of now. 
+            # Since domain is the Entry point, this will ensure that the program terminates immediately
 
         num_cells = cells.shape[0]
         print(f"[INFO] : Number of cells = {num_cells}")
@@ -381,6 +383,9 @@ class Geometry_2D:
             gmsh.write(str(mesh_file_name))
             print("[INFO] : Internal mesh file generated at ", str(mesh_file_name))
 
+            # close the gmsh
+            gmsh.finalize()
+
             # read the mesh using meshio
             mesh = meshio.gmsh.read(str(mesh_file_name))
             meshio.vtk.write(str(vtk_file_name), mesh, binary=False, fmt_version="4.2")
@@ -406,7 +411,7 @@ class Geometry_2D:
         else:
             # print the file name and function name
             print("[Error] : File : geometry_2d.py, Function: ")
-            raise Exception("Unknown mesh type")
+            raise ValueError("Unknown mesh type")
 
     def get_test_points(self):
         """
@@ -437,7 +442,7 @@ class Geometry_2D:
         else:
             # print the file name and function name
             print("[Error] : File : geometry_2d.py, Function: ")
-            raise Exception("Unknown mesh type")
+            raise ValueError("Unknown mesh type")
 
         mesh = meshio.read(str(vtk_file_name))
         points = mesh.points
@@ -463,7 +468,7 @@ class Geometry_2D:
             vtk_file_name = Path(self.output_folder) / "external.vtk"
 
         data = []
-        with open(vtk_file_name, "r") as File:
+        with open(vtk_file_name, "r", encoding="utf-8") as File:
             for line in File:
                 data.append(line)
 
@@ -478,10 +483,10 @@ class Geometry_2D:
                 " Num of data names = ",
                 len(data_names),
             )
-            raise Exception("Number of data names and solution columns are not equal")
+            raise ValueError("Number of data names and solution columns are not equal")
 
         # write the data to the output file
-        with open(str(output_file_name), "w") as FN:
+        with open(str(output_file_name), "w", encoding="utf-8") as FN:
             for line in data:
                 FN.write(line)
                 if "POINT_DATA" in line.strip():
@@ -496,85 +501,6 @@ class Geometry_2D:
 
         # save the vtk file as image
         # self.save_vtk_as_image(str(output_file_name), data_names)
-
-    # def save_vtk_as_image(self, vtk_file_name, scalars_list):
-    #     """
-    #     Function to save VTK as image for easy rendering. Note : only works on linux environment
-    #     If any problem exists, comment the line pv.start_xvfb() in the constructor and also
-    #     comment this function
-
-    #     Parameters:
-    #     - vtk_file_name (str): The name of the vtk file
-    #     - scalars_list (list): The list of scalars to be plotted
-
-    #     Returns:
-    #     None
-    #     """
-    #     import gc  # Import the garbage collector
-
-    #     # Read the VTK file
-    #     vtk_data = pv.read(vtk_file_name)
-
-    #     # Setup the plotter
-    #     for scal in scalars_list:
-    #         if scal == "Exact":
-    #             continue
-    #         plotter = pv.Plotter(off_screen=True, window_size=[640, 480], image_scale=2)
-    #         # Set the background to white
-    #         plotter.set_background("white")
-
-    #         plotter.add_mesh(vtk_data, scalars=scal, cmap="jet", show_scalar_bar=False)
-
-    #         plotter.view_xy()
-
-    #         if scal == "Sol":
-    #             # using the Path object, remove the extension and add png
-    #             output_image_path = Path(vtk_file_name).with_suffix(".png")
-    #             # Adding a vertical scalar bar
-    #             plotter.add_scalar_bar(
-    #                 vertical=True,
-    #                 title="Solution",
-    #                 title_font_size=20,
-    #                 label_font_size=20,
-    #                 width=0.25,
-    #                 position_x=0.80,
-    #                 position_y=0.25,
-    #             )
-    #         else:
-    #             # get the file name from the path object
-    #             file_name = Path(vtk_file_name).name
-    #             # remove the extension and obtain the epoch number
-    #             # file name will be of the form prediction_4000.vtk
-    #             epoch = file_name.split(".")[0].split("_")[1]
-
-    #             # add the epoch number to the output file name
-    #             output_image_path = Path(self.output_folder) / (
-    #                 scal + "_" + epoch + ".png"
-    #             )
-
-    #             # Adding a vertical scalar bar
-    #             plotter.add_scalar_bar(
-    #                 vertical=True,
-    #                 title=scal,
-    #                 title_font_size=20,
-    #                 label_font_size=20,
-    #                 width=0.25,
-    #                 position_x=0.80,
-    #                 position_y=0.25,
-    #             )
-
-    #         # Save the screenshot
-    #         plotter.screenshot(output_image_path)
-
-    #         # Close the plotter
-    #         plotter.close()
-
-    #         # Delete the plotter and vtk_data objects
-    #         del plotter
-
-    #         # Call the garbage collector
-    #         gc.collect()
-    #     del vtk_data
 
     def plot_adaptive_mesh(
         self, cells_list, area_averaged_cell_loss_list, epoch, filename="cell_residual"
@@ -634,3 +560,5 @@ class Geometry_2D:
         output_filename = Path(f"{self.output_folder}/{filename}_{epoch}.png")
         plt.title(f"Cell Residual")
         plt.savefig(str(output_filename), dpi=300)
+
+

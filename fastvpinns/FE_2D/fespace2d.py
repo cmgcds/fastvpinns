@@ -85,20 +85,8 @@ class Fespace2D:
         self.fe_transformation_type = fe_transformation_type
 
         if cell_type == "triangle":
-            self.fe_transformation_type = "affine"
-            print(
-                "=========================================================================="
-            )
-            print(
-                "-----------------WARNING---------------------------------------------------"
-            )
-            print(
-                "[INFO] : Setting the fe_transformation_type to affine for triangle cells"
-            )
-            print(
-                "=========================================================================="
-            )
-
+            raise ValueError("Triangle Mesh is not supported yet")  # added by thivin - to remove support for triangular mesh
+        
         self.output_path = output_path
         self.bound_function_dict = bound_function_dict
         self.bound_condition_dict = bound_condition_dict

@@ -1,1 +1,9 @@
 *.sh
+# pycache
+__pycache__/
+fastvpinns.egg-info
+*.pyc
+
+# tests/test_dump
+test_dump/
+
