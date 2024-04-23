@@ -13,20 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.9
 
     - name: Install dependencies
       run: |
-        python -m venv venv
-        . venv/bin/activate
-        pip install -r requirements.txt
+        python3 -m pip install --upgrade pip
+        python3 -m pip install -e .
 
     - name: Run unit tests
       run: |
-        . venv/bin/activate
-        python -m pytest -v tests/unit
+        python3 -m pytest -v tests/unit
