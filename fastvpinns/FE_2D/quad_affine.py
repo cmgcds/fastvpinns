@@ -107,10 +107,10 @@ class QuadAffin(FETransforamtion2D):
         grady_orig = np.zeros(ref_grady.shape)
 
         for i in range(ref_gradx.shape[0]):
-            ref_gradx[i] = (
+            gradx_orig[i] = (
                 self.yc2 * ref_gradx[i] - self.yc1 * ref_grady[i]
             ) * self.rec_detjk
-            ref_grady[i] = (
+            grady_orig[i] = (
                 -self.xc2 * ref_gradx[i] + self.xc1 * ref_grady[i]
             ) * self.rec_detjk
 
