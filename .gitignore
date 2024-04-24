@@ -18,3 +18,13 @@ fastvpinns.egg-info/
 *.msh
 .egg-info/
 
+#result files
+examples/**/*.png
+# examples/**/model_* 
+*.txt
+*.vtk
+*.index
+*.svg
+
+
+
