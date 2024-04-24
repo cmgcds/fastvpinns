@@ -8,6 +8,7 @@ from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 
+
 def test_dirichlet_boundary_internal():
     """
     Test case for validating Dirichlet boundary routines.
@@ -17,7 +18,7 @@ def test_dirichlet_boundary_internal():
     # Define the geometry
     domain = Geometry_2D("quadrilateral", "internal", 10, 10, ".")
     cells, boundary_points = domain.generate_quad_mesh_internal(
-        x_limits=[0,1], y_limits=[0, 1], n_cells_x=4, n_cells_y=4, num_boundary_points=100
+        x_limits=[0, 1], y_limits=[0, 1], n_cells_x=4, n_cells_y=4, num_boundary_points=100
     )
 
     values = [np.random.rand() for _ in range(4)]
@@ -35,10 +36,14 @@ def test_dirichlet_boundary_internal():
         1003: "dirichlet",
     }
     rhs = lambda x, y: np.ones_like(x)
-    
+
     # obtain the boundary dict for each of the component and compute their means
     for bound_id in bound_condition_dict.keys():
-        mean_val = np.mean(bound_function_dict[bound_id](boundary_points[bound_id][:, 0], boundary_points[bound_id][:, 1]))
+        mean_val = np.mean(
+            bound_function_dict[bound_id](
+                boundary_points[bound_id][:, 0], boundary_points[bound_id][:, 1]
+            )
+        )
         assert np.isclose(mean_val, values[bound_id - 1000])
 
 
@@ -50,24 +55,24 @@ def test_dirichlet_boundary_external():
 
     # Define the geometry
     domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
-    cells, boundary_points = domain.read_mesh(mesh_file ="tests/support_files/circle_quad.mesh" , \
-                                                    boundary_point_refinement_level=2, \
-                                                    bd_sampling_method="uniform", \
-                                                    refinement_level=0)
-    
-    val = np.random.rand()
-    bound_function_dict = {
-        1000: lambda x, y: np.ones_like(x) *val,
-    }
+    cells, boundary_points = domain.read_mesh(
+        mesh_file="tests/support_files/circle_quad.mesh",
+        boundary_point_refinement_level=2,
+        bd_sampling_method="uniform",
+        refinement_level=0,
+    )
 
-    bound_condition_dict = {
-        1000: "dirichlet",
-    }
+    val = np.random.rand()
+    bound_function_dict = {1000: lambda x, y: np.ones_like(x) * val}
+
+    bound_condition_dict = {1000: "dirichlet"}
     rhs = lambda x, y: np.ones_like(x)
 
     # obtain the boundary dict for each of the component and compute their means
     for bound_id in bound_condition_dict.keys():
-        mean_val = np.mean(bound_function_dict[bound_id](boundary_points[bound_id][:, 0], boundary_points[bound_id][:, 1]))
+        mean_val = np.mean(
+            bound_function_dict[bound_id](
+                boundary_points[bound_id][:, 0], boundary_points[bound_id][:, 1]
+            )
+        )
         assert np.isclose(mean_val, val)
-
-

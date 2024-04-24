@@ -7,12 +7,14 @@ from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 
+
 @pytest.fixture
 def geometry_2d():
     """
     Fixture that returns an instance of Geometry_2D for testing.
     """
     return Geometry_2D("quadrilateral", "internal", 10, 10, ".")
+
 
 def test_read_mesh(geometry_2d):
     """
@@ -24,7 +26,7 @@ def test_read_mesh(geometry_2d):
         mesh_file="tests/support_files/circle_quad.mesh",
         boundary_point_refinement_level=2,
         bd_sampling_method="uniform",
-        refinement_level=0
+        refinement_level=0,
     )
 
     # Perform assertions
@@ -34,6 +36,7 @@ def test_read_mesh(geometry_2d):
     # Additional assertions can be added based on the expected behavior of the function
     # Example assertion: Check if the number of cells is correct
     assert cells.shape[0] == 1024
+
 
 def test_read_mesh_invalid_file_extension(geometry_2d):
     """
@@ -48,8 +51,9 @@ def test_read_mesh_invalid_file_extension(geometry_2d):
             mesh_file="tests/support_files/circle_quad.txt",
             boundary_point_refinement_level=2,
             bd_sampling_method="uniform",
-            refinement_level=0
+            refinement_level=0,
         )
+
 
 def test_read_mesh_invalid_mesh_type(geometry_2d):
     """
@@ -64,8 +68,9 @@ def test_read_mesh_invalid_mesh_type(geometry_2d):
             mesh_file="tests/support_files/circle_quad.mesh",
             boundary_point_refinement_level=2,
             bd_sampling_method="uniform",
-            refinement_level=0
+            refinement_level=0,
         )
+
 
 def test_read_mesh_invalid_sampling_method(geometry_2d):
     """
@@ -80,8 +85,9 @@ def test_read_mesh_invalid_sampling_method(geometry_2d):
             mesh_file="tests/support_files/circle_quad.mesh",
             boundary_point_refinement_level=2,
             bd_sampling_method="invalid_method",
-            refinement_level=0
+            refinement_level=0,
         )
+
 
 def test_generate_quad_mesh_internal():
     """
@@ -103,7 +109,7 @@ def test_generate_quad_mesh_internal():
         y_limits=y_limits,
         n_cells_x=n_cells_x,
         n_cells_y=n_cells_y,
-        num_boundary_points=num_boundary_points
+        num_boundary_points=num_boundary_points,
     )
 
     # Perform assertions

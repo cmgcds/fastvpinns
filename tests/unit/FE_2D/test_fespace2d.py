@@ -1,5 +1,5 @@
 # Author : Thivin Anandh. D
-# Added test cases for validating Quadrature routines by computing the areas. 
+# Added test cases for validating Quadrature routines by computing the areas.
 # The test cases are parametrized for different quadrature types and transformations.
 
 import pytest
@@ -10,6 +10,7 @@ from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 import pytest
+
 
 @pytest.fixture()
 def test_quadrature_uniform(request):
@@ -39,4 +40,13 @@ def test_quadrature_uniform(request):
     }
     rhs = lambda x, y: np.ones_like(x)
 
-    return domain, cells, boundary_points, bound_function_dict, bound_condition_dict, rhs, quad_type, transformation
+    return (
+        domain,
+        cells,
+        boundary_points,
+        bound_function_dict,
+        bound_condition_dict,
+        rhs,
+        quad_type,
+        transformation,
+    )
