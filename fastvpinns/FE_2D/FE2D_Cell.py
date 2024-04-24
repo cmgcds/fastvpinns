@@ -117,19 +117,28 @@ class FE2D_Cell:
 
     def assign_basis_function(self) -> BasisFunction2D:
         """
-        The function will assign the basis function class based on the cell type and the FE order.
+        Assigns the basis function class based on the cell type and the FE order.
+
+        :return: An instance of the BasisFunction2D class.
         """
         self.basis_function = self.fe_setup.assign_basis_function()
 
     def assign_quadrature(self) -> None:
         """
-        The function will assign the quadrature points and weights based on the cell type and the quadrature order.
+        Assigns the quadrature points and weights based on the cell type and the quadrature order.
+
+        :return: None
         """
         self.quad_weight, self.quad_xi, self.quad_eta = self.fe_setup.assign_quadrature_rules()
 
     def assign_fe_transformation(self) -> None:
         """
-        The function will assign the FE Transformation class based on the cell type and the FE order.
+        Assigns the FE Transformation class based on the cell type and the FE order.
+
+        This method assigns the appropriate FE Transformation class based on the cell type and the FE order.
+        It sets the cell coordinates for the FE Transformation and obtains the Jacobian of the transformation.
+
+        :return: None
         """
         self.fetransformation = self.fe_setup.assign_fe_transformation(
             self.fe_transformation, self.cell_coordinates
@@ -144,8 +153,17 @@ class FE2D_Cell:
 
     def assign_basis_values_at_quadrature_points(self) -> None:
         """
-        The function will assign the basis function values at the quadrature points.
-        There are N_quad_points, So the basis function values will be of size N_basis_functions x N_quad_points
+        Assigns the basis function values at the quadrature points.
+
+        This method calculates the values of the basis functions and their gradients at the quadrature points.
+        The basis function values are stored in `self.basis_at_quad`, while the gradients are stored in
+        `self.basis_gradx_at_quad`, `self.basis_grady_at_quad`, `self.basis_gradxy_at_quad`,
+        `self.basis_gradxx_at_quad`, and `self.basis_gradyy_at_quad`.
+
+        The basis function values are of size N_basis_functions x N_quad_points.
+
+        Returns:
+            None
         """
         self.basis_at_quad = []
         self.basis_gradx_at_quad = []
@@ -154,10 +172,6 @@ class FE2D_Cell:
         self.basis_gradxx_at_quad = []
         self.basis_gradyy_at_quad = []
 
-        # print("quad_x\n", self.quad_xi)
-        # print("quad_y\n", self.quad_eta)
-        # print("quad_weight\n", self.quad_weight)
-        # exit(1)
         self.basis_at_quad = self.basis_function.value(self.quad_xi, self.quad_eta)
 
         # For Gradients we need to perform a transformation to the original cell
@@ -191,13 +205,6 @@ class FE2D_Cell:
         self.basis_gradxx_at_quad = grad_xx_orig
         self.basis_gradyy_at_quad = grad_yy_orig
 
-        # # print the values
-        # print("=============================================================================")
-        # print("cell co-ordinates: \n", self.cell_coordinates)
-        # print("Shape functions : \n", self.basis_at_quad)
-        # print("Shape functions gradx : \n", self.basis_gradx_at_quad)
-        # print("Shape functions grady : \n", self.basis_grady_at_quad)
-
         # Multiply each row with the quadrature weights
         # Basis at Quad - n_test * N_quad
         self.basis_at_quad = self.basis_at_quad * self.mult
@@ -207,29 +214,28 @@ class FE2D_Cell:
         self.basis_gradxx_at_quad = self.basis_gradxx_at_quad * self.mult
         self.basis_gradyy_at_quad = self.basis_gradyy_at_quad * self.mult
 
-        # print("mat\n",self.basis_at_quad)
-        # print("mat_grad_x\n",self.basis_gradx_at_quad)
-        # print("mat_grad_y\n",self.basis_grady_at_quad)
-        # exit(1)
-
-        # print the values
-        # print("=============================================================================")
-        # print("cell co-ordinates: \n", self.cell_coordinates)
-        # print("Basis function values at the quadrature points: \n", self.basis_at_quad)
-        # print("Basis function gradx at the quadrature points: \n", self.basis_gradx_at_quad)
-        # print("Basis function grady at the quadrature points: \n", self.basis_grady_at_quad)
-
     def assign_quad_weights_and_jacobian(self) -> None:
         """
-        The function will assign the quadrature weights and the Jacobian of the transformation.
+        Assigns the quadrature weights and the Jacobian of the transformation.
+
+        This method calculates and assigns the quadrature weights and the Jacobian of the transformation
+        for the current cell. The quadrature weights are multiplied by the flattened Jacobian array
+        and stored in the `mult` attribute of the class.
+
+        :return: None
         """
         self.mult = self.quad_weight * self.jacobian.flatten()
 
     def assign_quadrature_coordinates(self) -> None:
         """
-        The function will assign the actual coordinates of the quadrature points.
+        Assigns the actual coordinates of the quadrature points.
+
+        This method calculates the actual coordinates of the quadrature points based on the given Xi and Eta values.
+        The Xi and Eta values are obtained from the `quad_xi` and `quad_eta` attributes of the class.
+        The calculated coordinates are stored in the `quad_actual_coordinates` attribute as a NumPy array.
+
+        :return: None
         """
-        # Input -> Xi (NQuad,), Eta (NQuad,) --> output -> (2 * NQuad) --> Transpose it to get (NQuad, 2)
         actual_co_ord = []
         for xi, eta in zip(self.quad_xi, self.quad_eta):
             actual_co_ord.append(self.fetransformation.get_original_from_ref(xi, eta))
@@ -238,17 +244,30 @@ class FE2D_Cell:
 
     def assign_forcing_term(self, forcing_function) -> None:
         """
-        The function will assign the forcing function values at the quadrature points.
-        The final shape will be N_shape_functions x 1
-        """
+        Assigns the forcing function values at the quadrature points.
 
+        This function computes the values of the forcing function at the quadrature points
+        and assigns them to the `forcing_at_quad` attribute of the FE2D_Cell object.
+
+        Parameters:
+            forcing_function (callable): The forcing function that takes the coordinates (x, y)
+                as input and returns the value of the forcing function at those coordinates.
+
+        Returns:
+            None
+
+        Notes:
+            - The final shape of `forcing_at_quad` will be N_shape_functions x 1.
+            - This function is for backward compatibility with old code and currently assigns
+              the values as zeros. The actual calculation is performed in the fespace class.
+        """
         # get number of shape functions
         n_shape_functions = self.basis_function.num_shape_functions
 
         # Loop over all the basis functions and compute the integral
         f_integral = np.zeros((n_shape_functions, 1), dtype=np.float64)
 
-        # The above code is for backward compatability with old code. this function will just assign the values as zeros
+        # The above code is for backward compatibility with old code. this function will just assign the values as zeros
         # the actual calculation is performed in the fespace class
 
         # for i in range(n_shape_functions):

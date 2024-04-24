@@ -1,9 +1,17 @@
+"""
+This module, `geometry_2d.py`, contains the `Geometry_2D` class which defines functions to read mesh from Gmsh and 
+generate internal mesh for 2D problems. It supports different types of meshes and mesh generation methods. 
+The class also allows for specifying the number of test points in the x and y directions, and the output folder for storing results.
+
+Author: Thivin Anandh D
+Date: 21-Sep-2023
+"""
+
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import meshio
-import pygmsh
-from pathlib import Path
 from pyDOE import lhs
 
 import gmsh
@@ -13,20 +21,16 @@ class Geometry_2D:
     """
     Defines functions to read mesh from Gmsh and internal mesh for 2D problems.
 
-    Attributes:
-    - mesh_type (str): The type of mesh to be used.
-    - mesh_generation_method (str): The method used to generate the mesh.
-    - n_test_points_x (int): The number of test points in the x-direction.
-    - n_test_points_y (int): The number of test points in the y-direction.
-    - output_folder (str): The path to the output folder.
-
-    Methods:
-    - read_mesh: Reads the mesh from a Gmsh .msh file and extracts cell information.
-    - generate_quad_mesh_internal: Generates and saves a quadrilateral mesh with physical curves.
-    - get_test_points: Returns the test points.
-    - write_vtk: Writes the data to a VTK file.
-    - save_vtk_as_image: Saves the VTK file as an image.
-
+    :param mesh_type: The type of mesh to be used.
+    :type mesh_type: str
+    :param mesh_generation_method: The method used to generate the mesh.
+    :type mesh_generation_method: str
+    :param n_test_points_x: The number of test points in the x-direction.
+    :type n_test_points_x: int
+    :param n_test_points_y: The number of test points in the y-direction.
+    :type n_test_points_y: int
+    :param output_folder: The path to the output folder.
+    :type output_folder: str
     """
 
     def __init__(
@@ -39,6 +43,16 @@ class Geometry_2D:
     ):
         """
         Constructor for Geometry_2D class.
+        :param mesh_type: The type of mesh to be used.
+        :type mesh_type: str
+        :param mesh_generation_method: The method used to generate the mesh.
+        :type mesh_generation_method: str
+        :param n_test_points_x: The number of test points in the x-direction.
+        :type n_test_points_x: int
+        :param n_test_points_y: The number of test points in the y-direction.
+        :type n_test_points_y: int
+        :param output_folder: The path to the output folder.
+        :type output_folder: str
         """
         self.mesh_type = mesh_type
         self.mesh_generation_method = mesh_generation_method
@@ -54,6 +68,10 @@ class Geometry_2D:
 
         # to be filled by external
         self.mesh_file_name = None
+        self.mesh = None
+        self.bd_dict = None
+        self.cell_points = None
+        self.test_points = None
 
     def read_mesh(
         self,
@@ -65,15 +83,16 @@ class Geometry_2D:
         """
         Reads mesh from a Gmsh .msh file and extracts cell information.
 
-        Parameters:
-        mesh_file (str): The path to the mesh file.
-        boundary_point_refinement_level (int): The number of boundary points to be generated.
-        bd_sampling_method (str): The method used to generate the boundary points.
-        refinement_level (int): The number of times the mesh should be refined.
-
-        Returns:
-        cell_points (numpy.ndarray): The cell points.
-        bd_dict (dict): The dictionary of boundary points.
+        :param mesh_file: The path to the mesh file.
+        :type mesh_file: str
+        :param boundary_point_refinement_level: The number of boundary points to be generated.
+        :type boundary_point_refinement_level: int
+        :param bd_sampling_method: The method used to generate the boundary points.
+        :type bd_sampling_method: str
+        :param refinement_level: The number of times the mesh should be refined.
+        :type refinement_level: int
+        :return: The cell points and the dictionary of boundary points.
+        :rtype: tuple
         """
 
         self.mesh_file_name = mesh_file
@@ -115,7 +134,6 @@ class Geometry_2D:
             cell_points[i] = cell[np.argsort(angles)]
 
         # Extract number of points within each cell
-        num_points_per_cell = cells.shape[1]
         print(f"[INFO] : Number of points per cell = {cell_points.shape}")
 
         # Collect the Boundary point id's within the domain
@@ -135,9 +153,6 @@ class Geometry_2D:
         # Generate a Dictionary of boundary tags and boundary coordinates
         # Keys will be the boundary tags and values will be the list of coordinates
         boundary_dict = {}
-
-        # unique tags
-        unique_tag = set(self.mesh.cell_data["medit:ref"][0])
 
         # refine the boundary points based on the number of boundary points needed
         for i in range(boundary_coordinates.shape[0]):
@@ -170,7 +185,7 @@ class Geometry_2D:
                 boundary_dict[tag] = final
 
         # get unique
-        for tag, bd_pts in boundary_dict.items():
+        for tag in boundary_dict.keys():
             val = boundary_dict[tag]
             val = np.unique(val, axis=0)
             boundary_dict[tag] = val
@@ -206,16 +221,18 @@ class Geometry_2D:
         """
         Generate and save a quadrilateral mesh with physical curves.
 
-        Parameters:
-        x_limits (tuple): The lower and upper limits in the x-direction (x_min, x_max).
-        y_limits (tuple): The lower and upper limits in the y-direction (y_min, y_max).
-        n_cells_x (int): The number of cells in the x-direction.
-        n_cells_y (int): The number of cells in the y-direction.
-
-        Returns:
-        cell_points (numpy.ndarray): The cell points.
-        bd_dict (dict): The dictionary of boundary points.
-
+        :param x_limits: The lower and upper limits in the x-direction (x_min, x_max).
+        :type x_limits: tuple
+        :param y_limits: The lower and upper limits in the y-direction (y_min, y_max).
+        :type y_limits: tuple
+        :param n_cells_x: The number of cells in the x-direction.
+        :type n_cells_x: int
+        :param n_cells_y: The number of cells in the y-direction.
+        :type n_cells_y: int
+        :param num_boundary_points: The number of boundary points.
+        :type num_boundary_points: int
+        :return: The cell points and the dictionary of boundary points.
+        :rtype: tuple[numpy.ndarray, dict]
         """
 
         self.n_cells_x = n_cells_x
@@ -267,8 +284,17 @@ class Geometry_2D:
 
         def _temp_bd_func(start, end, num_pts):
             """
-            This function will return the boundary points between the start and end points
-            using lhs sampling
+            This function returns the boundary points between the start and end points
+            using lhs sampling.
+
+            :param start: The starting point of the boundary.
+            :type start: float
+            :param end: The ending point of the boundary.
+            :type end: float
+            :param num_pts: The number of points to generate.
+            :type num_pts: int
+            :return: The boundary points as a 1D numpy array.
+            :rtype: numpy.ndarray
             """
             # generate the boundary points using lhs as a np.float64 array
             bd_pts = lhs(1, num_pts).astype(np.float64)
@@ -307,10 +333,9 @@ class Geometry_2D:
 
     def generate_vtk_for_test(self):
         """
-        generate a VTK from Mesh file (External) or using gmsh (for Internal)
+        Generates a VTK from Mesh file (External) or using gmsh (for Internal).
 
-        Parameters:
-        None
+        :return: None
         """
 
         if self.mesh_generation_method == "internal":
@@ -350,20 +375,6 @@ class Geometry_2D:
 
             # Generate mesh:
             gmsh.model.mesh.generate()
-
-            # ## Add Physical Groups for ParMooN-Import
-            # ## Bottom - 1000, Right 1001, Top 1002 , Left 1003
-            # ## (Dimension, Line/Curve/Surface , Physical Group Number)
-            # gmsh.model.addPhysicalGroup(1, [line1], 1000)
-            # gmsh.model.addPhysicalGroup(1, [line2], 1001)
-            # gmsh.model.addPhysicalGroup(1, [line3], 1002)
-            # gmsh.model.addPhysicalGroup(1, [line4], 1003)
-
-            # # Generate mesh:
-            # gmsh.model.mesh.generate()
-
-            # ## save all Elements
-            # gmsh.option.setNumber("Mesh.SaveAll", 1)
 
             mesh_file_name = Path(self.output_folder) / "internal.msh"
             vtk_file_name = Path(self.output_folder) / "internal.vtk"
@@ -413,9 +424,9 @@ class Geometry_2D:
             x = np.linspace(self.x_limits[0], self.x_limits[1], self.n_test_points_x)
             y = np.linspace(self.y_limits[0], self.y_limits[1], self.n_test_points_y)
             # generate meshgrid
-            X, Y = np.meshgrid(x, y)
+            x_grid, y_grid = np.meshgrid(x, y)
             # stack the points
-            self.test_points = np.vstack([X.flatten(), Y.flatten()]).T
+            self.test_points = np.vstack([x_grid.flatten(), y_grid.flatten()]).T
 
             return self.test_points
 
@@ -432,16 +443,17 @@ class Geometry_2D:
 
     def write_vtk(self, solution, output_path, filename, data_names):
         """
-        This function will write the data to vtk file
+        Writes the data to a VTK file.
 
-        Parameters:
-        - solution (numpy.ndarray): The solution vector
-        - output_path (str): The path to the output folder
-        - filename (str): The name of the output file
-        - data_names (list): The list of data names in vtk file to be written as scalars
-
-        Returns:
-        None
+        :param solution: The solution vector.
+        :type solution: numpy.ndarray
+        :param output_path: The path to the output folder.
+        :type output_path: str
+        :param filename: The name of the output file.
+        :type filename: str
+        :param data_names: The list of data names in the VTK file to be written as scalars.
+        :type data_names: list
+        :return: None
         """
         # read the existing vtk into file
         if self.mesh_generation_method == "internal":
@@ -488,12 +500,17 @@ class Geometry_2D:
         self, cells_list, area_averaged_cell_loss_list, epoch, filename="cell_residual"
     ):
         """
-        plot the residuals in each cell of the mesh
+        Plots the residuals in each cell of the mesh.
 
-        Parameters:
-        - cells_list (list): The list of cells
-        - area_averaged_cell_loss_list (list): The list of area averaged cell residual ( or the normal residual)
-        - epoch (int): The epoch number ( for file name)
+        :param cells_list: The list of cells.
+        :type cells_list: list
+        :param area_averaged_cell_loss_list: The list of area averaged cell residual (or the normal residual).
+        :type area_averaged_cell_loss_list: list
+        :param epoch: The epoch number (for file name).
+        :type epoch: int
+        :param filename: The name of the output file, defaults to "cell_residual".
+        :type filename: str, optional
+        :return: None
         """
 
         plt.figure(figsize=(6.4, 4.8), dpi=300)
@@ -521,14 +538,14 @@ class Geometry_2D:
 
             plt.plot(x, y, "k")
 
-            # compute x_min, x_max, y_min, y_max
-            x_min = np.min(x)
-            x_max = np.max(x)
-            y_min = np.min(y)
-            y_max = np.max(y)
+            # # compute x_min, x_max, y_min, y_max
+            # x_min = np.min(x)
+            # x_max = np.max(x)
+            # y_min = np.min(y)
+            # y_max = np.max(y)
 
-            # compute centroid of the cells
-            centroid = np.array([np.mean(x), np.mean(y)])
+            # # compute centroid of the cells
+            # centroid = np.array([np.mean(x), np.mean(y)])
 
             # plot the loss text within the cell
             # plt.text(centroid[0], centroid[1], f"{curr_cell_loss:.3e}", fontsize=16, horizontalalignment='center', verticalalignment='center')

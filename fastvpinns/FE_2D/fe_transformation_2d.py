@@ -34,13 +34,35 @@ class FETransforamtion2D:
     def set_cell(self):
         """
         Set the cell co-ordinates, which will be used to calculate the Jacobian and actual values.
+
+        :return: None
         """
         pass
 
     @abstractmethod
     def get_original_from_ref(self, xi, eta):
         """
+        This method returns the original coordinates from the reference coordinates.
+
+        :param xi: The xi coordinate in the reference space.
+        :type xi: float
+        :param eta: The eta coordinate in the reference space.
+        :type eta: float
+        :return: The original coordinates (x, y) corresponding to the given reference coordinates.
+        :rtype: tuple
+        """
+        pass
+
+    def get_original_from_ref(self, xi, eta):
+        """
         This method returns the original co-ordinates from the reference co-ordinates.
+
+        :param xi: The xi value of the reference co-ordinates.
+        :type xi: float
+        :param eta: The eta value of the reference co-ordinates.
+        :type eta: float
+        :return: The original co-ordinates corresponding to the given reference co-ordinates.
+        :rtype: tuple
         """
         pass
 
@@ -48,6 +70,13 @@ class FETransforamtion2D:
     def get_jacobian(self, xi, eta):
         """
         This method returns the Jacobian of the transformation.
+
+        :param xi: The xi coordinate.
+        :type xi: float
+        :param eta: The eta coordinate.
+        :type eta: float
+        :return: The Jacobian matrix.
+        :rtype: numpy.ndarray
         """
         pass
 

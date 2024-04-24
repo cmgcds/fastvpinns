@@ -1,8 +1,11 @@
-# This file contains the loss function for the poisson problem in 2D domain
-# this loss function will be passed as a class to the tensorflow custom model
-# Author : Thivin Anandh
-# Date : 22/Sep/2023
-# History : 22/Sep/2023 - Initial implementation with basic loss function
+"""
+This function is implemntation of our efficient tensor-based loss calculation for poisson equation
+Author: Thivin Anandh D
+Date: 21-Sep-2023
+History: Initial implementation
+Refer: https://arxiv.org/abs/2404.12063
+"""
+
 import tensorflow as tf
 
 
@@ -21,21 +24,14 @@ def pde_loss_poisson(
     """
     This method returns the loss for the Poisson Problem of the PDE
     """
-    # Compute PDE loss
+    # ∫du/dx. dv/dx dΩ
     pde_diffusion_x = tf.transpose(tf.linalg.matvec(test_grad_x_mat, pred_grad_x_nn))
 
-    # print
-    # tf.print("pde_diffusion_x = ", pde_diffusion_x.shape)
-
+    # ∫du/dy. dv/dy dΩ
     pde_diffusion_y = tf.transpose(tf.linalg.matvec(test_grad_y_mat, pred_grad_y_nn))
 
-    # tf.print("pde_diffusion_y = ", pde_diffusion_y.shape)
-
+    # eps * ∫ (du/dx. dv/dx + du/dy. dv/dy) dΩ
     pde_diffusion = bilinear_params["eps"] * (pde_diffusion_x + pde_diffusion_y)
-
-    # tf.print("pde_diffusion = ", pde_diffusion.shape)
-
-    # tf.print("pde_diffusion = ", pde_diffusion)
 
     residual_matrix = pde_diffusion - forcing_function
 

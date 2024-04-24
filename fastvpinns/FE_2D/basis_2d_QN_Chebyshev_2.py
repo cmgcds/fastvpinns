@@ -1,10 +1,14 @@
-# Purpose: Defines the basis functions for a 2D Q1 element.
-# Reference: ParMooN -  File: BF_C_Q_Q1_2D.h
-# Author: Thivin Anandh D
-# Date: 30/Aug/2023
-
-## NOTE : TEST FUNCTIONS AND DERIVATIVES INFERED FROM https://github.com/ehsankharazmi/hp-VPINNs/
-## Cite: hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition Ehsan Kharazmi et.al
+"""
+file: basis_2d_QN_Chebyshev_2.py
+description: This file contains the class Basis2DQNChebyshev2 which defines the basis functions for a 
+              2D Q1 element using Chebyshev polynomials.
+              Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
+             (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)
+             available at https://github.com/ehsankharazmi/hp-VPINNs/
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+"""
 
 # import the legendre polynomials
 from scipy.special import jacobi
@@ -25,14 +29,17 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         Evaluate the Jacobi polynomial of degree n with parameters a and b at the given points x.
 
-        Parameters:
-            n (int): Degree of the Jacobi polynomial.
-            a (float): First parameter of the Jacobi polynomial.
-            b (float): Second parameter of the Jacobi polynomial.
-            x (array_like): Points at which to evaluate the Jacobi polynomial.
+        :param n: Degree of the Jacobi polynomial.
+        :type n: int
+        :param a: First parameter of the Jacobi polynomial.
+        :type a: float
+        :param b: Second parameter of the Jacobi polynomial.
+        :type b: float
+        :param x: Points at which to evaluate the Jacobi polynomial.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the Jacobi polynomial at the given points x.
+        :return: Values of the Jacobi polynomial at the given points x.
+        :rtype: array_like
         """
         x = np.array(x, dtype=np.float64)
         return jacobi(n, a, b)(x)
@@ -42,12 +49,13 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         Compute the x-component of the test functions for a given number of test functions and x-coordinates.
 
-        Parameters:
-            n_test (int): Number of test functions.
-            x (array_like): x-coordinates at which to evaluate the test functions.
+        :param n_test: Number of test functions.
+        :type n_test: int
+        :param x: x-coordinates at which to evaluate the test functions.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the x-component of the test functions.
+        :return: Values of the x-component of the test functions.
+        :rtype: array_like
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -63,12 +71,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         Compute the y-component of the test functions for a given number of test functions and y-coordinates.
 
-        Parameters:
-            n_test (int): Number of test functions.
-            y (array_like): y-coordinates at which to evaluate the test functions.
-
-        Returns:
-            array_like: Values of the y-component of the test functions.
+        :param n_test: Number of test functions.
+        :type n_test: int
+        :param y: y-coordinates at which to evaluate the test functions.
+        :type y: array_like
+        :return: Values of the y-component of the test functions.
+        :rtype: array_like
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -84,13 +92,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         Compute the first and second derivatives of the test function.
 
-        Parameters:
-        - n_test (int): The number of test functions.
-        - x (float): The input value.
-
-        Returns:
-        - d1test_total (ndarray): Array of first derivatives of the test function.
-        - d2test_total (ndarray): Array of second derivatives of the test function.
+        :param n_test: The number of test functions.
+        :type n_test: int
+        :param x: The input value.
+        :type x: float
+        :return: Array of first derivatives of the test function, Array of second derivatives of the test function.
+        :rtype: tuple(ndarray, ndarray)
         """
         d1test_total = []
         d2test_total = []
@@ -152,12 +159,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the values of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)
@@ -175,12 +182,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the x-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the x-derivatives of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the x-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)[0]
@@ -198,12 +205,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the y-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
 
-        Returns:
-            array_like: Values of the y-derivatives of the basis functions.
+        :return: Values of the y-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)
@@ -221,12 +228,13 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the xx-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
 
-        Returns:
-            array_like: Values of the xx-derivatives of the basis functions.
+        :return: Values of the xx-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_grad_x = self.dtest_fcn(num_shape_func_in_1d, xi)[1]
@@ -244,12 +252,12 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the xy-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the xy-derivatives of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the xy-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)[0]
@@ -267,12 +275,13 @@ class Basis2DQNChebyshev2(BasisFunction2D):
         """
         This method returns the yy-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
 
-        Returns:
-            array_like: Values of the yy-derivatives of the basis functions.
+        :return: Values of the yy-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)

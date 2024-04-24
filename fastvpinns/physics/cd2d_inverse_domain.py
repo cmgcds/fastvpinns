@@ -1,13 +1,15 @@
-# This file contains the loss function for the poisson problem in 2D domain
-# this loss function will be passed as a class to the tensorflow custom model
-# Author : Thivin Anandh
-# Date : 22/Sep/2023
-# History : 22/Sep/2023 - Initial implementation with basic loss function
+"""
+This function is implemntation of our efficient tensor-based loss calculation for cd2d equation with inverse problem (Domain)
+Author: Thivin Anandh D
+Date: 21-Sep-2023
+History: Initial implementation
+Refer: https://arxiv.org/abs/2404.12063
+"""
+
 import tensorflow as tf
 
 
-# PDE loss function for the poisson problem
-@tf.function
+# PDE loss function for the CD2D inverse problem (Domain)
 def pde_loss_cd2d_inverse_domain(
     test_shape_val_mat,
     test_grad_x_mat,
@@ -20,13 +22,33 @@ def pde_loss_cd2d_inverse_domain(
     inverse_params_list,
 ):
     """
-    This method returns the loss for the Poisson Problem of the PDE
+    Calculates and returns the loss for the CD2D inverse problem (Domain)
+
+    :param test_shape_val_mat: The test shape value matrix.
+    :type test_shape_val_mat: tf.Tensor
+    :param test_grad_x_mat: The x-gradient of the test matrix.
+    :type test_grad_x_mat: tf.Tensor
+    :param test_grad_y_mat: The y-gradient of the test matrix.
+    :type test_grad_y_mat: tf.Tensor
+    :param pred_nn: The predicted neural network output.
+    :type pred_nn: tf.Tensor
+    :param pred_grad_x_nn: The x-gradient of the predicted neural network output.
+    :type pred_grad_x_nn: tf.Tensor
+    :param pred_grad_y_nn: The y-gradient of the predicted neural network output.
+    :type pred_grad_y_nn: tf.Tensor
+    :param forcing_function: The forcing function used in the PDE.
+    :type forcing_function: function
+    :param bilinear_params: The parameters for the bilinear form.
+    :type bilinear_params: list
+    :param inverse_params_list: The parameters for the inverse problem.
+    :type inverse_params_list: list
+
+    :return: The calculated loss.
+    :rtype: tf.Tensor
     """
 
     # The first values in the inverse_params_list is the number of inverse problems
     diffusion_coeff_NN = inverse_params_list[0]
-
-    # Loss Function : ∫du/dx. dv/dx  +  ∫du/dy. dv/dy - ∫f.v
 
     # ∫ε.du/dx. dv/dx dΩ
     pde_diffusion_x = tf.transpose(
@@ -51,7 +73,11 @@ def pde_loss_cd2d_inverse_domain(
     # # b(x) * ∫du/dx. v dΩ + b(y) * ∫du/dy. v dΩ
     conv = bilinear_params["b_x"] * conv_x + bilinear_params["b_y"] * conv_y
 
-    residual_matrix = (pde_diffusion + conv) - forcing_function
+    # reaction term
+    # ∫c.u.v dΩ
+    reaction = bilinear_params["c"] * tf.transpose(tf.linalg.matvec(test_shape_val_mat, pred_nn))
+
+    residual_matrix = (pde_diffusion + conv + reaction) - forcing_function
 
     # Perform Reduce mean along the axis 0
     residual_cells = tf.reduce_mean(tf.square(residual_matrix), axis=0)
