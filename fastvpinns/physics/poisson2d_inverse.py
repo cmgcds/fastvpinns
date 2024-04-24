@@ -10,7 +10,6 @@ import tensorflow as tf
 
 
 # PDE loss function for the poisson problem inverse
-@tf.function
 def pde_loss_poisson_inverse(
     test_shape_val_mat,
     test_grad_x_mat,

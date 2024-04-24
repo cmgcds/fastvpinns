@@ -1,40 +1,69 @@
 """
 file: model_inverse.py
-description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
-             This focuses on training variational PINNs for inverse problems where the inverse parameter is constant on the domain.
-             The focus is on the model architecture and the training loop, and not on the loss functions.
-authors: Thivin Anandh D
-changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
-known_issues: Currently out of the box, supports only one constant inverse parameters.
-dependencies: None specified.
+description: This file contains the DenseModel class which is a custom model for the Neural Network
+                for solving Variational PINNs. This model is used for solving inverse problems of parameter estimation, where the parameters are uniform in the domain.
+author: Thivin Anandh D, Divij Ghose, Sashikumaar Ganesan
+date: 29/01/2024
+changelog: 29/01/2024 - file created
+
+known issues: None
 """
 
+# A method which hosts the NN model and the training loop for variational Pinns
+# This focusses only on the model architecture and the training loop, and not on the loss functions
+# Author : Thivin Anandh D
+# Date : 22/Sep/2023
+# History : 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+import copy
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import initializers
-import copy
+
+
+# Custom Loss Functions
+def custom_loss1(y_true1, y_pred1):
+    return tf.reduce_mean(tf.square(y_pred1 - y_true1))
+
+
+def custom_loss2(y_true2, y_pred2):
+    return tf.reduce_mean(tf.square(y_pred2 - y_true2))
 
 
 # Custom Model
 class DenseModel_Inverse(tf.keras.Model):
-    """
-    A subclass of tf.keras.Model that defines a dense model for an inverse problem.
+    """ Custom Dense Model for solving Inverse Problems using Neural Networks
 
-    :param list layer_dims: The dimensions of the layers in the model.
-    :param dict learning_rate_dict: A dictionary containing the learning rates.
-    :param dict params_dict: A dictionary containing the parameters of the model.
-    :param function loss_function: The loss function to be used in the model.
-    :param list input_tensors_list: A list of input tensors.
-    :param list orig_factor_matrices: The original factor matrices.
-    :param list force_function_list: A list of force functions.
-    :param list sensor_list: A list of sensors for the inverse problem.
-    :param dict inverse_params_dict: A dictionary containing the parameters for the inverse problem.
-    :param tf.DType tensor_dtype: The data type of the tensors.
-    :param bool use_attention: Whether to use attention mechanism in the model. Defaults to False.
-    :param str activation: The activation function to be used in the model. Defaults to 'tanh'.
-    :param bool hessian: Whether to use Hessian in the model. Defaults to False.
-    """
+    This class is a custom model for solving inverse problems using Neural Networks. The model is designed to solve inverse problems of parameter estimation using data, where the parameter is uniform in the domain.
 
+    :param layer_dims: A list of integers representing the number of neurons in each layer of the model
+    :type layer_dims: list
+    :param learning_rate_dict: A dictionary containing the learning rate and other parameters for the optimizer
+    :type learning_rate_dict: dict
+    :param params_dict: A dictionary containing the parameters for the model
+    :type params_dict: dict
+    :param loss_function: A custom loss function for the model
+    :type loss_function: function
+    :param input_tensors_list: A list containing the input tensors for the model
+    :type input_tensors_list: list
+    :param orig_factor_matrices: A list containing the original factor matrices for the model
+    :type orig_factor_matrices: list
+    :param force_function_list: A list containing the force functions for the model
+    :type force_function_list: list
+    :param sensor_list: A list containing the sensor values for the model
+    :type sensor_list: list
+    :param inverse_params_dict: A dictionary containing the parameters for the inverse problem
+    :type inverse_params_dict: dict
+    :param tensor_dtype: A tensorflow data type for the model
+    :type tensor_dtype: tf.DType
+    :param use_attention: A boolean flag to use attention layer in the model
+    :type use_attention: bool
+    :param activation: A string representing the activation function for the model
+    :type activation: str
+    :param hessian: A boolean flag to compute the hessian of the model
+    :type hessian: bool
+    :return: A custom Dense Model for solving inverse problems using Neural Networks
+    :rtype: tf.keras.Model
+    """
     def __init__(
         self,
         layer_dims,
@@ -103,6 +132,7 @@ class DenseModel_Inverse(tf.keras.Model):
 
         self.force_matrix = self.force_function_list
 
+        self.gradients = None
         print(f"{'-'*74}")
         print(f"| {'PARAMETER':<25} | {'SHAPE':<25} |")
         print(f"{'-'*74}")
@@ -183,16 +213,20 @@ class DenseModel_Inverse(tf.keras.Model):
         if self.use_attention:
             self.attention_layer = layers.Attention()
 
+                # Compile the model
+        self.compile(optimizer=self.optimizer)
+        self.build(input_shape=(None, self.layer_dims[0]))
+
+        # print the summary of the model
+        self.summary()
+
     def call(self, inputs):
-        """
-        Applies the model to the input data.
-
-        Args:
-            inputs: The input data.
-
-        Returns:
-            The output of the model after applying all the layers.
-        """
+        """ This method is used to define the forward pass of the model.
+        :param inputs: Input tensor
+        :type inputs: tf.Tensor
+        :return: Output tensor from the model
+        :rtype: tf.Tensor
+        """        
         x = inputs
 
         # Apply attention layer after input if flag is True
@@ -206,14 +240,9 @@ class DenseModel_Inverse(tf.keras.Model):
         return x
 
     def get_config(self):
-        """
-        Returns the configuration of the model.
-
-        This method is used to serialize the model configuration. It returns a dictionary
-        containing all the necessary information to recreate the model.
-
-        Returns:
-            dict: The configuration dictionary of the model.
+        """ This method is used to get the configuration of the model.
+        :return: Configuration of the model
+        :rtype: dict
         """
         # Get the base configuration
         base_config = super().get_config()
@@ -241,6 +270,14 @@ class DenseModel_Inverse(tf.keras.Model):
 
     @tf.function
     def train_step(self, beta=10, bilinear_params_dict=None):
+        """ This method is used to define the training step of the model.
+        :param beta: A float representing the weight for the boundary loss
+        :type beta: float
+        :param bilinear_params_dict: A dictionary containing the parameters for the bilinear form
+        :type bilinear_params_dict: dict
+        :return: A dictionary containing the loss values for the model
+        :rtype: dict
+        """
 
         with tf.GradientTape(persistent=True) as tape:
             # Predict the values for dirichlet boundary conditions
