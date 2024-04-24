@@ -183,6 +183,13 @@ class DenseModel_Inverse(tf.keras.Model):
         if self.use_attention:
             self.attention_layer = layers.Attention()
 
+        # Compile the model
+        self.compile(optimizer=self.optimizer)
+        self.build(input_shape=(None, self.layer_dims[0]))
+
+        # print the summary of the model
+        self.summary()
+
     def call(self, inputs):
         """
         Applies the model to the input data.
