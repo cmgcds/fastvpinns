@@ -21,7 +21,7 @@ geometry:
     n_test_points_y: 100  # Number of test points in the y-direction.
   
   exact_solution:
-    exact_solution_generation: "external" # whether the exact solution needs to be read from external file.
+    exact_solution_generation: "internal" # whether the exact solution needs to be read from external file.
     exact_solution_file_name: "" # External solution file name.
 
   mesh_type: "quadrilateral"  # Type of mesh. Can be "quadrilateral" or other supported types.
