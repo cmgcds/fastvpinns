@@ -11,42 +11,50 @@ import tensorflow as tf
 
 class DataHandler2D:
     """
-    This class is to handle data for 2D problems, convert them into tensors using custom tf functions
-    Responsible for all type conversions and data handling
-    Note: All inputs to these functions are generally numpy arrays with dtype np.float64
-            So we can either maintain the same dtype or convert them to tf.float32 ( for faster computation )
+    This class is to handle data for 2D problems, convert them into tensors using custom tf functions.
+    It is responsible for all type conversions and data handling.
 
-    Attributes:
-    - fespace (FESpace2D): The FESpace2D object
-    - domain (Domain2D): The Domain2D object
-    - shape_val_mat_list (list): List of shape function values for each cell
-    - grad_x_mat_list (list): List of shape function derivatives with respect to x for each cell
-    - grad_y_mat_list (list): List of shape function derivatives with respect to y for each cell
-    - x_pde_list (list): List of actual coordinates of the quadrature points for each cell
-    - forcing_function_list (list): List of forcing function values for each cell
-    - dtype (tf.DType): The tensorflow dtype to be used for all the tensors
+    .. note:: All inputs to these functions are generally numpy arrays with dtype np.float64.
+              So we can either maintain the same dtype or convert them to tf.float32 ( for faster computation ).
 
-    Methods:
-    - get_pde_input(): Returns the input for the PDE training data
-    - get_dirichlet_input(): Returns the input for the Dirichlet boundary data
-    - get_test_points(num_test_points): Returns the test points
-    - get_bilinear_params_dict_as_tensors(function): Accepts a function from example file and converts all the values into tensors of the given dtype
-    - get_sensor_data(exact_sol, num_sensor_points, mesh_type, file_name=None): Returns the sensor data
-    - get_inverse_params(inverse_params_dict_function): Accepts a function from example file and converts all the values into tensors of the given dtype
-
+    :param fespace: The FESpace2D object.
+    :type fespace: FESpace2D
+    :param domain: The Domain2D object.
+    :type domain: Domain2D
+    :param shape_val_mat_list: List of shape function values for each cell.
+    :type shape_val_mat_list: list
+    :param grad_x_mat_list: List of shape function derivatives with respect to x for each cell.
+    :type grad_x_mat_list: list
+    :param grad_y_mat_list: List of shape function derivatives with respect to y for each cell.
+    :type grad_y_mat_list: list
+    :param x_pde_list: List of actual coordinates of the quadrature points for each cell.
+    :type x_pde_list: list
+    :param forcing_function_list: List of forcing function values for each cell.
+    :type forcing_function_list: list
+    :param dtype: The tensorflow dtype to be used for all the tensors.
+    :type dtype: tf.DType
     """
 
     def __init__(self, fespace, domain, dtype):
         """
         Constructor for the DataHandler2D class
 
-        Parameters:
-        - fespace (FESpace2D): The FESpace2D object
-        - domain (Domain2D): The Domain2D object
-        - dtype (tf.DType): The tensorflow dtype to be used for all the tensors
-
-        Returns:
-        None
+        :param fespace: The FESpace2D object.
+        :type fespace: FESpace2D
+        :param domain: The Domain2D object.
+        :type domain: Domain2D
+        :param shape_val_mat_list: List of shape function values for each cell.
+        :type shape_val_mat_list: list
+        :param grad_x_mat_list: List of shape function derivatives with respect to x for each cell.
+        :type grad_x_mat_list: list
+        :param grad_y_mat_list: List of shape function derivatives with respect to y for each cell.
+        :type grad_y_mat_list: list
+        :param x_pde_list: List of actual coordinates of the quadrature points for each cell.
+        :type x_pde_list: list
+        :param forcing_function_list: List of forcing function values for each cell.
+        :type forcing_function_list: list
+        :param dtype: The tensorflow dtype to be used for all the tensors.
+        :type dtype: tf.DType
         """
 
         self.fespace = fespace
@@ -97,26 +105,13 @@ class DataHandler2D:
         # test points
         self.test_points = None
 
-    def get_pde_input(self):
-        """
-        This function will return the input for the PDE training data
-
-        Returns:
-        - input_pde (tf.Tensor): The input for the PDE training data
-        """
-        return self.fespace.get_pde_training_data()
-
     def get_dirichlet_input(self):
         """
         This function will return the input for the Dirichlet boundary data
 
-        Args:
-        None
-
-        Returns:
-        - input_dirichlet (tf.Tensor): The input for the Dirichlet boundary data
-        - actual_dirichlet (tf.Tensor): The actual Dirichlet boundary data
-
+        :return:
+            - input_dirichlet (tf.Tensor): The input for the Dirichlet boundary data
+            - actual_dirichlet (tf.Tensor): The actual Dirichlet boundary data
         """
         input_dirichlet, actual_dirichlet = self.fespace.generate_dirichlet_boundary_data()
 
@@ -127,18 +122,14 @@ class DataHandler2D:
 
         return input_dirichlet, actual_dirichlet
 
-    def get_test_points(self, num_test_points):
+    def get_test_points(self):
         """
-        This function will return the test points for the given domain
+        Get the test points for the given domain.
 
-        Args:
-        - num_test_points (int): The number of test points to be generated
-
-        Returns:
-        - test_points (tf.Tensor): The test points for the given domain
+        :return: The test points for the given domain.
+        :rtype: tf.Tensor
         """
-
-        self.test_points = self.domain.generate_test_points(num_test_points)
+        self.test_points = self.domain.get_test_points()
         self.test_points = tf.constant(self.test_points, dtype=self.dtype)
         return self.test_points
 
@@ -151,8 +142,12 @@ class DataHandler2D:
 
         Returns:
         - bilinear_params_dict (dict): The bilinear parameters dictionary with all the values converted to tensors
-        """
 
+        :param function: The function from the example file which returns the bilinear parameters dictionary
+        :type function: function
+        :return: The bilinear parameters dictionary with all the values converted to tensors
+        :rtype: dict
+        """
         # get the dictionary of bilinear parameters
         bilinear_params_dict = function()
 
@@ -167,15 +162,16 @@ class DataHandler2D:
         """
         Accepts a function from example file and converts all the values into tensors of the given dtype
 
-        Parameters:
-        - exact_sol (function): The function from the example file which returns the exact solution
-        - num_sensor_points (int): The number of sensor points to be generated
-        - mesh_type (str): The type of mesh to be used for sensor data generation
-        - file_name (str): The name of the file to be used for external mesh generation
-
-        Returns:
-        - points (tf.Tensor): The sensor points
-        - sensor_values (tf.Tensor): The sensor values
+        :param exact_sol: The function from the example file which returns the exact solution
+        :type exact_sol: function
+        :param num_sensor_points: The number of sensor points to be generated
+        :type num_sensor_points: int
+        :param mesh_type: The type of mesh to be used for sensor data generation
+        :type mesh_type: str
+        :param file_name: The name of the file to be used for external mesh generation, defaults to None
+        :type file_name: str, optional
+        :return: The sensor points and sensor values as tensors
+        :rtype: tuple[tf.Tensor, tf.Tensor]
         """
         print(f"mesh_type = {mesh_type}")
         if mesh_type == "internal":
@@ -200,11 +196,10 @@ class DataHandler2D:
         """
         Accepts a function from example file and converts all the values into tensors of the given dtype
 
-        Parameters:
-        - inverse_params_dict_function (function): The function from the example file which returns the inverse parameters dictionary
-
-        Returns:
-        - inverse_params_dict (dict): The inverse parameters dictionary with all the values converted to tensors
+        :param inverse_params_dict_function: The function from the example file which returns the inverse parameters dictionary
+        :type inverse_params_dict_function: function
+        :return: The inverse parameters dictionary with all the values converted to tensors
+        :rtype: dict
         """
         # loop over all keys and convert the values to tensors
 

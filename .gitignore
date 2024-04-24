@@ -13,6 +13,9 @@ test_dump/
 
 fastvpinns.egg-info/
 
+#ignore output files
+examples/**/output/
+
 # pytest 
 *.vtk
 *.msh
