@@ -1,12 +1,15 @@
-# This file contains the loss function for the poisson problem in 2D domain
-# this loss function will be passed as a class to the tensorflow custom model
-# Author : Thivin Anandh
-# Date : 22/Sep/2023
-# History : 22/Sep/2023 - Initial implementation with basic loss function
+"""
+This function is implemntation of our efficient tensor-based loss calculation for cd2d equation
+Author: Thivin Anandh D
+Date: 21-Sep-2023
+History: Initial implementation
+Refer: https://arxiv.org/abs/2404.12063
+"""
+
 import tensorflow as tf
 
 
-# PDE loss function for the poisson problem
+# PDE loss function for the cd2d problem
 @tf.function
 def pde_loss_cd2d(
     test_shape_val_mat,
@@ -19,7 +22,28 @@ def pde_loss_cd2d(
     bilinear_params,
 ):
     """
-    This method returns the loss for the Poisson Problem of the PDE
+    Calculates and returns the loss for the CD2D problem
+
+    :param test_shape_val_mat: The test shape value matrix.
+    :type test_shape_val_mat: tf.Tensor
+    :param test_grad_x_mat: The x-gradient of the test matrix.
+    :type test_grad_x_mat: tf.Tensor
+    :param test_grad_y_mat: The y-gradient of the test matrix.
+    :type test_grad_y_mat: tf.Tensor
+    :param pred_nn: The predicted neural network output.
+    :type pred_nn: tf.Tensor
+    :param pred_grad_x_nn: The x-gradient of the predicted neural network output.
+    :type pred_grad_x_nn: tf.Tensor
+    :param pred_grad_y_nn: The y-gradient of the predicted neural network output.
+    :type pred_grad_y_nn: tf.Tensor
+    :param forcing_function: The forcing function used in the PDE.
+    :type forcing_function: function
+    :param bilinear_params: The parameters for the bilinear form.
+    :type bilinear_params: list
+
+
+    :return: The calculated loss.
+    :rtype: tf.Tensor
     """
 
     # Loss Function : ∫du/dx. dv/dx  +  ∫du/dy. dv/dy - ∫f.v

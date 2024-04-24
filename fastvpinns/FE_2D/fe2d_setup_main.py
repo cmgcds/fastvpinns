@@ -33,7 +33,11 @@ class FE2DSetupMain:
 
     def assign_basis_function(self) -> BasisFunction2D:
         """
-        This method assigns the basis function based on the cell type and the fe_order.
+        Assigns the basis function based on the cell type and the fe_order.
+
+        :return: An instance of the BasisFunction2D class representing the assigned basis function.
+        :rtype: BasisFunction2D
+        :raises ValueError: If the fe_order is invalid.
         """
         if self.cell_type == "quadrilateral":
             self.n_nodes = 4
@@ -41,7 +45,7 @@ class FE2DSetupMain:
             # --- LEGENDRE --- #
             if self.fe_type == "legendre" or self.fe_type == "jacobi":
                 # jacobi is added for backward compatibility with prev pushes
-                # generally, jacobi is refered as Legendre basis on previous iterations
+                # generally, jacobi is referred to as Legendre basis on previous iterations
                 return Basis2DQNLegendre(self.fe_order**2)
 
             elif self.fe_type == "legendre_special":
@@ -67,7 +71,11 @@ class FE2DSetupMain:
 
     def assign_quadrature_rules(self):
         """
-        This method assigns the quadrature rule based on the quad_order.
+        Assigns the quadrature rule based on the quad_order.
+
+        :return: A tuple containing the weights, xi, and eta values of the quadrature rule.
+        :rtype: tuple
+        :raises ValueError: If the quad_order is invalid or the cell_type is invalid.
         """
         if self.cell_type == "quadrilateral":
             if self.quad_order < 2:
@@ -77,7 +85,6 @@ class FE2DSetupMain:
                     self.quad_order, self.quad_type
                 ).get_quad_values()
                 return weights, xi, eta
-
             else:
                 print(
                     f"Invalid quad order {self.quad_order} in {self.__class__.__name__} from {__name__}."
@@ -96,7 +103,15 @@ class FE2DSetupMain:
         self, fe_transformation_type, cell_coordinates
     ) -> FETransforamtion2D:
         """
-        This method assigns the FE transformation based on the cell type.
+        Assigns the FE transformation based on the cell type.
+
+        :param fe_transformation_type: The type of FE transformation.
+        :type fe_transformation_type: str
+        :param cell_coordinates: The coordinates of the cell.
+        :type cell_coordinates: list
+        :return: The FE transformation object.
+        :rtype: FETransforamtion2D
+        :raises ValueError: If the cell type or FE transformation type is invalid.
         """
         if self.cell_type == "quadrilateral":
             if fe_transformation_type == "affine":

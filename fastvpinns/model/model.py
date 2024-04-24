@@ -1,8 +1,12 @@
-# A method which hosts the NN model and the training loop for variational Pinns
-# This focusses only on the model architecture and the training loop, and not on the loss functions
-# Author : Thivin Anandh D
-# Date : 22/Sep/2023
-# History : 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+"""
+file: model.py
+description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
+             The focus is on the model architecture and the training loop, and not on the loss functions.
+authors: Thivin Anandh D
+changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+known_issues: None
+dependencies: None specified.
+"""
 
 import tensorflow as tf
 from tensorflow.keras import layers
@@ -10,51 +14,33 @@ from tensorflow.keras import initializers
 import copy
 
 
-# Custom Loss Functions
-def custom_loss1(y_true1, y_pred1):
-    return tf.reduce_mean(tf.square(y_pred1 - y_true1))
-
-
-def custom_loss2(y_true2, y_pred2):
-    return tf.reduce_mean(tf.square(y_pred2 - y_true2))
-
-
 # Custom Model
 class DenseModel(tf.keras.Model):
     """
-    This class defines the Dense Model for the Neural Network for solving Variational PINNs
+    Defines the Dense Model for the Neural Network for solving Variational PINNs.
 
-    Attributes:
-    - layer_dims (list): List of dimensions of the dense layers
-    - use_attention (bool): Flag to use attention layer after input
-    - activation (str): The activation function to be used for the dense layers
-    - layer_list (list): List of dense layers
-    - loss_function (function): The loss function for the PDE
-    - hessian (bool): Flag to use hessian loss
-    - input_tensor (tf.Tensor): The input tensor for the PDE
-    - dirichlet_input (tf.Tensor): The input tensor for the Dirichlet boundary data
-    - dirichlet_actual (tf.Tensor): The actual values for the Dirichlet boundary data
-    - optimizer (tf.keras.optimizers): The optimizer for the model
-    - gradients (tf.Tensor): The gradients of the loss function wrt the trainable variables
-    - learning_rate_dict (dict): The dictionary containing the learning rate parameters
-    - orig_factor_matrices (list): The list containing the original factor matrices
-    - shape_function_mat_list (tf.Tensor): The shape function matrix
-    - shape_function_grad_x_factor_mat_list (tf.Tensor): The shape function derivative with respect to x matrix
-    - shape_function_grad_y_factor_mat_list (tf.Tensor): The shape function derivative with respect to y matrix
-    - force_function_list (tf.Tensor): The force function matrix
-    - input_tensors_list (list): The list containing the input tensors
-    - params_dict (dict): The dictionary containing the parameters
-    - pre_multiplier_val (tf.Tensor): The pre-multiplier for the shape function matrix
-    - pre_multiplier_grad_x (tf.Tensor): The pre-multiplier for the shape function derivative with respect to x matrix
-    - pre_multiplier_grad_y (tf.Tensor): The pre-multiplier for the shape function derivative with respect to y matrix
-    - force_matrix (tf.Tensor): The force function matrix
-    - n_cells (int): The number of cells in the domain
-    - tensor_dtype (tf.DType): The tensorflow dtype to be used for all the tensors
-
-    Methods:
-    - call(inputs): The call method for the model
-    - get_config(): Returns the configuration of the model
-    - train_step(beta, bilinear_params_dict): The train step method for the model
+    :param layer_dims: List of dimensions of the dense layers.
+    :type layer_dims: list
+    :param learning_rate_dict: The dictionary containing the learning rate parameters.
+    :type learning_rate_dict: dict
+    :param params_dict: The dictionary containing the parameters.
+    :type params_dict: dict
+    :param loss_function: The loss function for the PDE.
+    :type loss_function: function
+    :param input_tensors_list: The list containing the input tensors.
+    :type input_tensors_list: list
+    :param orig_factor_matrices: The list containing the original factor matrices.
+    :type orig_factor_matrices: list
+    :param force_function_list: The force function matrix.
+    :type force_function_list: tf.Tensor
+    :param tensor_dtype: The tensorflow dtype to be used for all the tensors.
+    :type tensor_dtype: tf.DType
+    :param use_attention: Flag to use attention layer after input, defaults to False.
+    :type use_attention: bool, optional
+    :param activation: The activation function to be used for the dense layers, defaults to "tanh".
+    :type activation: str, optional
+    :param hessian: Flag to use hessian loss, defaults to False.
+    :type hessian: bool, optional
     """
 
     def __init__(
@@ -143,7 +129,7 @@ class DenseModel(tf.keras.Model):
         use_lr_scheduler = learning_rate_dict["use_lr_scheduler"]
         decay_steps = learning_rate_dict["decay_steps"]
         decay_rate = learning_rate_dict["decay_rate"]
-        staircase = learning_rate_dict["staircase"]
+        # staircase = learning_rate_dict["staircase"]
 
         if use_lr_scheduler:
             learning_rate_fn = tf.keras.optimizers.schedules.ExponentialDecay(
@@ -196,6 +182,14 @@ class DenseModel(tf.keras.Model):
     #     super(DenseModel, self).build(input_shape)
 
     def call(self, inputs):
+        """
+        The call method for the model.
+
+        :param inputs: The input tensor for the model.
+        :type inputs: tf.Tensor
+        :return: The output tensor of the model.
+        :rtype: tf.Tensor
+        """
         x = inputs
 
         # Apply attention layer after input if flag is True
@@ -209,6 +203,12 @@ class DenseModel(tf.keras.Model):
         return x
 
     def get_config(self):
+        """
+        Get the configuration of the model.
+
+        Returns:
+            dict: The configuration of the model.
+        """
         # Get the base configuration
         base_config = super().get_config()
 
@@ -233,6 +233,16 @@ class DenseModel(tf.keras.Model):
 
     @tf.function
     def train_step(self, beta=10, bilinear_params_dict=None):
+        """
+        The train step method for the model.
+
+        :param beta: The beta parameter for the training step, defaults to 10.
+        :type beta: int, optional
+        :param bilinear_params_dict: The dictionary containing the bilinear parameters, defaults to None.
+        :type bilinear_params_dict: dict, optional
+        :return: The output of the training step.
+        :rtype: varies based on implementation
+        """
 
         with tf.GradientTape(persistent=True) as tape:
             # Predict the values for dirichlet boundary conditions
@@ -276,24 +286,13 @@ class DenseModel(tf.keras.Model):
 
             residual = tf.reduce_sum(cells_residual)
 
-            # tf.print("Residual : ", residual)
-            # tf.print("Residual Shape : ", residual.shape)
-
             # Compute the total loss for the PDE
             total_pde_loss = total_pde_loss + residual
-
-            # convert predicted_values_dirichlet to tf.float64
-            # predicted_values_dirichlet = tf.cast(predicted_values_dirichlet, tf.float64)
 
             # print shapes of the predicted values and the actual values
             boundary_loss = tf.reduce_mean(
                 tf.square(predicted_values_dirichlet - self.dirichlet_actual), axis=0
             )
-
-            # tf.print("Boundary Loss : ", boundary_loss)
-            # tf.print("Boundary Loss Shape : ", boundary_loss.shape)
-            # tf.print("Total PDE Loss : ", total_pde_loss)
-            # tf.print("Total PDE Loss Shape : ", total_pde_loss.shape)
 
             # Compute Total Loss
             total_loss = total_pde_loss + beta * boundary_loss

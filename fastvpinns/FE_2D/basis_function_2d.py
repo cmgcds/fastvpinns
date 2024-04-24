@@ -1,18 +1,15 @@
-# This class is a wrapper class to all the finite element basis functions that
-# are used in the FE2D code. The 2D basis functions, will have the following
-# methods:
-#   1. value(xi, eta) - This will return the value of the basis function at the reference point (xi, eta)
-#   2. gradx(xi, eta) - This will return the value of the derivative of the basis function with respect to xi
-#   3. grady(xi, eta) - This will return the value of the derivative of the basis function with respect to eta
-#   4. gradxx(xi, eta) - This will return the value of the second derivative of the basis function with respect to xi
-#   5. gradxy(xi, eta) - This will return the value of the second derivative of the basis function with respect to xi and eta
+"""
+file: basis_function_2d.py
+description: This file contains a wrapper class for all the finite element basis functions 
+             used in the FE2D code. The 2D basis functions have methods to return the value 
+             of the basis function and its derivatives at the reference point (xi, eta).
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - First version
+known_issues: None
+dependencies: None specified.
+"""
 
-
-# Author: Thivin Anandh D
-# Date:  30/Aug/2023
-# History: First version - 30/Aug/2023 - Thivin Anandh D
-
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 
 class BasisFunction2D:
@@ -39,12 +36,10 @@ class BasisFunction2D:
         """
         Evaluates the basis function at the given xi and eta coordinates.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The value of the basis function at the given coordinates.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The value of the basis function at the given coordinates.
+        :rtype: float
         """
         pass
 
@@ -53,12 +48,10 @@ class BasisFunction2D:
         """
         Computes the partial derivative of the basis function with respect to xi.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The partial derivative of the basis function with respect to xi.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The partial derivative of the basis function with respect to xi.
+        :rtype: float
         """
         pass
 
@@ -67,12 +60,10 @@ class BasisFunction2D:
         """
         Computes the partial derivative of the basis function with respect to eta.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The partial derivative of the basis function with respect to eta.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The partial derivative of the basis function with respect to eta.
+        :rtype: float
         """
         pass
 
@@ -81,12 +72,10 @@ class BasisFunction2D:
         """
         Computes the second partial derivative of the basis function with respect to xi.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The second partial derivative of the basis function with respect to xi.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The second partial derivative of the basis function with respect to xi.
+        :rtype: float
         """
         pass
 
@@ -95,12 +84,10 @@ class BasisFunction2D:
         """
         Computes the mixed partial derivative of the basis function with respect to xi and eta.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The mixed partial derivative of the basis function with respect to xi and eta.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The mixed partial derivative of the basis function with respect to xi and eta.
+        :rtype: float
         """
         pass
 
@@ -109,12 +96,10 @@ class BasisFunction2D:
         """
         Computes the second partial derivative of the basis function with respect to eta.
 
-        Args:
-            xi (float): The xi coordinate.
-            eta (float): The eta coordinate.
-
-        Returns:
-            float: The second partial derivative of the basis function with respect to eta.
+        :param float xi: The xi coordinate.
+        :param float eta: The eta coordinate.
+        :return: The second partial derivative of the basis function with respect to eta.
+        :rtype: float
         """
         pass
 

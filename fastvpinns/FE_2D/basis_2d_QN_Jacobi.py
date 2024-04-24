@@ -1,10 +1,15 @@
-# Purpose: Defines the basis functions for a 2D Q1 element.
-# Reference: ParMooN -  File: BF_C_Q_Q1_2D.h
-# Author: Thivin Anandh D
-# Date: 30/Aug/2023
-
-## NOTE : TEST FUNCTIONS AND DERIVATIVES INFERED FROM https://github.com/ehsankharazmi/hp-VPINNs/
-## Cite: hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition Ehsan Kharazmi et.al
+"""
+file: basis_2d_QN_Jacobi.py
+description: This file contains the class Basis2DQNJacobi which is used 
+             to define the basis functions for a Jacobi Polynomial.
+             Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
+             (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)
+             available at https://github.com/ehsankharazmi/hp-VPINNs/
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+dependencies: Requires scipy and numpy.
+"""
 
 # import the jacobi polynomials
 from scipy.special import jacobi
@@ -25,14 +30,17 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         Evaluate the Jacobi polynomial of degree n with parameters a and b at the given points x.
 
-        Parameters:
-            n (int): Degree of the Jacobi polynomial.
-            a (float): First parameter of the Jacobi polynomial.
-            b (float): Second parameter of the Jacobi polynomial.
-            x (array_like): Points at which to evaluate the Jacobi polynomial.
+        :param n: Degree of the Jacobi polynomial.
+        :type n: int
+        :param a: First parameter of the Jacobi polynomial.
+        :type a: float
+        :param b: Second parameter of the Jacobi polynomial.
+        :type b: float
+        :param x: Points at which to evaluate the Jacobi polynomial.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the Jacobi polynomial at the given points x.
+        :return: Values of the Jacobi polynomial at the given points x.
+        :rtype: array_like
         """
         x = np.array(x, dtype=np.float64)
         return jacobi(n, a, b)(x)
@@ -42,15 +50,25 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         Evaluate the k-th derivative of the Jacobi polynomial of degree n with parameters a and b at the given points x.
 
-        Parameters:
-            n (int): Degree of the Jacobi polynomial.
-            a (float): First parameter of the Jacobi polynomial.
-            b (float): Second parameter of the Jacobi polynomial.
-            x (array_like): Points at which to evaluate the Jacobi polynomial.
-            k (int): Order of the derivative.
+        :param n: Degree of the Jacobi polynomial.
+        :type n: int
+        :param a: First parameter of the Jacobi polynomial.
+        :type a: float
+        :param b: Second parameter of the Jacobi polynomial.
+        :type b: float
+        :param x: Points at which to evaluate the Jacobi polynomial.
+        :type x: array_like
+        :param k: Order of the derivative.
+        :type k: int
 
-        Returns:
-            array_like: Values of the k-th derivative of the Jacobi polynomial at the given points x.
+        :return: Values of the k-th derivative of the Jacobi polynomial at the given points x.
+        :rtype: array_like
+
+        :raises ValueError: If the derivative order is not 1 or 2.
+
+        :raises ImportError: If the required module 'jacobi' is not found.
+
+        :raises Exception: If an unknown error occurs during the computation.
         """
         x = np.array(x, dtype=np.float64)
         if k == 1:
@@ -66,12 +84,13 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         Compute the x-component of the test functions for a given number of test functions and x-coordinates.
 
-        Parameters:
-            n_test (int): Number of test functions.
-            x (array_like): x-coordinates at which to evaluate the test functions.
+        :param n_test: Number of test functions.
+        :type n_test: int
+        :param x: x-coordinates at which to evaluate the test functions.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the x-component of the test functions.
+        :return: Values of the x-component of the test functions.
+        :rtype: array_like
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -100,12 +119,13 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
 
-        Parameters:
-            n_test (int): Number of test functions.
-            x (array_like): x-coordinates at which to evaluate the test functions.
+        :param n_test: Number of test functions.
+        :type n_test: int
+        :param x: x-coordinates at which to evaluate the test functions.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the x-derivatives of the test functions.
+        :return: Values of the x-derivatives of the test functions.
+        :rtype: array_like
         """
         d1test_total = []
         for n in range(1, n_test + 1):
@@ -117,12 +137,13 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
 
-        Parameters:
-            n_test (int): Number of test functions.
-            x (array_like): x-coordinates at which to evaluate the test functions.
+        :param n_test: Number of test functions.
+        :type n_test: int
+        :param x: x-coordinates at which to evaluate the test functions.
+        :type x: array_like
 
-        Returns:
-            array_like: Values of the x-derivatives of the test functions.
+        :return: Values of the x-derivatives of the test functions.
+        :rtype: array_like
         """
         d1test_total = []
         for n in range(1, n_test + 1):
@@ -130,47 +151,16 @@ class Basis2DQNJacobi(BasisFunction2D):
             d1test_total.append(d1test)
         return np.asarray(d1test_total)
 
-    # def dtest_fcn(self, n_test,x):
-    #     """
-    #     Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.
-
-    #     Parameters:
-    #         n_test (int): Number of test functions.
-    #         x (array_like): x-coordinates at which to evaluate the test functions.
-
-    #     Returns:
-    #         tuple: Values of the first and second x-derivatives of the test functions.
-    #     """
-    #     d1test_total = []
-    #     d2test_total = []
-    #     for n in range(1,n_test+1):
-    #         if n==1:
-    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x)
-    #             d1test_total.append(d1test)
-    #             d2test_total.append(d2test)
-    #         elif n==2:
-    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x) - ((n)/2)*jacobi_wrapper(n-2,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x)
-    #             d1test_total.append(d1test)
-    #             d2test_total.append(d2test)
-    #         else:
-    #             d1test = ((n+2)/2)*jacobi_wrapper(n,1,1,x) - ((n)/2)*jacobi_wrapper(n-2,1,1,x)
-    #             d2test = ((n+2)*(n+3)/(2*2))*jacobi_wrapper(n-1,2,2,x) - ((n)*(n+1)/(2*2))*jacobi_wrapper(n-3,2,2,x)
-    #             d1test_total.append(d1test)
-    #             d2test_total.append(d2test)
-    #     return np.asarray(d1test_total), np.asarray(d2test_total)
-
     def value(self, xi, eta):
         """
         This method returns the values of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)
@@ -188,12 +178,12 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         This method returns the x-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the x-derivatives of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the x-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)
@@ -211,12 +201,14 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         This method returns the y-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
 
-        Returns:
-            array_like: Values of the y-derivatives of the basis functions.
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+
+        :return: Values of the y-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)
@@ -234,12 +226,13 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         This method returns the xx-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
 
-        Returns:
-            array_like: Values of the xx-derivatives of the basis functions.
+        :return: Values of the xx-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_grad_x = self.ddtest_fcn(num_shape_func_in_1d, xi)
@@ -257,12 +250,12 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         This method returns the xy-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
-
-        Returns:
-            array_like: Values of the xy-derivatives of the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
+        :return: Values of the xy-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         grad_test_x = self.dtest_fcn(num_shape_func_in_1d, xi)
@@ -280,12 +273,13 @@ class Basis2DQNJacobi(BasisFunction2D):
         """
         This method returns the yy-derivatives of the basis functions at the given (xi, eta) coordinates.
 
-        Parameters:
-            xi (array_like): x-coordinates at which to evaluate the basis functions.
-            eta (array_like): y-coordinates at which to evaluate the basis functions.
+        :param xi: x-coordinates at which to evaluate the basis functions.
+        :type xi: array_like
+        :param eta: y-coordinates at which to evaluate the basis functions.
+        :type eta: array_like
 
-        Returns:
-            array_like: Values of the yy-derivatives of the basis functions.
+        :return: Values of the yy-derivatives of the basis functions.
+        :rtype: array_like
         """
         num_shape_func_in_1d = int(np.sqrt(self.num_shape_functions))
         test_x = self.test_fcnx(num_shape_func_in_1d, xi)

@@ -1,6 +1,11 @@
-# Purpose: Defines the basis functions for a 2D Quad element using a Lengendre polynomial.
-# Author: Thivin Anandh D
-# Date: 30/Aug/2023
+"""
+file: basis_2d_QN_Legendre_Special.py
+description: This file contains the class Basis2DQNLegendreSpecial which is used 
+             to define the basis functions for a 2D Quad element using a Legendre polynomial.
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+"""
 
 import numpy as np
 
@@ -38,13 +43,12 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
         """
         Calculate the test function values for a given number of tests and input values.
 
-        Parameters:
-            n_test (int): The number of tests to perform.
-            x (float or array-like): The input value(s) for the test function.
-
-        Returns:
-            numpy.ndarray: An array containing the test function values for each test.
-
+        :param n_test: The number of tests to perform.
+        :type n_test: int
+        :param x: The input value(s) for the test function.
+        :type x: float or array-like
+        :return: An array containing the test function values for each test.
+        :rtype: numpy.ndarray
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -58,12 +62,12 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
         """
         Calculate the gradient of the test function at a given point.
 
-        Parameters:
-        - n_test (int): The number of test functions to calculate.
-        - x (float): The point at which to evaluate the gradient.
-
-        Returns:
-        - np.ndarray: An array containing the gradients of the test functions at the given point.
+        :param n_test: The number of test functions to calculate.
+        :type n_test: int
+        :param x: The point at which to evaluate the gradient.
+        :type x: float
+        :return: An array containing the gradients of the test functions at the given point.
+        :rtype: np.ndarray
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -77,12 +81,12 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
         """
         Calculate the gradient of the second derivative of a function using Legendre polynomials.
 
-        Parameters:
-        - n_test (int): The number of test cases to evaluate.
-        - x (float): The input value at which to evaluate the function.
-
-        Returns:
-        - test_total (ndarray): An array containing the results of the test cases.
+        :param n_test: The number of test cases to evaluate.
+        :type n_test: int
+        :param x: The input value at which to evaluate the function.
+        :type x: float
+        :return: An array containing the results of the test cases.
+        :rtype: ndarray
         """
         test_total = []
         for n in range(1, n_test + 1):
@@ -96,6 +100,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def value(self, xi, eta):
         """
         This method returns the values of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinate.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinate.
+        :type eta: numpy.ndarray
+
+        :return: The values of the basis functions at the given coordinates.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 
@@ -115,6 +128,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def gradx(self, xi, eta):
         """
         This method returns the x-derivatives of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinate.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinate.
+        :type eta: numpy.ndarray
+
+        :return: The x-derivatives of the basis functions.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 
@@ -134,6 +156,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def grady(self, xi, eta):
         """
         This method returns the y-derivatives of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinates.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinates.
+        :type eta: numpy.ndarray
+
+        :return: The y-derivatives of the basis functions.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 
@@ -153,6 +184,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def gradxx(self, xi, eta):
         """
         This method returns the xx-derivatives of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinate.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinate.
+        :type eta: numpy.ndarray
+
+        :return: The xx-derivatives of the basis functions.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 
@@ -172,6 +212,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def gradxy(self, xi, eta):
         """
         This method returns the xy-derivatives of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinate.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinate.
+        :type eta: numpy.ndarray
+
+        :return: The xy-derivatives of the basis functions.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 
@@ -191,6 +240,15 @@ class Basis2DQNLegendreSpecial(BasisFunction2D):
     def gradyy(self, xi, eta):
         """
         This method returns the yy-derivatives of the basis functions at the given (xi, eta) coordinates.
+
+        :param xi: The xi coordinates.
+        :type xi: numpy.ndarray
+
+        :param eta: The eta coordinates.
+        :type eta: numpy.ndarray
+
+        :return: The yy-derivatives of the basis functions.
+        :rtype: numpy.ndarray
         """
         values = np.zeros((self.num_shape_functions, len(xi)))
 

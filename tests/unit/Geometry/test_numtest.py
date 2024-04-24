@@ -9,12 +9,15 @@ from fastvpinns.data.datahandler2d import DataHandler2D
 
 
 # Parametrize the test case for different combinations of n_test_x and n_test_y
-@pytest.mark.parametrize("n_test_x, n_test_y", [
-    (4, 4),  # Equal values
-    (4, 6),  # Different values
-    (6, 4),  # Different values
-    (6, 6),  # Equal values
-])
+@pytest.mark.parametrize(
+    "n_test_x, n_test_y",
+    [
+        (4, 4),  # Equal values
+        (4, 6),  # Different values
+        (6, 4),  # Different values
+        (6, 6),  # Equal values
+    ],
+)
 def test_numtest_points_internal(n_test_x, n_test_y):
     """
     Parametrized test case for validating the number of test points.
@@ -62,7 +65,6 @@ def test_numtest_points_internal(n_test_x, n_test_y):
     assert len(test_points) == total_expected
 
 
-
 def test_numtest_points_external():
     """
     Parametrized test case for validating the number of test points.
@@ -71,19 +73,17 @@ def test_numtest_points_external():
     Test case for validating the number of test points.
     """
     domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
-    cells, boundary_points = domain.read_mesh(mesh_file ="tests/support_files/circle_quad.mesh" , \
-                                                    boundary_point_refinement_level=2, \
-                                                    bd_sampling_method="uniform", \
-                                                    refinement_level=0)
-    
-    val = np.random.rand()
-    bound_function_dict = {
-        1000: lambda x, y: np.ones_like(x) *val,
-    }
+    cells, boundary_points = domain.read_mesh(
+        mesh_file="tests/support_files/circle_quad.mesh",
+        boundary_point_refinement_level=2,
+        bd_sampling_method="uniform",
+        refinement_level=0,
+    )
 
-    bound_condition_dict = {
-        1000: "dirichlet",
-    }
+    val = np.random.rand()
+    bound_function_dict = {1000: lambda x, y: np.ones_like(x) * val}
+
+    bound_condition_dict = {1000: "dirichlet"}
 
     test_points = domain.get_test_points()
 

@@ -34,11 +34,8 @@ def test_write_vtk_internal():
     filename = "internal.vtk"
     data_names = ["data1", "data2"]
 
-
     # Check if the output file exists
     assert os.path.exists(os.path.join(output_path, filename))
-
-    
 
 
 def test_write_vtk_external():
@@ -48,15 +45,17 @@ def test_write_vtk_external():
 
     # use pathlib to create a directory "tests/test_dump"
     Path("tests/test_dump").mkdir(parents=True, exist_ok=True)
-    
+
     # Define the geometry
     domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/test_dump")
 
-    #read external mesh
-    cells, boundary_points = domain.read_mesh(mesh_file="tests/support_files/circle_quad.mesh",
-                                              boundary_point_refinement_level=2,
-                                              bd_sampling_method="uniform",
-                                              refinement_level=0)
+    # read external mesh
+    cells, boundary_points = domain.read_mesh(
+        mesh_file="tests/support_files/circle_quad.mesh",
+        boundary_point_refinement_level=2,
+        bd_sampling_method="uniform",
+        refinement_level=0,
+    )
 
     # Define test inputs
     solution = np.array([[1, 2], [3, 4]])

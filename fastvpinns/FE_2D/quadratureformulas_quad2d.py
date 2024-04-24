@@ -1,3 +1,14 @@
+"""
+file: quadratureformulas_quad2d.py
+description: This file defines the Quadrature Formulas for the 2D Quadrilateral elements.
+             It supports both Gauss-Legendre and Gauss-Jacobi quadrature types.
+             The quadrature points and weights are calculated based on the specified quadrature order and type.
+authors: Not specified
+changelog: Not specified
+known_issues: None
+dependencies: numpy, scipy
+"""
+
 import numpy as np
 from scipy.special import roots_legendre, roots_jacobi, jacobi, gamma
 from scipy.special import legendre
@@ -8,27 +19,20 @@ class Quadratureformulas_Quad2D:
     """
     Defines the Quadrature Formulas for the 2D Quadrilateral elements.
 
-    Attributes:
-    - quad_order (int): The order of the quadrature.
-    - quad_type (str): The type of the quadrature.
-    - num_quad_points (int): The number of quadrature points.
-
-    Methods:
-    - get_quad_values(): Returns the quadrature weights, xi and eta values.
-    - get_num_quad_points(): Returns the number of quadrature points.
-
+    :param quad_order: The order of the quadrature.
+    :type quad_order: int
+    :param quad_type: The type of the quadrature.
+    :type quad_type: str
     """
 
     def __init__(self, quad_order: int, quad_type: str):
         """
-        The constructor of the Quadformulas_2D class.
+        Constructor for the Quadratureformulas_Quad2D class.
 
-        Parameters:
-        - quad_order (int): The order of the quadrature.
-        - quad_type (str): The type of the quadrature.
-
-        Returns:
-        None
+        :param quad_order: The order of the quadrature.
+        :type quad_order: int
+        :param quad_type: The type of the quadrature.
+        :type quad_type: str
         """
         self.quad_order = quad_order
         self.quad_type = quad_type
@@ -43,9 +47,6 @@ class Quadratureformulas_Quad2D:
         quad_type = self.quad_type
 
         if quad_type == "gauss-legendre":
-            """
-            This method returns the Gauss-Legendre quadrature points and weights.
-            """
             # Commented out by THIVIN -  to Just use legendre quadrature points as it is
             # if quad_order == 2:
             #     nodes_1d = np.array([-1, 1])
@@ -69,9 +70,6 @@ class Quadratureformulas_Quad2D:
             self.quad_weights = quad_weights
 
         elif quad_type == "gauss-jacobi":
-            """
-            This method returns the Gauss-Jacobi quadrature points and weights.
-            """
 
             def GaussJacobiWeights(Q: int, a, b):
                 [X, W] = roots_jacobi(Q, a, b)
@@ -159,11 +157,17 @@ class Quadratureformulas_Quad2D:
     def get_quad_values(self):
         """
         Returns the quadrature weights, xi and eta values.
+
+        :return: A tuple containing the quadrature weights, xi values, and eta values.
+        :rtype: tuple
         """
         return self.quad_weights, self.xi_quad, self.eta_quad
 
     def get_num_quad_points(self):
         """
         Returns the number of quadrature points.
+
+        :return: The number of quadrature points.
+        :rtype: int
         """
         return self.num_quad_points

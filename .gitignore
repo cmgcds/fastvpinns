@@ -27,4 +27,10 @@ examples/**/*.png
 *.svg
 
 
+# result files in examples
+examples/**/*.png
+examples/**/*.vtk
+examples/**/*.txt
+examples/**/*.svg
+examples/**/*.index
 

@@ -1,0 +1,65 @@
+# input file for inverse problems (domain)
+experimentation:
+  output_path: "output/inverse/circle_1"
+
+geometry:
+  mesh_generation_method: "external"
+  internal_mesh_params:
+    x_min: 0
+    x_max: 1
+    y_min: 0
+    y_max: 1
+    n_cells_x: 20
+    n_cells_y: 20
+    n_boundary_points: 1500
+    n_test_points_x: 100
+    n_test_points_y: 100
+
+  mesh_type: "quadrilateral"
+  external_mesh_params:
+    mesh_file_name: "circle_quad.mesh"  # should be a .mesh file
+    boundary_refinement_level: 2
+    boundary_sampling_method: "uniform"  # "uniform" or "lhs"
+
+fe:
+  fe_order: 3  
+  fe_type: "jacobi"   #"parmoon", "legendre" and "legendre".
+  quad_order:  5    
+  quad_type: "gauss-jacobi"  # "gauss-jacobi, gauss-legendre, gauss-lobatto"
+
+pde:
+  beta: 10
+model:
+  model_architecture: [2, 30,30,30, 2] # output is made as 2 to accomodate the inverse param in the output
+  activation: "tanh"
+  use_attention: False
+  epochs: 50000
+  dtype: "float32"
+  set_memory_growth: True
+  learning_rate:
+    initial_learning_rate: 0.003
+    use_lr_scheduler: False
+    decay_steps: 1000
+    decay_rate: 0.98
+    staircase: True
+
+logging:
+  update_progress_bar: 100
+  update_console_output: 5000
+  update_solution_images: 5000
+
+inverse:
+  num_sensor_points: 500
+
+  sensor_data_file: "fem_output_circle2.csv"
+
+wandb:
+  use_wandb: True
+  project_name: "New_Inverse_Complex_updated"
+  wandb_run_prefix: "Test_Gear"
+  entity: "starslab-iisc" 
+
+additional:
+  run_by: "Divij"
+  System: "23"
+
