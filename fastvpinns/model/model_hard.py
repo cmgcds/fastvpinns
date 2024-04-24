@@ -217,7 +217,9 @@ class DenseModel(tf.keras.Model):
         :return: Output tensor with hard boundary constraints
         :rtype: tf.Tensor
         """
-        return tf.tanh(4.0*np.pi*inputs[:,0:1])*tf.tanh(4.0*np.pi*inputs[:,1:2])*tf.tanh(4.0*np.pi*(inputs[:,0:1]-1.0))*tf.tanh(4.0*np.pi*(inputs[:,1:2]-1.0))*x
+        ansatz = tf.tanh(4.0*np.pi*inputs[:,0:1])*tf.tanh(4.0*np.pi*inputs[:,1:2])*tf.tanh(4.0*np.pi*(inputs[:,0:1]-1.0))*tf.tanh(4.0*np.pi*(inputs[:,1:2]-1.0))
+        ansatz = tf.cast(ansatz, self.tensor_dtype)
+        return ansatz*x
 
     def call(self, inputs):
         """ This method is used to define the forward pass of the model.
