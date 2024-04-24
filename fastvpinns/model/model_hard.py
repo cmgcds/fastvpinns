@@ -28,8 +28,8 @@ def custom_loss2(y_true2, y_pred2):
 
 
 # Custom Model
-class DenseModel(tf.keras.Model):
-    """The DenseModel class is a custom model class that hosts the neural network model.
+class DenseModel_Hard(tf.keras.Model):
+    """The DenseModel_Hard class is a custom model class that hosts the neural network model.
 
     The class inherits from the tf.keras.Model class and is used
     to define the neural network model architecture and the training loop for FastVPINNs.
@@ -80,14 +80,19 @@ class DenseModel(tf.keras.Model):
         use_attention=False,
         activation="tanh",
         hessian=False,
+        hard_constraint_function=None,
     ):
-        super(DenseModel, self).__init__()
+        super(DenseModel_Hard, self).__init__()
         self.layer_dims = layer_dims
         self.use_attention = use_attention
         self.activation = activation
         self.layer_list = []
         self.loss_function = loss_function
         self.hessian = hessian
+        if hard_constraint_function is None:
+            self.hard_constraint_function = lambda x, y: y
+        else:
+            self.hard_constraint_function = hard_constraint_function
 
         self.tensor_dtype = tensor_dtype
 
@@ -207,23 +212,6 @@ class DenseModel(tf.keras.Model):
     # def build(self, input_shape):
     #     super(DenseModel, self).build(input_shape)
 
-    def apply_hard_boundary_constraints(self, inputs, x):
-        """This method applies hard boundary constraints to the model.
-        :param inputs: Input tensor
-        :type inputs: tf.Tensor
-        :param x: Output tensor from the model
-        :type x: tf.Tensor
-        :return: Output tensor with hard boundary constraints
-        :rtype: tf.Tensor
-        """
-        return (
-            tf.tanh(4.0 * np.pi * inputs[:, 0:1])
-            * tf.tanh(4.0 * np.pi * inputs[:, 1:2])
-            * tf.tanh(4.0 * np.pi * (inputs[:, 0:1] - 1.0))
-            * tf.tanh(4.0 * np.pi * (inputs[:, 1:2] - 1.0))
-            * x
-        )
-
     def call(self, inputs):
         """This method is used to define the forward pass of the model.
         :param inputs: Input tensor
@@ -241,7 +229,7 @@ class DenseModel(tf.keras.Model):
         for layer in self.layer_list:
             x = layer(x)
 
-        x = self.apply_hard_boundary_constraints(inputs, x)
+        x = self.hard_constraint_function(inputs, x)
 
         return x
 
