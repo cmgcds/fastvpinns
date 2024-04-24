@@ -10,7 +10,7 @@ import tensorflow as tf
 
 
 # PDE loss function for the CD2D problem Inverse (constant)
-@tf.function
+# @tf.function  #- Commented due to compatibility issues
 def pde_loss_cd2d(
     test_shape_val_mat,
     test_grad_x_mat,

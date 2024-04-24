@@ -10,6 +10,7 @@ import tensorflow as tf
 
 
 # PDE loss function for the CD2D inverse problem (Domain)
+@tf.function
 def pde_loss_cd2d_inverse_domain(
     test_shape_val_mat,
     test_grad_x_mat,
