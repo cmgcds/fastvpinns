@@ -17,7 +17,7 @@ import time
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
-from fastvpinns.model.model_hard import DenseModel
+from fastvpinns.model.model_hard import DenseModel_Hard
 from fastvpinns.physics.poisson2d import pde_loss_poisson
 from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
 from fastvpinns.utils.compute_utils import compute_errors_combined
@@ -152,7 +152,22 @@ if __name__ == "__main__":
     # and convert them into tensors of desired dtype
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
-    model = DenseModel(
+    # Setup the hard constraints
+    @tf.function      
+    def apply_hard_boundary_constraints(inputs, x):
+        """This method applies hard boundary constraints to the model.
+        :param inputs: Input tensor
+        :type inputs: tf.Tensor
+        :param x: Output tensor from the model
+        :type x: tf.Tensor
+        :return: Output tensor with hard boundary constraints
+        :rtype: tf.Tensor
+        """
+        ansatz = tf.tanh(4.0*np.pi*inputs[:,0:1])*tf.tanh(4.0*np.pi*inputs[:,1:2])*tf.tanh(4.0*np.pi*(inputs[:,0:1]-1.0))*tf.tanh(4.0*np.pi*(inputs[:,1:2]-1.0))
+        ansatz = tf.cast(ansatz, i_dtype)
+        return ansatz*x
+
+    model = DenseModel_Hard(
         layer_dims=[2, 30, 30, 30, 1],
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
@@ -168,6 +183,7 @@ if __name__ == "__main__":
         use_attention=i_use_attention,
         activation=i_activation,
         hessian=False,
+        hard_constraint_function = apply_hard_boundary_constraints,
     )
 
     test_points = domain.get_test_points()
