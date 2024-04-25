@@ -19,6 +19,7 @@ examples/**/output/
 # pytest 
 *.vtk
 *.msh
+sensor_points.png
 .egg-info/
 
 #result files
