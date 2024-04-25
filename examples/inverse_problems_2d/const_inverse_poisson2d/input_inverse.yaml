@@ -1,5 +1,5 @@
 experimentation:
-  output_path: "output/inv_test/1"
+  output_path: "output/inv_test"
 
 geometry:
   mesh_generation_method: "internal"
@@ -32,7 +32,7 @@ model:
   model_architecture: [2, 30,30,30, 1]
   activation: "tanh"
   use_attention: False
-  epochs: 50000
+  epochs: 10000
   dtype: "float32"
   set_memory_growth: False
   learning_rate:

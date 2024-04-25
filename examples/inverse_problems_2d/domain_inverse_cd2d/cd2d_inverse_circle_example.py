@@ -6,34 +6,34 @@ import numpy as np
 import tensorflow as tf
 
 
-EPS = 0.01
+
 
 def left_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = np.sin(x) * np.tanh(x) * np.exp(-1.0*EPS *(x**2)) * 10
+    val = np.ones_like(x) * 0.0
     return val
 
 def right_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = np.sin(x) * np.tanh(x) * np.exp(-1.0*EPS *(x**2)) * 10
+    val = np.ones_like(x) * 0.0
     return val
 
 def top_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = np.sin(x) * np.tanh(x) * np.exp(-1.0*EPS *(x**2)) * 10
+    val = np.ones_like(x) * 0.0
     return val
 
 def bottom_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = np.sin(x) * np.tanh(x) * np.exp(-1.0*EPS *(x**2)) * 10
+    val = np.ones_like(x) * 0.0
     return val
 
 def rhs(x, y):
@@ -41,18 +41,11 @@ def rhs(x, y):
     This function will return the value of the rhs at a given point
     """
 
-    X =x
-    Y =y
-    eps = EPS
+    # return -y * np.sin(x * y) * np.tanh(8 * x * y) + 8 * y * np.cos(x * y) / np.cosh(8 * x * y)**2 + 10 * (x**2 + y**2) * \
+    #       (16 * np.sin(x * y) / np.cosh(8 * x * y)**2 + np.cos(x * y) * np.tanh(8 * x * y) + 128 * np.cos(x * y) * np.tanh(8 * x * y) / np.cosh(8 * x * y)**2) * np.sin(x) * np.cos(y)
 
-    return -EPS * (
-        40.0 * X * eps * (np.tanh(X)**2 - 1) * np.sin(X) 
-        - 40.0 * X * eps * np.cos(X) * np.tanh(X) 
-        + 10 * eps * (4.0 * X**2 * eps - 2.0) * np.sin(X) * np.tanh(X) 
-        + 20 * (np.tanh(X)**2 - 1) * np.sin(X) * np.tanh(X) 
-        - 20 * (np.tanh(X)**2 - 1) * np.cos(X) 
-        - 10 * np.sin(X) * np.tanh(X)
-    ) * np.exp(-1.0 * X**2 * eps)
+    
+    return 10.0 * np.ones_like(x)
 
 
 def exact_solution(x, y):
@@ -60,7 +53,7 @@ def exact_solution(x, y):
     This function will return the exact solution at a given point
     """
     
-    val = np.sin(x) * np.tanh(x) * np.exp(-1.0*EPS *(x**2)) * 10
+    val = np.ones_like(x) * 0.0
 
     return val
 
@@ -80,27 +73,20 @@ def get_bilinear_params_dict():
     """
     This function will return a dictionary of bilinear parameters
     """
-    # Initial Guess
-    eps = EPS
+    
+    eps = 0.1 # will not be used in the loss function, as it will be replaced by the predicted value of NN
+    b1 = 1
+    b2 = 0
+    c = 0.0
 
-    return {"eps": eps}
+    return {"eps": eps, "b_x": b1, "b_y": b2, "c": c}
 
 
-def get_inverse_params_dict():
+
+def get_inverse_params_actual_dict(x, y):
     """
     This function will return a dictionary of inverse parameters
     """
     # Initial Guess
-    eps = 2
-
-    return {"eps": eps}
-
-
-def get_inverse_params_actual_dict():
-    """
-    This function will return a dictionary of inverse parameters
-    """
-    # Initial Guess
-    eps = EPS
-
+    eps = 0.5 * (np.sin(x) + np.cos(y))
     return {"eps": eps}
