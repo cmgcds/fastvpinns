@@ -153,7 +153,7 @@ if __name__ == "__main__":
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
     # Setup the hard constraints
-    @tf.function      
+    @tf.function
     def apply_hard_boundary_constraints(inputs, x):
         """This method applies hard boundary constraints to the model.
         :param inputs: Input tensor
@@ -163,9 +163,14 @@ if __name__ == "__main__":
         :return: Output tensor with hard boundary constraints
         :rtype: tf.Tensor
         """
-        ansatz = tf.tanh(4.0*np.pi*inputs[:,0:1])*tf.tanh(4.0*np.pi*inputs[:,1:2])*tf.tanh(4.0*np.pi*(inputs[:,0:1]-1.0))*tf.tanh(4.0*np.pi*(inputs[:,1:2]-1.0))
+        ansatz = (
+            tf.tanh(4.0 * np.pi * inputs[:, 0:1])
+            * tf.tanh(4.0 * np.pi * inputs[:, 1:2])
+            * tf.tanh(4.0 * np.pi * (inputs[:, 0:1] - 1.0))
+            * tf.tanh(4.0 * np.pi * (inputs[:, 1:2] - 1.0))
+        )
         ansatz = tf.cast(ansatz, i_dtype)
-        return ansatz*x
+        return ansatz * x
 
     model = DenseModel_Hard(
         layer_dims=[2, 30, 30, 30, 1],
@@ -183,7 +188,7 @@ if __name__ == "__main__":
         use_attention=i_use_attention,
         activation=i_activation,
         hessian=False,
-        hard_constraint_function = apply_hard_boundary_constraints,
+        hard_constraint_function=apply_hard_boundary_constraints,
     )
 
     test_points = domain.get_test_points()

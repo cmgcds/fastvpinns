@@ -181,7 +181,7 @@ if __name__ == "__main__":
         y_exact = exact_solution(test_points[:, 0], test_points[:, 1])
     else:
         exact_db = pd.read_csv(f"{i_exact_solution_file_name}", header=None, delimiter=",")
-        y_exact = exact_db.iloc[:,2].values.reshape(-1,)
+        y_exact = exact_db.iloc[:, 2].values.reshape(-1)
 
     # plot the exact solution
     num_epochs = i_epochs  # num_epochs

@@ -5,17 +5,18 @@
 import numpy as np
 import tensorflow as tf
 
+
 def inner_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
     return 0.0
 
+
 def outer_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-
 
     return 0.0
 
@@ -28,14 +29,15 @@ def rhs(x, y):
     # f_temp =
     return 50 * np.sin(x) + np.cos(x)
 
+
 def exact_solution(x, y):
     """
     This function will return the exact solution at a given point
     """
     r = np.sqrt(x**2 + y**2)
-    
 
     return np.ones_like(x) * 0
+
 
 def get_boundary_function_dict():
     """
@@ -43,11 +45,13 @@ def get_boundary_function_dict():
     """
     return {1000: outer_boundary, 1001: inner_boundary}
 
+
 def get_bound_cond_dict():
     """
     This function will return a dictionary of boundary conditions
     """
     return {1000: "dirichlet", 1001: "dirichlet"}
+
 
 def get_bilinear_params_dict():
     """
@@ -60,7 +64,8 @@ def get_bilinear_params_dict():
 
     return {"eps": eps, "b_x": b_x, "b_y": b_y, "c": c}
 
-def get_inverse_params_actual_dict(x,y):
+
+def get_inverse_params_actual_dict(x, y):
     """
     This function will return a dictionary of inverse parameters
     """
