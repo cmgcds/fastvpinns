@@ -15,6 +15,9 @@ fastvpinns.egg-info/
 
 #ignore output files
 examples/**/output/
+examples/**/output_*
+examples/**/__pycache__/
+
 
 # pytest 
 *.vtk
@@ -23,10 +26,7 @@ sensor_points.png
 .egg-info/
 
 #result files
-examples/**/*.png
-examples/**/*.vtk
-examples/**/*.txt
-examples/**/*.svg
-examples/**/*.index
-examples/**/*.csv
+# examples/**/*.png # as the README.md uses png image files
+examples/**/sensor_points.png
+
 

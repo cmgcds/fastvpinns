@@ -5,30 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 
-def left_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    return (x + y) * np.sin(np.pi * x) * np.sin(np.pi * y)
-
-
-def right_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    val = 0.0
-    return (x + y) * np.sin(np.pi * x) * np.sin(np.pi * y)
-
-
-def top_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    val = 0.0
-    return (x + y) * np.sin(np.pi * x) * np.sin(np.pi * y)
-
-
-def bottom_boundary(x, y):
+def circle_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
@@ -63,14 +40,14 @@ def get_boundary_function_dict():
     """
     This function will return a dictionary of boundary functions
     """
-    return {1000: bottom_boundary, 1001: right_boundary, 1002: top_boundary, 1003: left_boundary}
+    return {1000: circle_boundary}
 
 
 def get_bound_cond_dict():
     """
     This function will return a dictionary of boundary conditions
     """
-    return {1000: "dirichlet", 1001: "dirichlet", 1002: "dirichlet", 1003: "dirichlet"}
+    return {1000: "dirichlet"}
 
 
 def get_bilinear_params_dict():

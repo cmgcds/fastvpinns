@@ -91,9 +91,7 @@ if __name__ == "__main__":
 
     i_beta = config['pde']['beta']
 
-    i_update_progress_bar = config['logging']['update_progress_bar']
     i_update_console_output = config['logging']['update_console_output']
-    i_update_solution_images = config['logging']['update_solution_images']
 
     # use pathlib to create the folder,if it does not exist
     folder = Path(i_output_path)
@@ -158,7 +156,7 @@ if __name__ == "__main__":
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
     model = DenseModel(
-        layer_dims=[2, 30, 30, 30, 1],
+        layer_dims=i_model_architecture,
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
         loss_function=pde_loss_cd2d,
