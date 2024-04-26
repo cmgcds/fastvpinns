@@ -5,6 +5,15 @@ on:
     branches: [main]
   push:
     branches: ['*']
+  workflow_call:  # Allows other workflows to call this workflow
+  inputs:
+    python-version:
+      required: true
+      type: string
+  outputs:
+    result:
+      description: "Result of the quality check"
+      value: ${{ steps.quality-check.outputs.result }}
 
 jobs:
   quality-check:
@@ -29,4 +38,3 @@ jobs:
     - name: Run black
       run: |
         black --check fastvpinns
-        
