@@ -9,7 +9,7 @@ on:
 
 jobs:
   pylint:
-    needs: quality-check  # This job depends on the quality-check job
+    needs: [quality-check, unit-tests, integration-tests]  # This job depends on the quality-check, unit and integration checks
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
