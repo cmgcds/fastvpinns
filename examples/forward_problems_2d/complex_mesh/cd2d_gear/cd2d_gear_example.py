@@ -63,12 +63,3 @@ def get_bilinear_params_dict():
     c = 0.0
 
     return {"eps": eps, "b_x": b_x, "b_y": b_y, "c": c}
-
-
-def get_inverse_params_actual_dict(x, y):
-    """
-    This function will return a dictionary of inverse parameters
-    """
-    eps = np.cos(x) + np.cos(y)
-
-    return {"eps": eps}
