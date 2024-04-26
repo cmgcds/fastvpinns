@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
+  quality-check-internal:
+    uses: ./.github/workflows/code-quality-control.yml
   build:
-    needs: quality-check  # This job depends on the quality-check job
-    id: integration-tests
     runs-on: ubuntu-20.04
 
     steps:
