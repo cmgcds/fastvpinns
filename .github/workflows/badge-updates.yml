@@ -1,0 +1,26 @@
+name: badge-updates
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  pylint:
+    needs: quality-check  # This job depends on the quality-check job
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: Silleellie/pylint-github-action@v2
+      with:
+        lint-path: fastvpinns
+        python-version: 3.9
+        requirements-path: requirements.txt
+        readme-path: README.md
+        badge-text: PyLint
+        color-bad-score: red
+        color-ok-score: yellow
+        color-good-score: brightgreen
+        color-perfect-score: brightgreen

@@ -16,7 +16,12 @@ def rhs(x, y):
     """
     This function will return the value of the rhs at a given point
     """
-    f_temp = 4.0*x**2*np.cos(x**2 + y**2) - 2.0*x*np.sin(x**2 + y**2) + 4.0*y**2*np.cos(x**2 + y**2) + 4.0*np.sin(x**2 + y**2)
+    f_temp = (
+        4.0 * x**2 * np.cos(x**2 + y**2)
+        - 2.0 * x * np.sin(x**2 + y**2)
+        + 4.0 * y**2 * np.cos(x**2 + y**2)
+        + 4.0 * np.sin(x**2 + y**2)
+    )
 
     return f_temp
 
