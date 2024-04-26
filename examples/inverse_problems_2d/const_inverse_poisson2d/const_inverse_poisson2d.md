@@ -1,10 +1,11 @@
-# Solving Inverse Problems with FastVPINNs : Estimation of spatially varying parameter on a complex geometry.
+# Solving Inverse Problems with FastVPINNs : Estimation of uniform diffusion parameter on a quadrilateral geometry.
 
-In this example, we will learn how to solve inverse problems on a complex geometry using FastVPINNs. In particular, we will solve the 2-dimensional convection-diffusion equation, as shown below, while simultaneously estimating the spatially dependent diffusion parameter $\epsilon(x,y)$ using synthetically generated sensor data.
+In this example, we will learn how to solve inverse problems using FastVPINNs. In particular, we will solve the 2-dimensional Poisson equation, as shown below, while simultaneously estimating the uniform diffusion parameter $\epsilon$ using synthetically generated sensor data.
 
-$$-\left(\frac{\partial}{\partial x}\left(\epsilon(x,y)\frac{\partial u}{\partial x}\right) + \frac{\partial}{\partial y}\left(\epsilon(x,y)\frac{\partial u}{\partial y}\right)\right) + b_x\frac{\partial u}{\partial x} + b_y\frac{\partial u}{\partial y} = f  $$
-where
-$$f=10; \quad \epsilon_{\text{actual}}=0.5\times(\sin{x} + \cos{y}); \qquad b_x=1.0; \quad b_y=0.0$$
+$$-\epsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2
+$$
+for the actual solution $u(x, y) = 10 \sin(x) \tanh(x) e^{-\epsilon x^2}$
+In this problem, the actual value of the diffusion parameter, $\epsilon_{\text{actual}}$ is 0.3, and we start with an initial guess of $\epsilon_{\text{initial}}=2.0$.
 
 We begin by introducing the various files required to run this example
 
@@ -15,21 +16,25 @@ We begin by introducing the various files required to run this example
 
 The code in this example can be run using
 ```bash
-python3 main_inverse_domain_circle.py input_inverse_domain.yaml
+python3 main_inverse.py input_inverse.yaml
 ```
 
 ## Example File
-The example file, `cd2d_inverse_circle_example.py`, defines the boundary conditions and boundary values, the forcing function and exact function (if test error needs to be calculated), bilinear parameters and the actual value of the parameter that needs to be estimated (if the error between the actual and estimated parameter needs to be calculated) 
+The example file, `inverse_uniform.py`, defines the boundary conditions and boundary values, the forcing function and exact function (if test error needs to be calculated), bilinear parameters and the actual value of the parameter that needs to be estimated (if the error between the actual and estimated parameter needs to be calculated) 
 ### Defining boundary values
 The current version of FastVPINNs only implements Dirichlet boundary conditions. The boundary values can be set defining a function for each boundary, 
 ```python
+EPS = 0.3
+
+
 def left_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = np.ones_like(x) * 0.0
+    val = np.sin(x) * np.tanh(x) * np.exp(-1.0 * EPS * (x**2)) * 10
     return val
 ```
+Here `EPS` is the actual value of the diffusion parameter to be estimated. 
 In the above snippet, we define a function `left_boundary` which returns the Dirichlet values to be enforced at that boundary. Similarly, we can define more boundary functions like `right_boundary`, `top_boundary` and `bottom_boundary`. Once these functions are defined, we can assign them to the respective boundaries using `get_boundary_function_dict`
 ```python
 def get_boundary_function_dict():
@@ -57,7 +62,23 @@ def rhs(x, y):
     """
     This function will return the value of the rhs at a given point
     """
-    return 10.0 * np.ones_like(x)
+
+    X = x
+    Y = y
+    eps = EPS
+
+    return (
+        -EPS
+        * (
+            40.0 * X * eps * (np.tanh(X) ** 2 - 1) * np.sin(X)
+            - 40.0 * X * eps * np.cos(X) * np.tanh(X)
+            + 10 * eps * (4.0 * X**2 * eps - 2.0) * np.sin(X) * np.tanh(X)
+            + 20 * (np.tanh(X) ** 2 - 1) * np.sin(X) * np.tanh(X)
+            - 20 * (np.tanh(X) ** 2 - 1) * np.cos(X)
+            - 10 * np.sin(X) * np.tanh(X)
+        )
+        * np.exp(-1.0 * X**2 * eps)
+    )
 ```
 
 ### Defining bilinear parameters
@@ -67,25 +88,23 @@ def get_bilinear_params_dict():
     """
     This function will return a dictionary of bilinear parameters
     """
+    # Initial Guess
+    eps = EPS
 
-    eps = 0.1  # will not be used in the loss function, as it will be replaced by the predicted value of NN
-    b1 = 1
-    b2 = 0
-    c = 0.0
-
-    return {"eps": eps, "b_x": b1, "b_y": b2, "c": c}
+    return {"eps": eps}
 ```
-Here, `eps` denoted the diffusion constant, `b_x` and `b_y` denote the convective velocity in x and y direction respectively, and `c` denotes the reaction term. In this particular example, `eps` is not used in the loss calculation since it is the parameter to be estimated and `c` is zero since this is simply a convection-diffusion problem.
+Here, `eps` denoted the diffusion constant.
 
 ### Defining the target parameter values for testing
 To test if our solver converges to the correct value of the parameter to be estimated, we use the function `get_inverse_params_actual_dict`. 
 ```python
-def get_inverse_params_actual_dict(x, y):
+def get_inverse_params_actual_dict():
     """
     This function will return a dictionary of inverse parameters
     """
     # Initial Guess
-    eps = 0.5 * (np.sin(x) + np.cos(y))
+    eps = EPS
+
     return {"eps": eps}
 ```
 This can then be used to calculate some error metric that assesses the performance of our solver.
@@ -93,17 +112,17 @@ This can then be used to calculate some error metric that assesses the performan
 [Back to Contents](#contents)
 
 ## Input file
-The input file, `input_inverse_domain.yaml`, is used to define inputs to your solver. These will usually parameters that will changed often throughout your experimentation, hence it is best practice to pass these parameters externally. 
+The input file, `input_inverse.yaml`, is used to define inputs to your solver. These will usually parameters that will changed often throughout your experimentation, hence it is best practice to pass these parameters externally. 
 The input file is divided based on the modules which use the parameter in question, as follows - 
 ### `experimentation`
 This contains `output_path`, a string which specifies which folder will be used to store your outputs.
 
 ### `geometry`
 This section defines the geometrical parameters for your domain. 
-1. In this example, we set the `mesh_generation_method` as `"external"` since we want to read the mesh file for the circular domain, `circular_quad.mesh`.
-2. For the purposes of this example, the  parameters in `internal_mesh_params` can be ignored as they are used exclusively for internal meshes.
+1. In this example, we set the `mesh_generation_method` as `"internal"`. This generates a regular quadrilateral domain with a uniform mesh.
+2. The  parameters in `internal_mesh_params` define the x and y limits of the quadrilateral domain(`xmin`, `xmax`, `ymin` and `ymax`), number of cells in the domain in the x and y direction (`n_cells_x` and `n_cells_y`), number of total boundary points (`n_boundary_points`) and number of test points in x and y direction (`n_test_points_x` and `n_test_points_y`).
 3. `mesh_type` : FastVPINNs currently provides support for quadrilateral elements only.
-4. `external_mesh_params` can be used to specify parameters for the external mesh. `mesh_file_name` takes a string (`circular_quad_mesh` in this case). `boundary_refinement_level` controls how many times the boundaries are refined and in effect decides the number of boundary points sampled. This sampling can be set to `uniform` for uniform sampling.
+4. `external_mesh_params` can be used to specify parameters for the external mesh, and can be ignored for this example
 
 ### `fe`
 The parameters related to the finite element space are defined here.
@@ -129,12 +148,12 @@ The parameters pertaining to the neural network are specified here.
 It specifies the frequency with which the progress bar and console output will be updated, and at what interval will inference be carried out to print the solution image in the output folder.
 
 ### `inverse`
-Specific inputs only for inverse problems. `num_sensor_points` specifies the number of points in the domain at which the solution is known (or "sensed"). This sensor data can be synthetic or be read from a file given by `sensor_data_file`.
+Specific inputs only for inverse problems. `num_sensor_points` specifies the number of points in the domain at which the solution is known (or "sensed"). 
 
 [Back to contents](#contents)
 
 ## Main file
-This is the main file which needs to be run for the experiment, with the input file as an argument. For the example, we will use the main file `main_inverse_domain_circle.py`
+This is the main file which needs to be run for the experiment, with the input file as an argument. For the example, we will use the main file `main_inverse.py`
 
 Following are the key components of a FastVPINNs main file 
 
@@ -148,12 +167,12 @@ from fastvpinns.Geometry.geometry_2d import Geometry_2D
 Will import the functions related to setting up the finite element space, 2D Geometry and the datahandler required to manage data and make it available to the model.
 
 ```python
-from fastvpinns.model.model_inverse_domain import DenseModel_Inverse_Domain
+from fastvpinns.model.model_inverse import DenseModel_Inverse
 ``` 
-Will import the model file where the neural network and its training function is defined. The model file `model_inverse_domain.py` contains the `DenseModel_Inverse_Domain` class specifically designed for inverse problems where a spatially varying parameter has to be estimated along with the solution.
+Will import the model file where the neural network and its training function is defined. The model file `model_inverse.py` contains the `DenseModel_Inverse` class specifically designed for inverse problems where a spatially varying parameter has to be estimated along with the solution.
 
 ```python
-from fastvpinns.physics.cd2d_inverse_domain import *
+from fastvpinns.physics.poisson2d_inverse import *
 ```
 Imports the loss function specifically designed for this problem, with a sensor loss added to the PDE and boundary losses.
 
@@ -171,11 +190,15 @@ The input file is loaded into `config` and the input parameters are read and ass
 ```python
 domain = Geometry_2D(i_mesh_type, i_mesh_generation_method, i_n_test_points_x, i_n_test_points_y, i_output_path)
 ```
-will instantiate a `Geometry_2D` object, `domain`, with the mesh type, mesh generation method and test points. In our example, the mesh generation method is `external`, so the cells and boundary points will be obtained using the `read_mesh` method.
+will instantiate a `Geometry_2D` object, `domain`, with the mesh type, mesh generation method and test points. In our example, the mesh generation method is `internal`, so the cells and boundary points will be obtained using the `generate_quad_mesh_internal` method.
 ```python
-cells, boundary_points = domain.read_mesh(mesh_file=i_mesh_file_name, boundary_point_refinement_level=i_boundary_refinement_level,
-            bd_sampling_method=i_boundary_sampling_method,
-            refinement_level=0)
+        cells, boundary_points = domain.generate_quad_mesh_internal(
+            x_limits=[i_x_min, i_x_max],
+            y_limits=[i_y_min, i_y_max],
+            n_cells_x=i_n_cells_x,
+            n_cells_y=i_n_cells_y,
+            num_boundary_points=i_n_boundary_points,
+        )
 ```
 
 ### Reading the boundary conditions and values
@@ -203,14 +226,15 @@ bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bo
     )
 ```
 `fespace` will contain all the information about the finite element space, including those read from the [input file](#input-file)    
+
 ### Instantiating an inverse problem model
 
 ```python
-    model = DenseModel_Inverse_Domain(
+    model = DenseModel_Inverse(
         layer_dims=i_model_architecture,
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
-        loss_function=pde_loss_cd2d_inverse_domain,
+        loss_function=pde_loss_poisson_inverse,
         input_tensors_list=[datahandler.x_pde_list, train_dirichlet_input, train_dirichlet_output],
         orig_factor_matrices=[
             datahandler.shape_val_mat_list,
@@ -219,13 +243,14 @@ bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bo
         ],
         force_function_list=datahandler.forcing_function_list,
         sensor_list=[points, sensor_values],
+        inverse_params_dict=inverse_params_dict,
         tensor_dtype=i_dtype,
         use_attention=i_use_attention,
         activation=i_activation,
         hessian=False,
     )
 ```
-`DenseModel_Inverse_Domain` is a model written for inverse problems with spatially varying parameter estimation. In this problem, we pass the loss function `pde_loss_cd2d_inverse_domain` from the `physics` file `cd2d_inverse_domain.py`.
+`DenseModel_Inverse` is a model written for inverse problems with spatially varying parameter estimation. In this problem, we pass the loss function `pde_loss_poisson_inverse` from the `physics` file `poisson_inverse.py`.
 
 We are now ready to train the model to approximate the solution of the PDE while estimating the unknown diffusion parameter using the sensor data. 
 
