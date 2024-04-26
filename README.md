@@ -27,6 +27,11 @@ To install the package, run the following command:
 pip install fastvpinns
 ```
 
+ On ubuntu systems with libGL issues caused due to matplotlib or gmsh, please run the following command to install the required dependencies.
+```bash
+sudo apt-get install -y libglu1-mesa 
+```
+
 ## Usage
 ---
 
