@@ -13,6 +13,7 @@ def circle_boundary(x, y):
     omegaY = 2.0 * np.pi
     return -1.0 * np.sin(omegaX * x) * np.sin(omegaY * y)
 
+
 def rhs(x, y):
     """
     This function will return the value of the rhs at a given point
