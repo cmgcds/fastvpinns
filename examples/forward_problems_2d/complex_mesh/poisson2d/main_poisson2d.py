@@ -18,13 +18,13 @@ from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 from fastvpinns.model.model import DenseModel
-from fastvpinns.physics.helmholtz2d import pde_loss_helmholtz
+from fastvpinns.physics.poisson2d import pde_loss_poisson
 from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
 from fastvpinns.utils.compute_utils import compute_errors_combined
 from fastvpinns.utils.print_utils import print_table
 
 # import the example file
-from helmholtz_example import *
+from sin_cos import *
 
 # import all files from utility
 from utility import *
@@ -91,9 +91,7 @@ if __name__ == "__main__":
 
     i_beta = config['pde']['beta']
 
-    i_update_progress_bar = config['logging']['update_progress_bar']
     i_update_console_output = config['logging']['update_console_output']
-    i_update_solution_images = config['logging']['update_solution_images']
 
     # use pathlib to create the folder,if it does not exist
     folder = Path(i_output_path)
@@ -122,6 +120,7 @@ if __name__ == "__main__":
         i_boundary_sampling_method,
         refinement_level=1,
     )
+
     # get the boundary function dictionary from example file
     bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
 
@@ -160,7 +159,7 @@ if __name__ == "__main__":
         layer_dims=[2, 30, 30, 30, 1],
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
-        loss_function=pde_loss_helmholtz,
+        loss_function=pde_loss_poisson,
         input_tensors_list=[datahandler.x_pde_list, train_dirichlet_input, train_dirichlet_output],
         orig_factor_matrices=[
             datahandler.shape_val_mat_list,
@@ -178,6 +177,7 @@ if __name__ == "__main__":
     print(f"[bold]Number of Test Points = [/bold] {test_points.shape[0]}")
     y_exact = exact_solution(test_points[:, 0], test_points[:, 1])
 
+    # plot the exact solution
     num_epochs = i_epochs  # num_epochs
     progress_bar = tqdm(
         total=num_epochs,
@@ -231,6 +231,7 @@ if __name__ == "__main__":
 
             # Append test loss
             test_loss_array.append(l1_error)
+
             solution_array = np.c_[y_pred, y_exact, np.abs(y_exact - y_pred)]
             domain.write_vtk(
                 solution_array,
@@ -261,7 +262,6 @@ if __name__ == "__main__":
         filename=f"prediction_{epoch+1}.vtk",
         data_names=["Sol", "Exact", "Error"],
     )
-
     # print the Error values in table
     print_table(
         "Error Values",

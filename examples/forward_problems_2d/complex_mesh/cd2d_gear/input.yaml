@@ -1,3 +1,5 @@
+# This YAML file contains configuration parameters for FastVPINNs
+
 experimentation:
   output_path: "output/cd2d_gear"
 
@@ -23,13 +25,13 @@ geometry:
   external_mesh_params:
     mesh_file_name: "../meshes/gear.mesh"  # should be a .mesh file
     boundary_refinement_level: 2
-    boundary_sampling_method: "lhs"  # "uniform" or "lhs"
+    boundary_sampling_method: "uniform"  # "uniform" 
 
 fe:
   fe_order: 4    
-  fe_type: "jacobi"   #"parmoon", "legendre" and "legendre".
+  fe_type: "jacobi"   
   quad_order: 5
-  quad_type: "gauss-jacobi"  # "gauss-jacobi, gauss-legendre, gauss-lobatto"
+  quad_type: "gauss-jacobi"  
 
 pde:
   beta: 5
@@ -48,16 +50,4 @@ model:
     staircase: False
 
 logging:
-  update_progress_bar: 100
   update_console_output: 10000
-  update_solution_images: 10000
-
-wandb:
-  use_wandb: True
-  project_name: "New_Forward_Complex"
-  wandb_run_prefix: "Test_Gear_Sin"
-  entity: "starslab-iisc"
-
-additional:
-  run_by: "Thivin"
-  System: "24"
