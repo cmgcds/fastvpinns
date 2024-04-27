@@ -1,16 +1,22 @@
-# FastVPINNs
+# FastVPINNs - Fast hp-Variational Physics-Informed Neural Networks for solving PDE's
 --- 
 [![Unit tests](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml)
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
 ![Coverage](https://img.shields.io/badge/Coverage-92%25-brightgreen)
+
+[![License: CC BY-NC](https://img.shields.io/badge/License-CC%20BY--NC-blue.svg)](https://creativecommons.org/licenses/by-nc/2.0/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
+
 This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).
 
 ## Authors
 ---
 
-- [**Thivin Anandh**](https://github.com/thivinanandh)
-- [**Divij Ghose**](https://divijghose.github.io/)
-- [**Sashikumaar Ganesan**](https://cds.iisc.ac.in/faculty/sashi)
+[Thivin Anandh](https://github.com/thivinanandh), [Divij Ghose](https://divijghose.github.io/), [Sashikumaar Ganesan](https://cds.iisc.ac.in/faculty/sashi)
+
+STARS Lab, Department of Computational and Data Sciences, Indian Institute of Science, Bangalore, India
 
 ## Installation
 ---
@@ -31,7 +37,7 @@ sudo apt-get install -y libglu1-mesa
 
 For detailed usage, please refer to the README file in the [examples](examples) directory. 
 
-The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 30 lines of code.
+The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 15 lines of code.
 
 ```python
 #load the geometry 
@@ -62,35 +68,9 @@ for epoch in range(1000):
 
 Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code
 
-
-## Modules
-
-There are 5 important modules in the package. they are
-- Geometry
-- FE_2D
-- data
-- model
-- physics
-
-### Geometry
-This module contains the classes and functions to generate the mesh and the geometry of the domain. The module can read the quadrilateral mesh from external files or generate a structured quadrilateral mesh internally. This module also features vtk file generation for output visualisation and domain and quadrature point plotting for complex domains. 
-
-### FE_2D
-
-This module contains the classes and functions to generate the finite element basis functions and their derivatives for polynomials such as "jacobi" and "legendre" polynomials. The module also contains numerical quadrature routines such as Gauss Legendre and Gauss Jacobi Legendre polynomials which can be used for numerical integration purposes. It also handles the ability to extract and assign values for dirichlet boundary points on complex domains. It computes the RHS matrices to be used in the loss functionals of the hp-VPINNs model. 
-
-#### data
-
-This module contains routines to convert all the data into the tensorial format, which is required for the residual computation of the model in Variational format. This modules also takes care of the tensor data type requried for tensorflow and also controls the precision of calculations.
-
-### model
-
-This module contains the classes and functions required for training the NN to solve the PDE. All of these are dense models, which are fine tuned for specific problems such as problems with hard constraints , inverse problems and inverse problems. 
-
-### physics
-
-This is the module, which captures the core idea of the package, this contains functions responsible for calculating losses for different PDE's such as Poisson-2D, Helmholtz-2D, CD-2D equations for forward problems and also for some of the inverse problems. 
-
+## Contributing
+---
+we welcome contributions from the community. 
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the CC BY-NC 4.0 License - see the [LICENSE](LICENSE) file for details.
