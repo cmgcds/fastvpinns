@@ -4,7 +4,7 @@
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
 ![Coverage](https://img.shields.io/badge/Coverage-92%25-brightgreen)
 
-[![License: CC BY-NC](https://img.shields.io/badge/License-CC%20BY--NC-blue.svg)](https://creativecommons.org/licenses/by-nc/2.0/)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
@@ -70,7 +70,7 @@ Note : Supporting functions which define the actual solution and boundary condit
 
 ## Contributing
 ---
-we welcome contributions from the community. 
+This code is currently maintained by the [Authors](#Authors). We welcome contributions from the community. Please create a pull request with the changes you would like to make.
 
 ## License
-This project is licensed under the CC BY-NC 4.0 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
