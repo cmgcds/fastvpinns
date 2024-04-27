@@ -39,6 +39,11 @@ class FE2DSetupMain:
         :rtype: BasisFunction2D
         :raises ValueError: If the fe_order is invalid.
         """
+        # check for FE order lower bound and higher bound
+        if self.fe_order <= 1 or self.fe_order >= 1e3:
+            print(f"Invalid FE order {self.fe_order} in {self.__class__.__name__} from {__name__}.")
+            raise ValueError("FE order should be greater than 1 and less than 1e4.")
+
         if self.cell_type == "quadrilateral":
             self.n_nodes = 4
 
@@ -78,8 +83,8 @@ class FE2DSetupMain:
         :raises ValueError: If the quad_order is invalid or the cell_type is invalid.
         """
         if self.cell_type == "quadrilateral":
-            if self.quad_order < 2:
-                raise ValueError("Quad order should be greater than 1.")
+            if self.quad_order < 3:
+                raise ValueError("Quad order should be greater than 2.")
             elif self.quad_order >= 2 and self.quad_order <= 9999:
                 weights, xi, eta = Quadratureformulas_Quad2D(
                     self.quad_order, self.quad_type
@@ -90,10 +95,6 @@ class FE2DSetupMain:
                     f"Invalid quad order {self.quad_order} in {self.__class__.__name__} from {__name__}."
                 )
                 raise ValueError("Quad order should be between 1 and 9999.")
-
-        # if self.cell_type == "triangle":
-        #     weights, xi, eta = Quadratureformulas_Tri2D(self.quad_order).get_quad_values()
-        #     return weights, xi, eta
 
         raise ValueError(
             f"Invalid cell type {self.cell_type} in {self.__class__.__name__} from {__name__}."
@@ -118,14 +119,6 @@ class FE2DSetupMain:
                 return QuadAffin(cell_coordinates)
             elif fe_transformation_type == "bilinear":
                 return QuadBilinear(cell_coordinates)
-            else:
-                raise ValueError(
-                    f"Invalid FE transformation type {fe_transformation_type} in {self.__class__.__name__} from {__name__}."
-                )
-
-        elif self.cell_type == "triangle":
-            if fe_transformation_type == "affine":
-                return TriAffin(cell_coordinates)
             else:
                 raise ValueError(
                     f"Invalid FE transformation type {fe_transformation_type} in {self.__class__.__name__} from {__name__}."

@@ -402,8 +402,10 @@ class Fespace2D:
 
         :raises ValueError: If the cell_index is greater than the number of cells.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].basis_at_quad.copy()
 
@@ -421,8 +423,10 @@ class Fespace2D:
 
         This function returns the actual values of the gradient of the shape function on a given cell.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].basis_gradx_at_quad.copy()
 
@@ -438,8 +442,10 @@ class Fespace2D:
 
         :raises ValueError: If the cell_index is greater than the number of cells.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].basis_gradx_at_quad_ref.copy()
 
@@ -455,8 +461,10 @@ class Fespace2D:
 
         :raises ValueError: If the cell_index is greater than the total number of cells.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].basis_grady_at_quad.copy()
 
@@ -479,8 +487,10 @@ class Fespace2D:
         .. note::
             The returned gradient values are copied from the `basis_grady_at_quad_ref` array to ensure immutability.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].basis_grady_at_quad_ref.copy()
 
@@ -503,8 +513,10 @@ class Fespace2D:
                 [0.3, 0.4],
                 [0.5, 0.6]])
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].quad_actual_coordinates.copy()
 
@@ -545,8 +557,10 @@ class Fespace2D:
         :rtype: np.ndarray
         :raises ValueError: If cell_index is greater than the number of cells.
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         return self.fe_cell[cell_index].mult.copy()
 
@@ -575,8 +589,10 @@ class Fespace2D:
             >>> cell_index = 0
             >>> forcing_values = fespace.get_forcing_function_values(cell_index)
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         # Changed by Thivin: To assemble the forcing function at the quadrature points here in the fespace
         # so that it can be used to handle multiple dimensions on a vector valud problem
@@ -619,8 +635,10 @@ class Fespace2D:
         :rtype: np.ndarray
         :raises ValueError: If cell_index is greater than the number of cells
         """
-        if cell_index > self.n_cells:
-            raise ValueError(f"cell_index should be less than {self.n_cells}")
+        if cell_index >= len(self.fe_cell) or cell_index < 0:
+            raise ValueError(
+                f"cell_index should be less than {self.n_cells} and greater than or equal to 0"
+            )
 
         # get the coordinates
         x = self.fe_cell[cell_index].quad_actual_coordinates[:, 0]
@@ -635,71 +653,6 @@ class Fespace2D:
         self.fe_cell[cell_index].forcing_at_quad = f_integral.reshape(-1, 1)
 
         return self.fe_cell[cell_index].forcing_at_quad.copy()
-
-    def get_pde_data_for_training_lambda(self, cell_index) -> None:
-        """
-        This function returns one cell's data for training.
-
-        :param cell_index: The index of the cell.
-        :type cell_index: int
-
-        :return: The quadrature points and jacobian values of the cell.
-        :rtype: tuple(tf.Tensor, tf.Tensor)
-        """
-        # get the quadrature points
-        x = self.fe_cell[cell_index].quad_actual_coordinates
-
-        # get the jacobian values
-        y = self.fe_cell[cell_index].jacobian
-
-        x = tf.convert_to_tensor(x, dtype=tf.float64)
-        y = tf.convert_to_tensor(y, dtype=tf.float64)
-
-        return x, y
-
-    def get_pde_training_data(self) -> None:
-        """
-        this funciton will return the entire data for training as a tf.tensor
-        """
-        main_data_x = []
-        main_data_y = []
-
-        for cell_index in range(self.n_cells):
-            # get the quadrature points
-            x = self.fe_cell[cell_index].quad_actual_coordinates
-
-            # get the jacobian values
-            y = self.fe_cell[cell_index].jacobian
-
-            # append the data
-            main_data_x.append(x)
-            main_data_y.append(y)
-
-        return tf.convert_to_tensor(main_data_x, dtype=tf.float64), tf.convert_to_tensor(
-            main_data_y, dtype=tf.float64
-        )
-
-    def get_forcing_data_for_training(self) -> None:
-        """
-        This function will return the data for training
-        It should return a matrix of size N_Quad_Points x N_cells
-        Each FE_2D_Cell object will return a forcing function value at each quadrature point
-        in shape (N_Quad_Points, 1),
-        we need to stack them together to get a matrix of size (N_Quad_Points, N_cells)
-        """
-
-        main_data = []
-
-        # loop over all the cells
-        for cell_index in range(self.n_cells):
-            # get the quadrature points
-            x = self.fe_cell[cell_index].forcing_at_quad
-
-            # append the data
-            main_data.append(x)
-
-        # return the data as a numpy array
-        return np.squeeze(np.array(main_data).T, axis=0)
 
     def get_sensor_data(self, exact_solution, num_points):
         """

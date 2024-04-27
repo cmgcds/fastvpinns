@@ -60,6 +60,18 @@ class Geometry_2D:
         self.n_test_points_y = n_test_points_y
         self.output_folder = output_folder
 
+        if self.mesh_generation_method not in ["internal", "external"]:
+            print(
+                f"Invalid mesh generation method {self.mesh_generation_method} in {self.__class__.__name__} from {__name__}."
+            )
+            raise ValueError("Mesh generation method should be either internal or external.")
+
+        if self.mesh_type not in ["quadrilateral"]:
+            print(
+                f"Invalid mesh type {self.mesh_type} in {self.__class__.__name__} from {__name__}."
+            )
+            raise ValueError("Mesh type should be quadrilateral only.")
+
         # To be filled - only when mesh is internal
         self.n_cells_x = None
         self.n_cells_y = None
@@ -110,12 +122,6 @@ class Geometry_2D:
         if self.mesh_type == "quadrilateral":
             # Extract cell information
             cells = self.mesh.cells_dict["quad"]
-        # elif self.mesh_type == "triangle":
-        #     cells = self.mesh.cells_dict["triangle"]
-        else:
-            raise ValueError("Mesh type should be quadrilateral only")
-            # Changed by thivin -- Does not support triangular cells as of now.
-            # Since domain is the Entry point, this will ensure that the program terminates immediately
 
         num_cells = cells.shape[0]
         print(f"[INFO] : Number of cells = {num_cells}")
@@ -401,11 +407,6 @@ class Geometry_2D:
 
             print("[INFO] : VTK file for external mesh file generated at ", str(vtk_file_name))
 
-        else:
-            # print the file name and function name
-            print("[Error] : File : geometry_2d.py, Function: ")
-            raise ValueError("Unknown mesh type")
-
     def get_test_points(self):
         """
         This function is used to extract the test points from the given mesh
@@ -432,10 +433,6 @@ class Geometry_2D:
 
         elif self.mesh_generation_method == "external":
             vtk_file_name = Path(self.output_folder) / "external.vtk"
-        else:
-            # print the file name and function name
-            print("[Error] : File : geometry_2d.py, Function: ")
-            raise ValueError("Unknown mesh type")
 
         mesh = meshio.read(str(vtk_file_name))
         points = mesh.points
@@ -485,7 +482,6 @@ class Geometry_2D:
                 FN.write(line)
                 if "POINT_DATA" in line.strip():
                     break
-                pass
 
             for i in range(solution.shape[1]):
                 FN.write("SCALARS " + data_names[i] + " float\n")

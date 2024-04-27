@@ -38,9 +38,6 @@ class Quadratureformulas_Quad2D:
         self.quad_type = quad_type
         self.num_quad_points = quad_order * quad_order
 
-        if self.quad_order < 2:
-            raise ValueError("Quadrature order should be greater than 1.")
-
         # Calculate the Gauss-Legendre quadrature points and weights for 1D
         # nodes_1d, weights_1d = roots_jacobi(self.quad_order, 1, 1)
 
