@@ -25,14 +25,14 @@ for line in lines:
 
 # strip the percentage symbol
 coverage = coverage[:-1]
-
+print(f"Coverage: {coverage}%")
 # Update the coverage badge in README.md
 with open("README.md", "r") as f:
     lines = f.readlines()
-    for line in lines:
+    for i, line in enumerate(lines):
         if "![Coverage]" in line:
-            lines[lines.index(line)] = f"![Coverage](https://img.shields.io/badge/Coverage-{coverage}%25-brightgreen)"
+            print("Updating coverage badge")
+            lines[i] = f"![Coverage](https://img.shields.io/badge/Coverage-{coverage}%25-brightgreen)"
 
 with open("README.md", "w") as f:
     f.writelines(lines)
-

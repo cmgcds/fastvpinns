@@ -16,9 +16,7 @@ import matplotlib.pyplot as plt
 from cycler import cycler
 import numpy as np
 
-plt.rcParams["text.usetex"] = True
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["font.serif"] = ["Computer Modern"]
+
 plt.rcParams["xtick.labelsize"] = 20
 plt.rcParams["axes.titlesize"] = 20
 plt.rcParams["axes.labelsize"] = 20
