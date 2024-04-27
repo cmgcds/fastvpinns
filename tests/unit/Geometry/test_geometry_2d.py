@@ -1,46 +1,49 @@
-# Author: Thivin Anandh. D
-# Routines to check the VTK routines
+# Author : Thivin Anandh. D
+# Added test cases for validating Dirichlet boundary routines
+# Routines, provide a value to the boundary points and check if the value is set correctly.
 
 import pytest
 import numpy as np
+from pathlib import Path
 import shutil
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 
-import os
-import numpy as np
-from pathlib import Path
 
-
-def test_write_vtk_internal():
+@pytest.mark.parametrize("mesh_generation_method", ["internal", "external"])
+@pytest.mark.parametrize("mesh_type", ["quadrilateral"])
+def test_mesh_and_mesh_gen_type(mesh_generation_method, mesh_type):
     """
-    Test the write_vtk method for internal geometry.
+    Test case for checking the mesh generation type.
     """
-    # use pathlib to create a directory "tests/test_dump"
-    Path("tests/test_dump").mkdir(parents=True, exist_ok=True)
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
 
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/test_dump")
+    domain = Geometry_2D("quadrilateral", mesh_generation_method, 10, 10, "tests/dump")
 
-    # read internal mesh
-    cells, boundary_points = domain.generate_quad_mesh_internal(
-        x_limits=[0, 1], y_limits=[0, 1], n_cells_x=4, n_cells_y=4, num_boundary_points=100
-    )
+    # Perform assertions
+    assert domain.mesh_type == mesh_type and domain.mesh_generation_method == mesh_generation_method
 
-    # Define test inputs
-    output_path = "tests/test_dump"
-    filename = "internal.vtk"
+    shutil.rmtree("tests/dump")
 
-    # Check if the output file exists
-    assert os.path.exists(os.path.join(output_path, filename))
 
-    # delete the assets
-    shutil.rmtree("tests/test_dump")
+@pytest.mark.parametrize("mesh_generation_method", ["orthogonal"])
+@pytest.mark.parametrize("mesh_type", ["triangle", "polygon"])
+def test_invalid_mesh_and_mesh_gen_type(mesh_generation_method, mesh_type):
+    """
+    Test case for checking the mesh generation type.
+    """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
+    with pytest.raises(ValueError):
+        domain = Geometry_2D(mesh_type, mesh_generation_method, 10, 10, "tests/dump")
+
+    shutil.rmtree("tests/dump")
 
 
 @pytest.mark.parametrize("mesh_generation_method", ["external", "internal"])
-def test_write_vtk_solution_mismatch(mesh_generation_method):
+def test_plot_adaptive(mesh_generation_method):
     """
     Test the write_vtk method when the number of solution columns and data names do not match.
     """

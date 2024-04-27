@@ -3,6 +3,8 @@
 
 import pytest
 import numpy as np
+from pathlib import Path
+import shutil
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
@@ -25,8 +27,10 @@ def test_numtest_points_internal(n_test_x, n_test_y):
     """
     Test case for validating the number of test points.
     """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", n_test_x, n_test_y, ".")
+    domain = Geometry_2D("quadrilateral", "internal", n_test_x, n_test_y, "tests/dump")
 
     # Generate the mesh
     cells, boundary_points = domain.generate_quad_mesh_internal(
@@ -64,6 +68,8 @@ def test_numtest_points_internal(n_test_x, n_test_y):
     # Check if the number of test points is equal to the expected number
     assert len(test_points) == total_expected
 
+    shutil.rmtree("tests/dump")
+
 
 def test_numtest_points_external():
     """
@@ -72,7 +78,9 @@ def test_numtest_points_external():
     """
     Test case for validating the number of test points.
     """
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
     cells, boundary_points = domain.read_mesh(
         mesh_file="tests/support_files/circle_quad.mesh",
         boundary_point_refinement_level=2,
@@ -88,3 +96,5 @@ def test_numtest_points_external():
     test_points = domain.get_test_points()
 
     assert len(test_points) == 1090
+
+    shutil.rmtree("tests/dump")

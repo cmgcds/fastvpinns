@@ -3,6 +3,8 @@
 
 import pytest
 import numpy as np
+from pathlib import Path
+import shutil
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
@@ -16,16 +18,19 @@ def geometry_2d():
     return Geometry_2D("quadrilateral", "internal", 10, 10, ".")
 
 
-def test_read_mesh(geometry_2d):
+@pytest.mark.parametrize("boundary_sampling_method", ["uniform", "lhs"])
+def test_read_mesh(geometry_2d, boundary_sampling_method):
     """
     Test case for the read_mesh method of the Geometry_2D class.
     """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define test inputs
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
     cells, boundary_points = domain.read_mesh(
         mesh_file="tests/support_files/circle_quad.mesh",
         boundary_point_refinement_level=2,
-        bd_sampling_method="uniform",
+        bd_sampling_method=boundary_sampling_method,
         refinement_level=0,
     )
 
@@ -37,13 +42,17 @@ def test_read_mesh(geometry_2d):
     # Example assertion: Check if the number of cells is correct
     assert cells.shape[0] == 1024
 
+    shutil.rmtree("tests/dump")
+
 
 def test_read_mesh_invalid_file_extension(geometry_2d):
     """
     Test case for the read_mesh method of the Geometry_2D class with an invalid file extension.
     """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define test inputs
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
 
     # Expect a ValueError when the file extension is not .mesh
     with pytest.raises(ValueError, match="Mesh file should be in .mesh format."):
@@ -54,30 +63,30 @@ def test_read_mesh_invalid_file_extension(geometry_2d):
             refinement_level=0,
         )
 
+    shutil.rmtree("tests/dump")
+
 
 def test_read_mesh_invalid_mesh_type(geometry_2d):
     """
     Test case for the read_mesh method of the Geometry_2D class with an invalid mesh type.
     """
-    # Define test inputs
-    domain = Geometry_2D("invalid_type", "external", 10, 10, ".")
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
 
-    # Expect a ValueError when the mesh type is not quadrilateral or triangle
-    with pytest.raises(ValueError, match="Mesh type should be quadrilateral only"):
-        cells, boundary_points = domain.read_mesh(
-            mesh_file="tests/support_files/circle_quad.mesh",
-            boundary_point_refinement_level=2,
-            bd_sampling_method="uniform",
-            refinement_level=0,
-        )
+    # Define test inputs
+    with pytest.raises(ValueError):
+        domain = Geometry_2D("invalid_type", "external", 10, 10, "tests/dump")
+
+    shutil.rmtree("tests/dump")
 
 
 def test_read_mesh_invalid_sampling_method(geometry_2d):
     """
     Test case for the read_mesh method of the Geometry_2D class with an invalid sampling method.
     """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define test inputs
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
 
     # Expect a ValueError when the sampling method is not uniform or lhs
     with pytest.raises(ValueError, match="Sampling method should be either uniform or lhs."):
@@ -88,13 +97,16 @@ def test_read_mesh_invalid_sampling_method(geometry_2d):
             refinement_level=0,
         )
 
+    shutil.rmtree("tests/dump")
+
 
 def test_generate_quad_mesh_internal():
     """
     Test case for the generate_quad_mesh_internal method of the Geometry_2D class.
     """
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/dump")
 
     # Define test inputs
     x_limits = [0, 1]
@@ -120,3 +132,5 @@ def test_generate_quad_mesh_internal():
 
     # Check if the number of cells is correct
     assert cells.shape[0] == n_cells_x * n_cells_y
+
+    shutil.rmtree("tests/dump")

@@ -5,7 +5,8 @@
 import pytest
 import numpy as np
 import tensorflow as tf
-
+import shutil
+from pathlib import Path
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
@@ -18,8 +19,11 @@ import pytest
 def test_quadrature_uniform(coord, quad_type, transformation):
     """Tests Quadrature routines for different quadrature types and transformations by calculating Area"""
 
+    # generate a temp directory called tests/dump using pathlib
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/dump")
     cells, boundary_points = domain.generate_quad_mesh_internal(
         x_limits=[coord[0], coord[1]],
         y_limits=[coord[2], coord[3]],
@@ -58,7 +62,7 @@ def test_quadrature_uniform(coord, quad_type, transformation):
         bound_function_dict=bound_function_dict,
         bound_condition_dict=bound_condition_dict,
         forcing_function=rhs,
-        output_path=".",
+        output_path="tests/dump",
         generate_mesh_plot=False,
     )
 
@@ -77,14 +81,19 @@ def test_quadrature_uniform(coord, quad_type, transformation):
     # Clean up objects
     del domain, cells, boundary_points, bound_function_dict, bound_condition_dict, rhs, fespace
 
+    # remove the temp directory
+    shutil.rmtree("tests/dump")
+
 
 @pytest.mark.parametrize("quad_type", ["gauss-legendre", "gauss-jacobi"])
 @pytest.mark.parametrize("transformation", ["affine", "bilinear"])
 def test_quadrature_complex(quad_type, transformation):
     """Tests Quadrature routines for different quadrature types and transformations by calculating Area"""
 
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
 
     cells, boundary_points = domain.read_mesh(
         mesh_file="tests/support_files/circle_quad.mesh",
@@ -112,7 +121,7 @@ def test_quadrature_complex(quad_type, transformation):
         bound_function_dict=bound_function_dict,
         bound_condition_dict=bound_condition_dict,
         forcing_function=rhs,
-        output_path=".",
+        output_path="tests/dump",
         generate_mesh_plot=False,
     )
 
@@ -130,3 +139,6 @@ def test_quadrature_complex(quad_type, transformation):
 
     # Clean up objects
     del domain, cells, boundary_points, bound_function_dict, bound_condition_dict, rhs, fespace
+
+    # remove the temp directory
+    shutil.rmtree("tests/dump")

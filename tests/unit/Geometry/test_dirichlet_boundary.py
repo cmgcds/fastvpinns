@@ -4,6 +4,8 @@
 
 import pytest
 import numpy as np
+from pathlib import Path
+import shutil
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 from fastvpinns.FE_2D.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
@@ -15,8 +17,10 @@ def test_dirichlet_boundary_internal():
     Routines provide a value to the boundary points and check if the value is set correctly.
     """
 
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/dump")
     cells, boundary_points = domain.generate_quad_mesh_internal(
         x_limits=[0, 1], y_limits=[0, 1], n_cells_x=4, n_cells_y=4, num_boundary_points=100
     )
@@ -46,6 +50,8 @@ def test_dirichlet_boundary_internal():
         )
         assert np.isclose(mean_val, values[bound_id - 1000])
 
+    shutil.rmtree("tests/dump")
+
 
 def test_dirichlet_boundary_external():
     """
@@ -53,8 +59,10 @@ def test_dirichlet_boundary_external():
     Routines provide a value to the boundary points and check if the value is set correctly.
     """
 
+    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+
     # Define the geometry
-    domain = Geometry_2D("quadrilateral", "external", 10, 10, ".")
+    domain = Geometry_2D("quadrilateral", "external", 10, 10, "tests/dump")
     cells, boundary_points = domain.read_mesh(
         mesh_file="tests/support_files/circle_quad.mesh",
         boundary_point_refinement_level=2,
@@ -76,3 +84,5 @@ def test_dirichlet_boundary_external():
             )
         )
         assert np.isclose(mean_val, val)
+
+    shutil.rmtree("tests/dump")
