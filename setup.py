@@ -9,8 +9,10 @@ setup(
     version="1.0.0",
     author="Thivin Anandh, Divij Ghose, Sashikumaar Ganesan",
     author_email="thivinanandh@gmail.com",
-    description="A short description of your package",
+    description="An Efficient tensor-based implementation of hp-Variational Physics-informed Neural Networks (VPINNs) for solving PDEs",
     packages=find_packages(),
+    license="CC BY-NC 4.0",
     install_requires=requirements,
     keywords=['variational PINNs', 'VPINNs', 'PINNs', 'Physics-informed neural networks', 'Deep learning', 'Machine learning']
+    
 )
