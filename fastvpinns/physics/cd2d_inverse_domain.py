@@ -21,7 +21,7 @@ def pde_loss_cd2d_inverse_domain(
     forcing_function,
     bilinear_params,
     inverse_params_list,
-):
+):  # pragma: no cover
     """
     Calculates and returns the loss for the CD2D inverse problem (Domain)
 

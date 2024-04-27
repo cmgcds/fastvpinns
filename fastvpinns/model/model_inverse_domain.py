@@ -237,7 +237,7 @@ class DenseModel_Inverse_Domain(tf.keras.Model):
         return base_config
 
     @tf.function
-    def train_step(self, beta=10, bilinear_params_dict=None):
+    def train_step(self, beta=10, bilinear_params_dict=None):  # pragma: no cover
         """
         The train step method for the model.
 

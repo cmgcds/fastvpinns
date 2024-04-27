@@ -247,7 +247,7 @@ class DenseModel_Inverse(tf.keras.Model):
         return base_config
 
     @tf.function
-    def train_step(self, beta=10, bilinear_params_dict=None):
+    def train_step(self, beta=10, bilinear_params_dict=None):  # pragma: no cover
 
         with tf.GradientTape(persistent=True) as tape:
             # Predict the values for dirichlet boundary conditions

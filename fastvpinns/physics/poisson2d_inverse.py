@@ -21,7 +21,7 @@ def pde_loss_poisson_inverse(
     forcing_function,
     bilinear_params,
     inverse_params_dict,
-):
+):  # pragma: no cover
     """
     Calculates and returns the loss for the  Poisson problem Inverse (constant)
 

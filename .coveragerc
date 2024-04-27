@@ -1,0 +1,3 @@
+[run]
+source = fastvpinns
+omit = */__init__.py

@@ -20,7 +20,7 @@ def pde_loss_poisson(
     pred_grad_y_nn,
     forcing_function,
     bilinear_params,
-):
+):  # pragma: no cover
     """
     This method returns the loss for the Poisson Problem of the PDE
     """

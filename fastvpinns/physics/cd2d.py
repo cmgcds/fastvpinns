@@ -20,7 +20,7 @@ def pde_loss_cd2d(
     pred_grad_y_nn,
     forcing_function,
     bilinear_params,
-):
+):  # pragma: no cover
     """
     Calculates and returns the loss for the CD2D problem
 

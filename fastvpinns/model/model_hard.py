@@ -18,15 +18,6 @@ from tensorflow.keras import layers
 from tensorflow.keras import initializers
 
 
-# Custom Loss Functions
-def custom_loss1(y_true1, y_pred1):
-    return tf.reduce_mean(tf.square(y_pred1 - y_true1))
-
-
-def custom_loss2(y_true2, y_pred2):
-    return tf.reduce_mean(tf.square(y_pred2 - y_true2))
-
-
 # Custom Model
 class DenseModel_Hard(tf.keras.Model):
     """The DenseModel_Hard class is a custom model class that hosts the neural network model.
@@ -261,7 +252,7 @@ class DenseModel_Hard(tf.keras.Model):
         return base_config
 
     @tf.function
-    def train_step(self, beta=10, bilinear_params_dict=None):
+    def train_step(self, beta=10, bilinear_params_dict=None):  # pragma: no cover
         """This method is used to define the training step of the mode.
         :param bilinear_params_dict: Dictionary containing the bilinear parameters
         :type bilinear_params_dict: dict

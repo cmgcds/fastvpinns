@@ -21,7 +21,7 @@ def pde_loss_cd2d(
     forcing_function,
     bilinear_params_dict,
     inverse_param_dict,
-):
+):  # pragma: no cover
     """
     Calculates and returns the loss for the  CD2D problem Inverse (constant)
 
