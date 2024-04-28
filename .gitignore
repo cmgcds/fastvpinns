@@ -7,6 +7,12 @@ fastvpinns.egg-info
 # tests/test_dump
 test_dump/
 
+# build
+build/
+
+# dist
+dist/
+
 # add vtk and mesh files
 *.vtk
 *.msh

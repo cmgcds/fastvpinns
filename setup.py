@@ -6,13 +6,12 @@ with open("requirements.txt") as f:
 
 setup(
     name="fastvpinns",
-    version="1.0.0",
+    version="1.0.1",
     author="Thivin Anandh, Divij Ghose, Sashikumaar Ganesan",
     author_email="thivinanandh@gmail.com",
     description="An Efficient tensor-based implementation of hp-Variational Physics-informed Neural Networks (VPINNs) for solving PDEs",
     packages=find_packages(),
-    license="CC BY-NC 4.0",
+    license="MIT",
     install_requires=requirements,
     keywords=['variational PINNs', 'VPINNs', 'PINNs', 'Physics-informed neural networks', 'Deep learning', 'Machine learning']
-    
 )

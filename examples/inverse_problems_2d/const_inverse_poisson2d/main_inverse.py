@@ -18,6 +18,7 @@ import pandas as pd
 import pytest
 import tensorflow as tf
 import yaml
+import matplotlib.pyplot as plt
 
 # Import the example file
 from inverse_uniform import *
@@ -97,14 +98,7 @@ if __name__ == "__main__":
 
     i_beta = config['pde']['beta']
 
-    i_update_progress_bar = config['logging']['update_progress_bar']
     i_update_console_output = config['logging']['update_console_output']
-    i_update_solution_images = config['logging']['update_solution_images']
-
-    i_use_wandb = config['wandb']['use_wandb']
-    i_wandb_project_name = config['wandb']['project_name']
-    i_wandb_run_prefix = config['wandb']['wandb_run_prefix']
-    i_wandb_entity = config['wandb']['entity']
 
     # ---------------------------------------------------------------#
 
@@ -414,6 +408,20 @@ if __name__ == "__main__":
             x=X, y=Y, z=error, output_path=i_output_path, filename=f"final_error", title="Error"
         )
 
+        # plot the inverse parameter prediction
+        # close all existing plots
+        plt.close("all")
+        plt.figure(figsize=(6.4, 4.8), dpi=300)
+        plt.plot(inverse_params_array, label="Predicted Epsilon")
+        plt.axhline(y=actual_epsilon, color="r", linestyle="--", label="Actual Epsilon")
+        plt.xlabel("Epochs")
+        plt.ylabel("Epsilon")
+        plt.legend()
+        plt.title("Inverse Parameter Prediction")
+        plt.tight_layout()
+        plt.savefig(str(Path(i_output_path) / "inverse_eps_prediction.png"))
+        plt.close("all")
+
     elif i_mesh_generation_method == "external":
         solution_array = np.c_[y_pred, y_exact, np.abs(y_exact - y_pred)]
         error = np.abs(y_exact - y_pred)
@@ -450,7 +458,8 @@ if __name__ == "__main__":
             "Time per Epoch(s) IQR-25% ",
             "Time per Epoch(s) IQR-75% ",
             "Mean without first(s)",
-            "Mean with first(s)" "Epochs per second",
+            "Mean with first(s)",
+            "Epochs per second",
             "Total Train Time",
         ],
         [

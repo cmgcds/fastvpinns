@@ -18,7 +18,7 @@ geometry:
   external_mesh_params:
     mesh_file_name: "meshes/circle_quad.mesh"  # should be a .mesh file
     boundary_refinement_level: 8
-    boundary_sampling_method: "lhs"  # "uniform" or "lhs"
+    boundary_sampling_method: "uniform"  # "uniform" 
 
 fe:
   fe_order: 10    
@@ -46,16 +46,4 @@ inverse:
   num_sensor_points: 50
 
 logging:
-  update_progress_bar: 100
-  update_console_output: 2000
-  update_solution_images: 5000
-
-wandb:
-  use_wandb: False
-  project_name: "Inverse_Test"
-  wandb_run_prefix: "Forward Solution"
-  entity: "starslab-iisc"
-
-additional:
-  run_by: "Divij"
-  System: "23"
+  update_console_output: 5000

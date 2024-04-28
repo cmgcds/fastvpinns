@@ -19,13 +19,13 @@ geometry:
   external_mesh_params:
     mesh_file_name: "circle_quad.mesh"  # should be a .mesh file
     boundary_refinement_level: 2
-    boundary_sampling_method: "uniform"  # "uniform" or "lhs"
+    boundary_sampling_method: "uniform"  # "uniform"
 
 fe:
   fe_order: 3  
-  fe_type: "jacobi"   #"parmoon", "legendre" and "legendre".
+  fe_type: "jacobi"   #"jacobi"
   quad_order:  5    
-  quad_type: "gauss-jacobi"  # "gauss-jacobi, gauss-legendre, gauss-lobatto"
+  quad_type: "gauss-jacobi"  # "gauss-jacobi,
 
 pde:
   beta: 10
@@ -52,14 +52,3 @@ inverse:
   num_sensor_points: 500
 
   sensor_data_file: "fem_output_circle2.csv"
-
-wandb:
-  use_wandb: True
-  project_name: "New_Inverse_Complex_updated"
-  wandb_run_prefix: "Test_Gear"
-  entity: "starslab-iisc" 
-
-additional:
-  run_by: "Divij"
-  System: "23"
-

@@ -57,8 +57,6 @@ if __name__ == "__main__":
     i_n_boundary_points = config['geometry']['internal_mesh_params']['n_boundary_points']
     i_n_test_points_x = config['geometry']['internal_mesh_params']['n_test_points_x']
     i_n_test_points_y = config['geometry']['internal_mesh_params']['n_test_points_y']
-    i_exact_solution_generation = config['geometry']['exact_solution']['exact_solution_generation']
-    i_exact_solution_file_name = config['geometry']['exact_solution']['exact_solution_file_name']
 
     i_mesh_file_name = config['geometry']['external_mesh_params']['mesh_file_name']
     i_boundary_refinement_level = config['geometry']['external_mesh_params'][
@@ -91,9 +89,7 @@ if __name__ == "__main__":
 
     i_beta = config['pde']['beta']
 
-    i_update_progress_bar = config['logging']['update_progress_bar']
     i_update_console_output = config['logging']['update_console_output']
-    i_update_solution_images = config['logging']['update_solution_images']
 
     # use pathlib to create the folder,if it does not exist
     folder = Path(i_output_path)

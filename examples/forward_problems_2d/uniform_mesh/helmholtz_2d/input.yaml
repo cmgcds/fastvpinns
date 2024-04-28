@@ -29,7 +29,7 @@ geometry:
   external_mesh_params:  # Parameters for external mesh generation method.
     mesh_file_name: "meshes/hemker.mesh"  # Path to the external mesh file (should be a .mesh file).
     boundary_refinement_level: 4  # Level of refinement for the boundary.
-    boundary_sampling_method: "lhs"  # Method for sampling the boundary. Can be "uniform" or "lhs".
+    boundary_sampling_method: "uniform"  # Method for sampling the boundary. Can be "uniform"
 
 fe:
   fe_order: 6 # Order of the finite element basis functions.
@@ -41,7 +41,7 @@ pde:
   beta: 10  # Parameter for the PDE.
 
 model:
-  model_architecture: [2, 50,50,50,50, 1]  # Architecture of the neural network model.
+  model_architecture: [2, 30,30,30, 1]  # Architecture of the neural network model.
   activation: "tanh"  # Activation function used in the neural network.
   use_attention: False  # Flag indicating whether to use attention mechanism in the model.
   epochs: 10000  # Number of training epochs.
@@ -57,19 +57,7 @@ model:
   
 
 logging:
-  update_progress_bar: 100  # Number of steps between each update of the progress bar.
   update_console_output: 5000  # Number of steps between each update of the console output.
-  update_solution_images: 10000  # Number of steps between each update of the intermediate solution images.
-  plot_residual_images: True
-  test_error_last_n_epochs: 1000
 
-wandb:
-  use_wandb: False  # Flag indicating whether to use Weights & Biases for logging.
-  project_name: "Volker_example_2"  # Name of the Weights & Biases project.
-  wandb_run_prefix: "without_scaling"  # Prefix for the Weights & Biases run.
-  entity: "starslab-iisc"  # Weights & Biases entity.
 
-additional:
-  run_by: "Thivin"  # Name of the person running the experiment.
-  System: "24"  # System identifier.
 

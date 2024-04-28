@@ -96,14 +96,7 @@ if __name__ == "__main__":
 
     i_beta = config['pde']['beta']
 
-    i_update_progress_bar = config['logging']['update_progress_bar']
     i_update_console_output = config['logging']['update_console_output']
-    i_update_solution_images = config['logging']['update_solution_images']
-
-    i_use_wandb = config['wandb']['use_wandb']
-    i_wandb_project_name = config['wandb']['project_name']
-    i_wandb_run_prefix = config['wandb']['wandb_run_prefix']
-    i_wandb_entity = config['wandb']['entity']
 
     # ---------------------------------------------------------------#
 

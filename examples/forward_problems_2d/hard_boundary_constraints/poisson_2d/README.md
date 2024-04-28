@@ -12,9 +12,26 @@ $$
 We begin by introducing the various files required to run this example
 
 ## Contents
-- [Example File](#example-file): The boundary conditions, forcing function $f$ and parameters are defined in this file.
-- [Input File](#input_file): The input file contains parameters for the finite element space and neural networks that can be tuned.
-- [Main File](#main-file): The main file is the file that is actually run. 
+- [Example File - sin_cos.py](#example-file): The boundary conditions, forcing function $f$ and parameters are defined in this file.
+    - [Defining boundary values](#defining-boundary-values)
+    - [Defining the forcing function](#defining-the-forcing-function)
+    - [Defining bilinear parameters](#defining-bilinear-parameters)
+- [Input File - Input.yaml](#input-file): The input file is used to define the parameters required for the experiment.
+    - [experimentation](#experimentation)
+    - [geometry](#geometry)
+    - [fe](#fe)
+    - [pde](#pde)
+    - [model](#model)
+    - [logging](#logging)
+- [Main File - main_poisson2d_hard.py](#main-file): The main file is used to run the experiment.
+    - [Import relevant FastVPINNs methods](#import-relevant-fastvpinns-methods)
+    - [Reading the Input File](#reading-the-input-file)
+    - [Setting up a `Geometry_2D` object](#setting-up-a-geometry_2d-object)
+    - [Reading the boundary conditions and values](#reading-the-boundary-conditions-and-values)
+    - [Setting up the finite element space](#setting-up-the-finite-element-space)
+    - [Defining the hard boundary constraint ansatz](#defining-the-hard-boundary-constraint-ansatz)
+    - [Instantiating a model with hard boundary constraints](#instantiating-a-model-with-hard-boundary-constraints)
+- [Training the model](#training-the-model)
 
 The code in this example can be run using
 ```bash
@@ -223,6 +240,8 @@ Here, the ansatz we use is of the form $\tanh{(4\pi x)}\times\tanh{(4\pi(x-1))}\
 ```
 `DenseModel_Hard` is a model written for inverse problems with spatially varying parameter estimation. In this problem, we pass the loss function `pde_loss_poisson` from the `physics` file `poisson2d.py`.
 
+
+### Training the model
 We are now ready to train the model to approximate the solution of the PDE. 
 
 ```python
@@ -236,3 +255,25 @@ for epoch in range(num_epochs):
 ```
 
 [Back to contents](#contents)
+
+## Solution
+---
+<div style="display: flex; justify-content: space-around;">
+    <figure>
+        <img src="exact_solution.png" alt="Exact Solution">
+        <figcaption style="text-align: center;">Exact Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="predicted_solution.png" alt="Predicted Solution">
+        <figcaption style="text-align: center;">Predicted Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="error.png" alt="Error">
+        <figcaption style="text-align: center;">Error</figcaption>
+    </figure>
+</div>
+
+## References
+---
+
+1. [FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex Geometries.](https://arxiv.org/abs/2404.12063)

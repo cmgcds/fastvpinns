@@ -239,4 +239,44 @@ for epoch in range(num_epochs):
         ...
 ```
 
+## Solution
+---
+
+<div style="display: flex; justify-content: space-around;">
+    <figure>
+        <img src="exact_solution.png" alt="Exact Solution">
+        <figcaption style="text-align: center;">Exact Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="predicted_solution.png" alt="Predicted Solution">
+        <figcaption style="text-align: center;">Predicted Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="error.png" alt="Error">
+        <figcaption style="text-align: center;">Error</figcaption>
+    </figure>
+</div>
+
+<div style="display: flex; justify-content: space-around;">
+    <figure>
+        <img src="epsilon_exact.png" alt="Epsilon Exact">
+        <figcaption style="text-align: center;">Epsilon Exact</figcaption>
+    </figure>
+    <figure>
+        <img src="epsilon_predicted.png" alt="Epsilon Predicted">
+        <figcaption style="text-align: center;">Epsilon Predicted</figcaption>
+    </figure>
+    <figure>
+        <img src="epsilon_error.png" alt="Epsilon Error">
+        <figcaption style="text-align: center;">Epsilon Error</figcaption>
+    </figure>
+</div>
+
+[Back to contents](#contents)
+
+## References
+---
+
+1. [FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex Geometries.](https://arxiv.org/abs/2404.12063)
+
 [Back to contents](#contents)

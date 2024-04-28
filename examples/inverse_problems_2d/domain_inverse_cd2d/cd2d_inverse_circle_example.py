@@ -6,31 +6,7 @@ import numpy as np
 import tensorflow as tf
 
 
-def left_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    val = np.ones_like(x) * 0.0
-    return val
-
-
-def right_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    val = np.ones_like(x) * 0.0
-    return val
-
-
-def top_boundary(x, y):
-    """
-    This function will return the boundary value for given component of a boundary
-    """
-    val = np.ones_like(x) * 0.0
-    return val
-
-
-def bottom_boundary(x, y):
+def circle_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
@@ -63,7 +39,7 @@ def get_boundary_function_dict():
     """
     This function will return a dictionary of boundary functions
     """
-    return {1000: bottom_boundary, 1001: right_boundary, 1002: top_boundary, 1003: left_boundary}
+    return {1000: circle_boundary}
 
 
 def get_bound_cond_dict():

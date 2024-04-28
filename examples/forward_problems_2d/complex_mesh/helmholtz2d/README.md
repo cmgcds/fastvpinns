@@ -676,16 +676,20 @@ All the outputs will be saved in the output directory specified in the input fil
 ## Solution Plots
 ---
 
-#### Exact Solution
-![alt text](exact_solution.png)
-
-
-#### Predicted Solution
-![alt text](predicted_solution.png)
-
-
-#### Error Plot
-![Error](error.png)
+<div style="display: flex; justify-content: space-around;">
+    <figure>
+        <img src="exact_solution.png" alt="Exact Solution">
+        <figcaption style="text-align: center;">Exact Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="predicted_solution.png" alt="Predicted Solution">
+        <figcaption style="text-align: center;">Predicted Solution</figcaption>
+    </figure>
+    <figure>
+        <img src="error.png" alt="Error">
+        <figcaption style="text-align: center;">Error</figcaption>
+    </figure>
+</div>
 
 ## References
 ---

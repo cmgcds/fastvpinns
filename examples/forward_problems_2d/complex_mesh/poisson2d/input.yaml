@@ -29,7 +29,7 @@ geometry:
   external_mesh_params:  # Parameters for external mesh generation method.
     mesh_file_name: "../meshes/circle_quad.mesh"  # Path to the external mesh file (should be a .mesh file).
     boundary_refinement_level: 4  # Level of refinement for the boundary.
-    boundary_sampling_method: "lhs"  # Method for sampling the boundary. Can be "uniform" or "lhs".
+    boundary_sampling_method: "uniform"  # Method for sampling the boundary. Can be "uniform".
 
 fe:
   fe_order: 2 # Order of the finite element basis functions.
