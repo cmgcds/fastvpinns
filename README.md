@@ -2,11 +2,12 @@
 --- 
 [![Unit tests](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml)
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
+[![Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)
 ![Coverage](https://img.shields.io/badge/Coverage-92%25-brightgreen)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11-blue)
+![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10-blue)
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
@@ -22,7 +23,9 @@ STARS Lab, Department of Computational and Data Sciences, Indian Institute of Sc
 ## Installation
 ---
 
-To install the package, run the following command:
+The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details.
+
+You can simply install the package using pip as follows:
 
 ```bash
 pip install fastvpinns
@@ -74,4 +77,4 @@ Note : Supporting functions which define the actual solution and boundary condit
 This code is currently maintained by the [Authors](#Authors). We welcome contributions from the community. Please create a pull request with the changes you would like to make.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
