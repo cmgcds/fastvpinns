@@ -7,7 +7,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10-blue)
+![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11-blue)
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
@@ -23,7 +23,7 @@ STARS Lab, Department of Computational and Data Sciences, Indian Institute of Sc
 ## Installation
 ---
 
-The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details.
+The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest(refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details).
 
 You can simply install the package using pip as follows:
 
