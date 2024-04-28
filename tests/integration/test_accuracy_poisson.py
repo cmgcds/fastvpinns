@@ -395,7 +395,7 @@ def test_poisson_accuracy_activation_lr(poisson_test_data, activation, lr_type):
     assert l2_error < 8.2e-2 and l1_error < 8.2e-2
 
     if lr_type == "adaptive":
-        current_learning_rate = model.optimizer._decayed_lr('float32').numpy()
+        current_learning_rate = tf.keras.backend.get_value(model.optimizer.lr)
         assert current_learning_rate < 0.001
 
 
