@@ -1,13 +1,13 @@
-numpy>=1.21,<=1.22.4
+numpy>=1.21,<=1.23.5
 pandas<1.4.4
 matplotlib
-tensorflow>=2.9.1,<=2.12.0
+tensorflow>=2.9.1,<=2.13.0
 pytest==8.0.2
 meshio==5.3.4
 pyDOE==0.3.8
 tqdm==4.66.2
 scipy
-gmsh==4.10.4
+gmsh==4.11.0
 pyyaml
 # vtk
 rich==12.5.1
