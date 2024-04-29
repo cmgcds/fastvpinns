@@ -1,0 +1,45 @@
+fastvpinns.model package
+========================
+
+Submodules
+----------
+
+fastvpinns.model.model module
+-----------------------------
+
+.. automodule:: fastvpinns.model.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.model.model\_hard module
+-----------------------------------
+
+.. automodule:: fastvpinns.model.model_hard
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.model.model\_inverse module
+--------------------------------------
+
+.. automodule:: fastvpinns.model.model_inverse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.model.model\_inverse\_domain module
+----------------------------------------------
+
+.. automodule:: fastvpinns.model.model_inverse_domain
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: fastvpinns.model
+   :members:
+   :undoc-members:
+   :show-inheritance:

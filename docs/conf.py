@@ -26,7 +26,8 @@ release = '1.0.0'
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../fastvpinns/'))
+sys.path.insert(0, os.path.abspath('../fastvpinns'))
+sys.path.insert(0, os.path.abspath('../../fastvpinns'))
 import fastvpinns
 
 # -- General configuration ---------------------------------------------------
@@ -57,6 +58,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
+# autosummary_generate = True  # Turn on sphinx.ext.autosummary
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -68,3 +70,18 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# The master toctree document.
+master_doc = 'index'
+
+source_suffix = '.rst'
+
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = "images/Fastvpinns_logo.png"
+html_theme_options = {
+    'logo_only': True,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+}

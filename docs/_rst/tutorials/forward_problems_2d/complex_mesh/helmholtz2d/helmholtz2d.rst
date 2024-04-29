@@ -1,5 +1,5 @@
 Helmholtz 2D Example on Circular Domain
-=====================================
+=======================================
 
 
 This example demonstrates how to solve a Poisson equation in 2D on a

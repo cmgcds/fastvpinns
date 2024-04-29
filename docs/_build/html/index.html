@@ -36,8 +36,9 @@
 
           
           
-          <a href="#" class="icon icon-home">
-            fastvpinns
+          <a href="#">
+            
+              <img src="_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,13 +48,17 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="_rst/_installation.html">Installation</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="_rst/_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_rst/fastvpinns.html">fastvpinns</a></li>
 </ul>
 
         </div>
@@ -90,17 +95,15 @@
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 <img alt="Python Versions" src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11-blue" />
 <p>A robust tensor-based deep learning framework for solving PDE’s using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework supports handling complex geometries and uses tensor-based loss computation to accelerate the training of conventional hp-VPINNs.
-The framework is based on the work by <a class="reference external" href="https://arxiv.org/abs/2404.12063">FastVPINNs Paper</a>.
-This framework is an highly optimised version of the the initial implementation of hp-VPINNs by <a class="reference external" href="https://github.com/ehsankharazmi/hp-VPINNs">kharazmi</a>. Ref <a class="reference external" href="https://arxiv.org/abs/2003.05385">hp-VPINNs Paper</a>.</p>
+The framework is based on the work by <a class="reference external" href="https://arxiv.org/abs/2404.12063">FastVPINNs Paper</a>. The framework is written on <cite>Tensorflow 2.0 &lt;https://www.tensorflow.org/&gt;</cite> and has support for handling external meshes.</p>
+<p><em>Note: This framework is an highly optimised version of the the initial implementation of hp-VPINNs by</em> <a class="reference external" href="https://github.com/ehsankharazmi/hp-VPINNs">kharazmi</a>. Ref <a class="reference external" href="https://arxiv.org/abs/2003.05385">hp-VPINNs(arXiv)</a>.</p>
 <section id="variational-physics-informed-neural-network">
 <h2>Variational Physics-informed neural network<a class="headerlink" href="#variational-physics-informed-neural-network" title="Link to this heading"></a></h2>
 <p>Variational Physics-Informed neural networks are special form of physics informed neural networks, which uses variational form of the loss function to train the NN. A special form of hp-Variational PINNs which uses h- &amp; p- refinement to enhance the ability of the NN to capture higher frequency solutions.
 For more details on the theory and implementation of hp-VPINNs, please refer to the <a class="reference external" href="https://arxiv.org/abs/2404.12063">FastVPINNs Paper</a> and <a class="reference external" href="https://arxiv.org/abs/2003.05385">hp-VPINNs Paper</a>.</p>
 <img alt="VPINNs Image" src="_images/vpinns.png" />
-<section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h3>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="_rst/_installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="_rst/_installation.html#setting-up-an-virtual-environment">Setting up an Virtual Environment</a></li>
@@ -110,210 +113,43 @@ For more details on the theory and implementation of hp-VPINNs, please refer to 
 </li>
 </ul>
 </div>
-</section>
-<section id="tutorials">
-<h3>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading"></a></h3>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="_rst/_tutorial.html">  Tutorials</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="_rst/_tutorial.html#forward-problems">Forward Problems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-on-uniform-mesh">Problems on Uniform Mesh</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html"> Poisson Equation on unit square</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#contents">Contents</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#example-file">Example File</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#input-file">Input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#main-file">Main file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#solution">## Solution</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/poisson_2d/poisson2d_uniform.html#references">## References</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html"> Helmholtz Equation on unit square</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#contents">Contents</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#example-file">Example File</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#input-file">Input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#main-file">Main file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#solution">Solution</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/uniform_mesh/helmholtz_2d/helmholtz2d_uniform.html#references">References</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-on-complex-geometry">Problems on Complex geometry</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html"> Poisson Equation on unit circle</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#computational-domain">Computational Domain</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#experimentation">Experimentation</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#geometry">Geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#finite-element-space">Finite Element Space</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#pde">pde</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#model">model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#logging">logging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#importing-the-required-libraries">Importing the required libraries</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#imports-from-fastvpinns">imports from fastvpinns</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#reading-the-input-file">Reading the input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#reading-all-input-parameters">Reading all input parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#set-up-the-geometry">Set up the geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#setup-fespace">Setup fespace</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#setup-datahandler">Setup datahandler</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#setup-model">Setup model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#pre-train-setup">Pre-train setup</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#training">Training</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/poisson2d/poisson2d.html#post-training">Post Training</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html"> Helmholtz Equation on unit circle</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#computational-domain">Computational Domain</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#experimentation">Experimentation</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#geometry">Geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#finite-element-space">Finite Element Space</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#pde">pde</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#model">model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#logging">logging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#importing-the-required-libraries">Importing the required libraries</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#imports-from-fastvpinns">imports from fastvpinns</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#reading-the-input-file">Reading the input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#reading-all-input-parameters">Reading all input parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#set-up-the-geometry">Set up the geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#setup-fespace">Setup fespace</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#setup-datahandler">Setup datahandler</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#setup-model">Setup model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#pre-train-setup">Pre-train setup</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#training">Training</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/helmholtz2d/helmholtz2d.html#post-training">Post Training</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html"> Convection-Diffusion Equation on spur-gear geometry</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#computational-domain">Computational Domain</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#experimentation">Experimentation</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#geometry">Geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#finite-element-space">Finite Element Space</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#pde">pde</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#model">model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#logging">logging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#importing-the-required-libraries">Importing the required libraries</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#imports-from-fastvpinns">imports from fastvpinns</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#reading-the-input-file">Reading the input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#reading-all-input-parameters">Reading all input parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#set-up-the-geometry">Set up the geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#setup-fespace">Setup fespace</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#setup-datahandler">Setup datahandler</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#setup-model">Setup model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#pre-train-setup">Pre-train setup</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#training">Training</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d_gear/cd2d_gear.html#post-training">Post Training</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html"> Convection-Diffusion Equation on unit circle</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#computational-domain">Computational Domain</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#experimentation">Experimentation</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#geometry">Geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#finite-element-space">Finite Element Space</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#pde">pde</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#model">model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#logging">logging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#importing-the-required-libraries">Importing the required libraries</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#imports-from-fastvpinns">imports from fastvpinns</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#reading-the-input-file">Reading the input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#reading-all-input-parameters">Reading all input parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#set-up-the-geometry">Set up the geometry</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#setup-fespace">Setup fespace</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#setup-datahandler">Setup datahandler</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#setup-model">Setup model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#pre-train-setup">Pre-train setup</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#training">Training</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/complex_mesh/cd2d/cd2d.html#post-training">Post Training</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-with-hard-boundary-constraints">Problems with Hard boundary constraints</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html"> Poisson Equation with hard boundary constraints on unit square</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#contents">Contents</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#example-file">Example File</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#input-file">Input file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#main-file">Main file</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#solution">Solution</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html#references">References</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-on-uniform-mesh">Problems on Uniform Mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-on-complex-geometry">Problems on Complex geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_rst/_tutorial.html#problems-with-hard-boundary-constraints">Problems with Hard boundary constraints</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="_rst/_tutorial.html#inverse-problems">Inverse Problems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html"> Inverse problems with constant inverse parameter</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#contents">Contents</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#example-file">Example File</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#defining-boundary-conditions">Defining boundary conditions</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#defining-the-forcing-function">Defining the forcing function</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#defining-bilinear-parameters">Defining bilinear parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#defining-the-target-parameter-values-for-testing">Defining the target parameter values for testing</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#input-file">Input file</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#geometry"><code class="docutils literal notranslate"><span class="pre">geometry</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#fe"><code class="docutils literal notranslate"><span class="pre">fe</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#pde"><code class="docutils literal notranslate"><span class="pre">pde</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#logging"><code class="docutils literal notranslate"><span class="pre">logging</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#inverse"><code class="docutils literal notranslate"><span class="pre">inverse</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#main-file">Main file</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#import-relevant-fastvpinns-methods">Import relevant FastVPINNs methods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#reading-the-input-file">Reading the Input File</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#setting-up-a-geometry-2d-object">Setting up a <code class="docutils literal notranslate"><span class="pre">Geometry_2D</span></code> object</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#reading-the-boundary-conditions-and-values">Reading the boundary conditions and values</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#setting-up-the-finite-element-space">Setting up the finite element space</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#instantiating-an-inverse-problem-model">Instantiating an inverse problem model</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#solution">## Solution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html#references">## References</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html"> Inverse problems with spatially varying inverse parameter</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#contents">Contents</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#example-file">Example File</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#defining-boundary-values">Defining boundary values</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#defining-boundary-conditions">Defining boundary conditions</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#defining-the-forcing-function">Defining the forcing function</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#defining-bilinear-parameters">Defining bilinear parameters</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#defining-the-target-parameter-values-for-testing">Defining the target parameter values for testing</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#input-file">Input file</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#geometry"><code class="docutils literal notranslate"><span class="pre">geometry</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#fe"><code class="docutils literal notranslate"><span class="pre">fe</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#pde"><code class="docutils literal notranslate"><span class="pre">pde</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#logging"><code class="docutils literal notranslate"><span class="pre">logging</span></code></a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#inverse"><code class="docutils literal notranslate"><span class="pre">inverse</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#main-file">Main file</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#import-relevant-fastvpinns-methods">Import relevant FastVPINNs methods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#reading-the-input-file">Reading the Input File</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#setting-up-a-geometry-2d-object">Setting up a <code class="docutils literal notranslate"><span class="pre">Geometry_2D</span></code> object</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#reading-the-boundary-conditions-and-values">Reading the boundary conditions and values</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#setting-up-the-finite-element-space">Setting up the finite element space</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#solution">Solution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html#references">References</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.html"> Inverse problems with constant inverse parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_rst/tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html"> Inverse problems with spatially varying inverse parameter</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-</section>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_rst/fastvpinns.html">fastvpinns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#fe-2d">FE_2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_rst/fastvpinns.html#utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </section>
 </section>
 <section id="indices-and-tables">
-<span id="module-fastvpinns"></span><h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.FE_2D.basis_function_2d module &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="fastvpinns.FE_2D.basis_2d_QN_Jacobi module" href="fe2d_basis_function.html" />
+    <link rel="prev" title="FastVPINNs Module Documentation" href="../../fastvpinns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../fastvpinns.html">fastvpinns</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../fastvpinns.html#fe-2d">FE_2D</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../fastvpinns.html#finite-element-test-functions">Finite Element Test Functions</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">   Jacobi test functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fe2d_basis_function.html">   Basis function 2d (Abstract)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#quadrature-functions">Quadrature Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#finite-element-transformations">Finite Element Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#finite-element-setup">Finite Element Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../fastvpinns.html">FastVPINNs Module Documentation</a></li>
+      <li class="breadcrumb-item active">fastvpinns.FE_2D.basis_function_2d module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/_rst/library/fe2d/fe2d_jacobi.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fastvpinns.FE_2D.basis_function_2d">
+<span id="fastvpinns-fe-2d-basis-function-2d-module"></span><h1>fastvpinns.FE_2D.basis_function_2d module<a class="headerlink" href="#module-fastvpinns.FE_2D.basis_function_2d" title="Link to this heading"></a></h1>
+<p>file: basis_function_2d.py
+description: This file contains a wrapper class for all the finite element basis functions</p>
+<blockquote>
+<div><p>used in the FE2D code. The 2D basis functions have methods to return the value
+of the basis function and its derivatives at the reference point (xi, eta).</p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 30/Aug/2023 - First version
+known_issues: None
+dependencies: None specified.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.FE_2D.basis_function_2d.</span></span><span class="sig-name descname"><span class="pre">BasisFunction2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_shape_functions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a basis function in 2D.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num_shape_functions</strong> (<em>int</em>) – The number of shape functions.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.value" title="Link to this definition"></a></dt>
+<dd><p>Evaluates the basis function at the given xi and eta coordinates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradx">
+<span class="sig-name descname"><span class="pre">gradx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradx" title="Link to this definition"></a></dt>
+<dd><p>Computes the partial derivative of the basis function with respect to xi.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.grady">
+<span class="sig-name descname"><span class="pre">grady</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.grady"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.grady" title="Link to this definition"></a></dt>
+<dd><p>Computes the partial derivative of the basis function with respect to eta.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradxx">
+<span class="sig-name descname"><span class="pre">gradxx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradxx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradxx" title="Link to this definition"></a></dt>
+<dd><p>Computes the second partial derivative of the basis function with respect to xi.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradxy">
+<span class="sig-name descname"><span class="pre">gradxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradxy" title="Link to this definition"></a></dt>
+<dd><p>Computes the mixed partial derivative of the basis function with respect to xi and eta.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradyy">
+<span class="sig-name descname"><span class="pre">gradyy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradyy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D.gradyy" title="Link to this definition"></a></dt>
+<dd><p>Computes the second partial derivative of the basis function with respect to eta.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gradx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Computes the partial derivative of the basis function with respect to xi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The partial derivative of the basis function with respect to xi.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gradxx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradxx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Computes the second partial derivative of the basis function with respect to xi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The second partial derivative of the basis function with respect to xi.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gradxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Computes the mixed partial derivative of the basis function with respect to xi and eta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mixed partial derivative of the basis function with respect to xi and eta.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grady</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.grady"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Computes the partial derivative of the basis function with respect to eta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The partial derivative of the basis function with respect to eta.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gradyy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.gradyy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Computes the second partial derivative of the basis function with respect to eta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The second partial derivative of the basis function with respect to eta.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_function_2d.html#BasisFunction2D.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Evaluates the basis function at the given xi and eta coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the basis function at the given coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../fastvpinns.html" class="btn btn-neutral float-left" title="FastVPINNs Module Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fe2d_basis_function.html" class="btn btn-neutral float-right" title="fastvpinns.FE_2D.basis_2d_QN_Jacobi module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

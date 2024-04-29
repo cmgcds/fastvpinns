@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.FE_2D.basis_2d_QN_Jacobi module &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="fastvpinns.FE_2D.quadratureformulas_quad2d module" href="fe2d_quadrature.html" />
+    <link rel="prev" title="fastvpinns.FE_2D.basis_function_2d module" href="fe2d_jacobi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../fastvpinns.html">fastvpinns</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../fastvpinns.html#fe-2d">FE_2D</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../fastvpinns.html#finite-element-test-functions">Finite Element Test Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="fe2d_jacobi.html">   Jacobi test functions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">   Basis function 2d (Abstract)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#quadrature-functions">Quadrature Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#finite-element-transformations">Finite Element Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastvpinns.html#finite-element-setup">Finite Element Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../fastvpinns.html">FastVPINNs Module Documentation</a></li>
+      <li class="breadcrumb-item active">fastvpinns.FE_2D.basis_2d_QN_Jacobi module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/_rst/library/fe2d/fe2d_basis_function.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fastvpinns.FE_2D.basis_2d_QN_Jacobi">
+<span id="fastvpinns-fe-2d-basis-2d-qn-jacobi-module"></span><h1>fastvpinns.FE_2D.basis_2d_QN_Jacobi module<a class="headerlink" href="#module-fastvpinns.FE_2D.basis_2d_QN_Jacobi" title="Link to this heading"></a></h1>
+<p>file: basis_2d_QN_Jacobi.py
+description: This file contains the class Basis2DQNJacobi which is used</p>
+<blockquote>
+<div><p>to define the basis functions for a Jacobi Polynomial.
+Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
+(hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)
+available at <a class="reference external" href="https://github.com/ehsankharazmi/hp-VPINNs/">https://github.com/ehsankharazmi/hp-VPINNs/</a></p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+dependencies: Requires scipy and numpy.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.FE_2D.basis_2d_QN_Jacobi.</span></span><span class="sig-name descname"><span class="pre">Basis2DQNJacobi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_shape_functions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="fe2d_jacobi.html#fastvpinns.FE_2D.basis_function_2d.BasisFunction2D" title="fastvpinns.FE_2D.basis_function_2d.BasisFunction2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasisFunction2D</span></code></a></p>
+<p>This class defines the basis functions for a 2D Q1 element.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.ddtest_fcn">
+<span class="sig-name descname"><span class="pre">ddtest_fcn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.ddtest_fcn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.ddtest_fcn" title="Link to this definition"></a></dt>
+<dd><p>Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_test</strong> (<em>int</em>) – Number of test functions.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the test functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the x-derivatives of the test functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.djacobi">
+<span class="sig-name descname"><span class="pre">djacobi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.djacobi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.djacobi" title="Link to this definition"></a></dt>
+<dd><p>Evaluate the k-th derivative of the Jacobi polynomial of degree n with parameters a and b at the given points x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Degree of the Jacobi polynomial.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – First parameter of the Jacobi polynomial.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Second parameter of the Jacobi polynomial.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – Points at which to evaluate the Jacobi polynomial.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – Order of the derivative.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the k-th derivative of the Jacobi polynomial at the given points x.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the derivative order is not 1 or 2.</p></li>
+<li><p><strong>ImportError</strong> – If the required module ‘jacobi’ is not found.</p></li>
+<li><p><strong>Exception</strong> – If an unknown error occurs during the computation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.dtest_fcn">
+<span class="sig-name descname"><span class="pre">dtest_fcn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.dtest_fcn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.dtest_fcn" title="Link to this definition"></a></dt>
+<dd><p>Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_test</strong> (<em>int</em>) – Number of test functions.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the test functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the x-derivatives of the test functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradx">
+<span class="sig-name descname"><span class="pre">gradx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.gradx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradx" title="Link to this definition"></a></dt>
+<dd><p>This method returns the x-derivatives of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the x-derivatives of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradxx">
+<span class="sig-name descname"><span class="pre">gradxx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.gradxx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradxx" title="Link to this definition"></a></dt>
+<dd><p>This method returns the xx-derivatives of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the xx-derivatives of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradxy">
+<span class="sig-name descname"><span class="pre">gradxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.gradxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradxy" title="Link to this definition"></a></dt>
+<dd><p>This method returns the xy-derivatives of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the xy-derivatives of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.grady">
+<span class="sig-name descname"><span class="pre">grady</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.grady"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.grady" title="Link to this definition"></a></dt>
+<dd><p>This method returns the y-derivatives of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the y-derivatives of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradyy">
+<span class="sig-name descname"><span class="pre">gradyy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.gradyy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.gradyy" title="Link to this definition"></a></dt>
+<dd><p>This method returns the yy-derivatives of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the yy-derivatives of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.jacobi_wrapper">
+<span class="sig-name descname"><span class="pre">jacobi_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.jacobi_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.jacobi_wrapper" title="Link to this definition"></a></dt>
+<dd><p>Evaluate the Jacobi polynomial of degree n with parameters a and b at the given points x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Degree of the Jacobi polynomial.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – First parameter of the Jacobi polynomial.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Second parameter of the Jacobi polynomial.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – Points at which to evaluate the Jacobi polynomial.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the Jacobi polynomial at the given points x.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.test_fcnx">
+<span class="sig-name descname"><span class="pre">test_fcnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.test_fcnx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.test_fcnx" title="Link to this definition"></a></dt>
+<dd><p>Compute the x-component of the test functions for a given number of test functions and x-coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_test</strong> (<em>int</em>) – Number of test functions.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the test functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the x-component of the test functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.test_fcny">
+<span class="sig-name descname"><span class="pre">test_fcny</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.test_fcny"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.test_fcny" title="Link to this definition"></a></dt>
+<dd><p>Compute the y-component of the test functions for a given number of test functions and y-coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_test</strong> (<em>int</em>) – Number of test functions.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the test functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the y-component of the test functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/FE_2D/basis_2d_QN_Jacobi.html#Basis2DQNJacobi.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.basis_2d_QN_Jacobi.Basis2DQNJacobi.value" title="Link to this definition"></a></dt>
+<dd><p>This method returns the values of the basis functions at the given (xi, eta) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>array_like</em>) – x-coordinates at which to evaluate the basis functions.</p></li>
+<li><p><strong>eta</strong> (<em>array_like</em>) – y-coordinates at which to evaluate the basis functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values of the basis functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fe2d_jacobi.html" class="btn btn-neutral float-left" title="fastvpinns.FE_2D.basis_function_2d module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fe2d_quadrature.html" class="btn btn-neutral float-right" title="fastvpinns.FE_2D.quadratureformulas_quad2d module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

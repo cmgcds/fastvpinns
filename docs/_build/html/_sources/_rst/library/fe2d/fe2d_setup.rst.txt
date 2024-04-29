@@ -1,0 +1,24 @@
+fastvpinns.FE\_2D.FE2D\_Cell module
+-----------------------------------
+
+.. automodule:: fastvpinns.FE_2D.FE2D_Cell
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+fastvpinns.FE\_2D.fe2d\_setup\_main module
+------------------------------------------
+
+.. automodule:: fastvpinns.FE_2D.fe2d_setup_main
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.FE\_2D.fespace2d module
+----------------------------------
+
+.. automodule:: fastvpinns.FE_2D.fespace2d
+   :members:
+   :undoc-members:
+   :show-inheritance:

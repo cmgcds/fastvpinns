@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.data.datahandler2d &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fastvpinns
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_tutorial.html">  Tutorials</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fastvpinns.data.datahandler2d</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fastvpinns.data.datahandler2d</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This class is to handle data for 2D problems, convert them into tensors using custom tf functions</span>
+<span class="c1"># and make them available for the model to train</span>
+<span class="c1"># @Author : Thivin Anandh D</span>
+<span class="c1"># @Date : 22/Sep/2023</span>
+<span class="c1"># @History : 22/Sep/2023 - Initial implementation with basic data handling</span>
+
+<span class="kn">from</span> <span class="nn">..FE_2D.fespace2d</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..Geometry.geometry_2d</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+
+<div class="viewcode-block" id="DataHandler2D">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D">[docs]</a>
+<span class="k">class</span> <span class="nc">DataHandler2D</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is to handle data for 2D problems, convert them into tensors using custom tf functions.</span>
+<span class="sd">    It is responsible for all type conversions and data handling.</span>
+
+<span class="sd">    .. note:: All inputs to these functions are generally numpy arrays with dtype np.float64.</span>
+<span class="sd">              So we can either maintain the same dtype or convert them to tf.float32 ( for faster computation ).</span>
+
+<span class="sd">    :param fespace: The FESpace2D object.</span>
+<span class="sd">    :type fespace: FESpace2D</span>
+<span class="sd">    :param domain: The Domain2D object.</span>
+<span class="sd">    :type domain: Domain2D</span>
+<span class="sd">    :param shape_val_mat_list: List of shape function values for each cell.</span>
+<span class="sd">    :type shape_val_mat_list: list</span>
+<span class="sd">    :param grad_x_mat_list: List of shape function derivatives with respect to x for each cell.</span>
+<span class="sd">    :type grad_x_mat_list: list</span>
+<span class="sd">    :param grad_y_mat_list: List of shape function derivatives with respect to y for each cell.</span>
+<span class="sd">    :type grad_y_mat_list: list</span>
+<span class="sd">    :param x_pde_list: List of actual coordinates of the quadrature points for each cell.</span>
+<span class="sd">    :type x_pde_list: list</span>
+<span class="sd">    :param forcing_function_list: List of forcing function values for each cell.</span>
+<span class="sd">    :type forcing_function_list: list</span>
+<span class="sd">    :param dtype: The tensorflow dtype to be used for all the tensors.</span>
+<span class="sd">    :type dtype: tf.DType</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fespace</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the DataHandler2D class</span>
+
+<span class="sd">        :param fespace: The FESpace2D object.</span>
+<span class="sd">        :type fespace: FESpace2D</span>
+<span class="sd">        :param domain: The Domain2D object.</span>
+<span class="sd">        :type domain: Domain2D</span>
+<span class="sd">        :param shape_val_mat_list: List of shape function values for each cell.</span>
+<span class="sd">        :type shape_val_mat_list: list</span>
+<span class="sd">        :param grad_x_mat_list: List of shape function derivatives with respect to x for each cell.</span>
+<span class="sd">        :type grad_x_mat_list: list</span>
+<span class="sd">        :param grad_y_mat_list: List of shape function derivatives with respect to y for each cell.</span>
+<span class="sd">        :type grad_y_mat_list: list</span>
+<span class="sd">        :param x_pde_list: List of actual coordinates of the quadrature points for each cell.</span>
+<span class="sd">        :type x_pde_list: list</span>
+<span class="sd">        :param forcing_function_list: List of forcing function values for each cell.</span>
+<span class="sd">        :type forcing_function_list: list</span>
+<span class="sd">        :param dtype: The tensorflow dtype to be used for all the tensors.</span>
+<span class="sd">        :type dtype: tf.DType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span> <span class="o">=</span> <span class="n">fespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_val_mat_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_x_mat_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_y_mat_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_pde_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forcing_function_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+
+        <span class="c1"># check if the given dtype is a valid tensorflow dtype</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">DType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The given dtype is not a valid tensorflow dtype&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cell_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">n_cells</span><span class="p">):</span>
+            <span class="n">shape_val_mat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_shape_function_val</span><span class="p">(</span><span class="n">cell_index</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+            <span class="n">grad_x_mat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_shape_function_grad_x</span><span class="p">(</span><span class="n">cell_index</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+            <span class="n">grad_y_mat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_shape_function_grad_y</span><span class="p">(</span><span class="n">cell_index</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+            <span class="n">x_pde</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_quadrature_actual_coordinates</span><span class="p">(</span><span class="n">cell_index</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+            <span class="n">forcing_function</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_forcing_function_values</span><span class="p">(</span><span class="n">cell_index</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shape_val_mat_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape_val_mat</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad_x_mat_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad_x_mat</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grad_y_mat_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad_y_mat</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_pde_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_pde</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">forcing_function_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forcing_function</span><span class="p">)</span>
+
+        <span class="c1"># now convert all the shapes into 3D tensors for easy multiplication</span>
+        <span class="c1"># input tensor - x_pde_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_pde_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_pde_list</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forcing_function_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forcing_function_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_val_mat_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_val_mat_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_x_mat_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grad_x_mat_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_y_mat_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grad_y_mat_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># test points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_points</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DataHandler2D.get_dirichlet_input">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D.get_dirichlet_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_dirichlet_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function will return the input for the Dirichlet boundary data</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">            - input_dirichlet (tf.Tensor): The input for the Dirichlet boundary data</span>
+<span class="sd">            - actual_dirichlet (tf.Tensor): The actual Dirichlet boundary data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_dirichlet</span><span class="p">,</span> <span class="n">actual_dirichlet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">generate_dirichlet_boundary_data</span><span class="p">()</span>
+
+        <span class="c1"># convert to tensors</span>
+        <span class="n">input_dirichlet</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">input_dirichlet</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">actual_dirichlet</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">actual_dirichlet</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">actual_dirichlet</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">actual_dirichlet</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">input_dirichlet</span><span class="p">,</span> <span class="n">actual_dirichlet</span></div>
+
+
+<div class="viewcode-block" id="DataHandler2D.get_test_points">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D.get_test_points">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_test_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the test points for the given domain.</span>
+
+<span class="sd">        :return: The test points for the given domain.</span>
+<span class="sd">        :rtype: tf.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">get_test_points</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_points</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_points</span></div>
+
+
+<div class="viewcode-block" id="DataHandler2D.get_bilinear_params_dict_as_tensors">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D.get_bilinear_params_dict_as_tensors">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_bilinear_params_dict_as_tensors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accepts a function from example file and converts all the values into tensors of the given dtype</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - function (function): The function from the example file which returns the bilinear parameters dictionary</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - bilinear_params_dict (dict): The bilinear parameters dictionary with all the values converted to tensors</span>
+
+<span class="sd">        :param function: The function from the example file which returns the bilinear parameters dictionary</span>
+<span class="sd">        :type function: function</span>
+<span class="sd">        :return: The bilinear parameters dictionary with all the values converted to tensors</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get the dictionary of bilinear parameters</span>
+        <span class="n">bilinear_params_dict</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span>
+
+        <span class="c1"># loop over all keys and convert the values to tensors</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bilinear_params_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">bilinear_params_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">bilinear_params_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bilinear_params_dict</span></div>
+
+
+    <span class="c1"># to be used only in inverse problems</span>
+<div class="viewcode-block" id="DataHandler2D.get_sensor_data">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D.get_sensor_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_sensor_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exact_sol</span><span class="p">,</span> <span class="n">num_sensor_points</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accepts a function from example file and converts all the values into tensors of the given dtype</span>
+
+<span class="sd">        :param exact_sol: The function from the example file which returns the exact solution</span>
+<span class="sd">        :type exact_sol: function</span>
+<span class="sd">        :param num_sensor_points: The number of sensor points to be generated</span>
+<span class="sd">        :type num_sensor_points: int</span>
+<span class="sd">        :param mesh_type: The type of mesh to be used for sensor data generation</span>
+<span class="sd">        :type mesh_type: str</span>
+<span class="sd">        :param file_name: The name of the file to be used for external mesh generation, defaults to None</span>
+<span class="sd">        :type file_name: str, optional</span>
+<span class="sd">        :return: The sensor points and sensor values as tensors</span>
+<span class="sd">        :rtype: tuple[tf.Tensor, tf.Tensor]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mesh_type = </span><span class="si">{</span><span class="n">mesh_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mesh_type</span> <span class="o">==</span> <span class="s2">&quot;internal&quot;</span><span class="p">:</span>
+            <span class="c1"># Call the method to get the sensor data</span>
+            <span class="n">points</span><span class="p">,</span> <span class="n">sensor_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_sensor_data</span><span class="p">(</span><span class="n">exact_sol</span><span class="p">,</span> <span class="n">num_sensor_points</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mesh_type</span> <span class="o">==</span> <span class="s2">&quot;external&quot;</span><span class="p">:</span>
+            <span class="c1"># Call the method to get the sensor data</span>
+            <span class="n">points</span><span class="p">,</span> <span class="n">sensor_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fespace</span><span class="o">.</span><span class="n">get_sensor_data_external</span><span class="p">(</span>
+                <span class="n">exact_sol</span><span class="p">,</span> <span class="n">num_sensor_points</span><span class="p">,</span> <span class="n">file_name</span>
+            <span class="p">)</span>
+        <span class="c1"># convert the points and sensor values into tensors</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">sensor_values</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">sensor_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">sensor_values</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">sensor_values</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">points</span><span class="p">,</span> <span class="n">sensor_values</span></div>
+
+
+    <span class="c1"># get inverse param dict as tensors</span>
+<div class="viewcode-block" id="DataHandler2D.get_inverse_params">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.data.html#fastvpinns.data.datahandler2d.DataHandler2D.get_inverse_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_inverse_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inverse_params_dict_function</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accepts a function from example file and converts all the values into tensors of the given dtype</span>
+
+<span class="sd">        :param inverse_params_dict_function: The function from the example file which returns the inverse parameters dictionary</span>
+<span class="sd">        :type inverse_params_dict_function: function</span>
+<span class="sd">        :return: The inverse parameters dictionary with all the values converted to tensors</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># loop over all keys and convert the values to tensors</span>
+
+        <span class="n">inverse_params_dict</span> <span class="o">=</span> <span class="n">inverse_params_dict_function</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">inverse_params_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">inverse_params_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">inverse_params_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inverse_params_dict</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.FE_2D.basis_2d_QN_Legendre &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fastvpinns
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_tutorial.html">  Tutorials</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fastvpinns.FE_2D.basis_2d_QN_Legendre</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fastvpinns.FE_2D.basis_2d_QN_Legendre</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">file: basis_2d_QN_Legendre.py</span>
+<span class="sd">description: This file contains the class Basis2DQNLegendre which is used </span>
+<span class="sd">             to define the basis functions for a Legendre Polynomial.</span>
+<span class="sd">             Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al</span>
+<span class="sd">             (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)</span>
+<span class="sd">             available at https://github.com/ehsankharazmi/hp-VPINNs/</span>
+<span class="sd">authors: Thivin Anandh D</span>
+<span class="sd">changelog: 30/Aug/2023 - Initial version</span>
+<span class="sd">known_issues: None</span>
+<span class="sd">dependencies: Requires scipy and numpy.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># import the legendre polynomials</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">jacobi</span>
+
+<span class="kn">from</span> <span class="nn">.basis_function_2d</span> <span class="kn">import</span> <span class="n">BasisFunction2D</span>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre">[docs]</a>
+<span class="k">class</span> <span class="nc">Basis2DQNLegendre</span><span class="p">(</span><span class="n">BasisFunction2D</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class defines the basis functions for a 2D Q1 element.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_shape_functions</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">num_shape_functions</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Basis2DQNLegendre.jacobi_wrapper">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.jacobi_wrapper">[docs]</a>
+    <span class="k">def</span> <span class="nf">jacobi_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the Jacobi polynomial of degree n with parameters a and b at the given points x.</span>
+
+<span class="sd">        :param n: Degree of the Jacobi polynomial.</span>
+<span class="sd">        :type n: int</span>
+<span class="sd">        :param a: First parameter of the Jacobi polynomial.</span>
+<span class="sd">        :type a: float</span>
+<span class="sd">        :param b: Second parameter of the Jacobi polynomial.</span>
+<span class="sd">        :type b: float</span>
+<span class="sd">        :param x: Points at which to evaluate the Jacobi polynomial.</span>
+<span class="sd">        :type x: array_like</span>
+
+<span class="sd">        :return: Values of the Jacobi polynomial at the given points x.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">jacobi</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+    <span class="c1">## Helper Function</span>
+<div class="viewcode-block" id="Basis2DQNLegendre.test_fcnx">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.test_fcnx">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_fcnx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_test</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the x-component of the test functions for a given number of test functions and x-coordinates.</span>
+
+<span class="sd">        :param n_test: Number of test functions.</span>
+<span class="sd">        :type n_test: int</span>
+<span class="sd">        :param x: x-coordinates at which to evaluate the test functions.</span>
+<span class="sd">        :type x: array_like</span>
+
+<span class="sd">        :return: Values of the x-component of the test functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_total</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_test</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_total</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.test_fcny">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.test_fcny">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_fcny</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_test</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the y-component of the test functions for a given number of test functions and y-coordinates.</span>
+
+<span class="sd">        :param n_test: Number of test functions.</span>
+<span class="sd">        :type n_test: int</span>
+<span class="sd">        :param y: y-coordinates at which to evaluate the test functions.</span>
+<span class="sd">        :type y: array_like</span>
+
+<span class="sd">        :return: Values of the y-component of the test functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_total</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_test</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_total</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.dtest_fcn">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.dtest_fcn">[docs]</a>
+    <span class="k">def</span> <span class="nf">dtest_fcn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_test</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the x-derivatives of the test functions for a given number of test functions and x-coordinates.</span>
+
+<span class="sd">        :param n_test: Number of test functions.</span>
+<span class="sd">        :type n_test: int</span>
+<span class="sd">        :param x: x-coordinates at which to evaluate the test functions.</span>
+<span class="sd">        :type x: array_like</span>
+<span class="sd">        :return: Values of the first and second x-derivatives of the test functions.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d1test_total</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">d2test_total</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_test</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">d1test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d2test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d1test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d1test</span><span class="p">)</span>
+                <span class="n">d2test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d2test</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">d1test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d2test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d1test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d1test</span><span class="p">)</span>
+                <span class="n">d2test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d2test</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">d1test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d2test</span> <span class="o">=</span> <span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobi_wrapper</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">d1test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d1test</span><span class="p">)</span>
+                <span class="n">d2test_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d2test</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d1test_total</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d2test_total</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.value">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.value">[docs]</a>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the values of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+<span class="sd">        :return: Values of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">test_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcnx</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="n">test_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcny</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">test_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">test_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.gradx">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.gradx">[docs]</a>
+    <span class="k">def</span> <span class="nf">gradx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the x-derivatives of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+
+<span class="sd">        :return: Values of the x-derivatives of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">grad_test_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">test_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcny</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">grad_test_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">test_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.grady">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.grady">[docs]</a>
+    <span class="k">def</span> <span class="nf">grady</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the y-derivatives of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+<span class="sd">        :return: Values of the y-derivatives of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">test_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcnx</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="n">grad_test_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">test_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">grad_test_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.gradxx">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.gradxx">[docs]</a>
+    <span class="k">def</span> <span class="nf">gradxx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the xx-derivatives of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+<span class="sd">        :return: Values of the xx-derivatives of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">grad_grad_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">test_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcny</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">grad_grad_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">test_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.gradxy">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.gradxy">[docs]</a>
+    <span class="k">def</span> <span class="nf">gradxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the xy-derivatives of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+<span class="sd">        :return: Values of the xy-derivatives of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">grad_test_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">grad_test_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">grad_test_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">grad_test_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="Basis2DQNLegendre.gradyy">
+<a class="viewcode-back" href="../../../_rst/fastvpinns.FE_2D.html#fastvpinns.FE_2D.basis_2d_QN_Legendre.Basis2DQNLegendre.gradyy">[docs]</a>
+    <span class="k">def</span> <span class="nf">gradyy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns the yy-derivatives of the basis functions at the given (xi, eta) coordinates.</span>
+
+<span class="sd">        :param xi: x-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type xi: array_like</span>
+<span class="sd">        :param eta: y-coordinates at which to evaluate the basis functions.</span>
+<span class="sd">        :type eta: array_like</span>
+
+<span class="sd">        :return: Values of the yy-derivatives of the basis functions.</span>
+<span class="sd">        :rtype: array_like</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_shape_func_in_1d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">))</span>
+        <span class="n">test_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_fcnx</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="n">grad_grad_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest_fcn</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_shape_functions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_shape_func_in_1d</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:</span> <span class="n">num_shape_func_in_1d</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">test_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">grad_grad_y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

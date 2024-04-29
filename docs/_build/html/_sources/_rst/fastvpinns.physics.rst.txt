@@ -1,0 +1,61 @@
+fastvpinns.physics package
+==========================
+
+Submodules
+----------
+
+fastvpinns.physics.cd2d module
+------------------------------
+
+.. automodule:: fastvpinns.physics.cd2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.physics.cd2d\_inverse module
+---------------------------------------
+
+.. automodule:: fastvpinns.physics.cd2d_inverse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.physics.cd2d\_inverse\_domain module
+-----------------------------------------------
+
+.. automodule:: fastvpinns.physics.cd2d_inverse_domain
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.physics.helmholtz2d module
+-------------------------------------
+
+.. automodule:: fastvpinns.physics.helmholtz2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.physics.poisson2d module
+-----------------------------------
+
+.. automodule:: fastvpinns.physics.poisson2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.physics.poisson2d\_inverse module
+--------------------------------------------
+
+.. automodule:: fastvpinns.physics.poisson2d_inverse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: fastvpinns.physics
+   :members:
+   :undoc-members:
+   :show-inheritance:

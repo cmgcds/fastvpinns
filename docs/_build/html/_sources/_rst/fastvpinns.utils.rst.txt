@@ -1,0 +1,37 @@
+fastvpinns.utils package
+========================
+
+Submodules
+----------
+
+fastvpinns.utils.compute\_utils module
+--------------------------------------
+
+.. automodule:: fastvpinns.utils.compute_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.utils.plot\_utils module
+-----------------------------------
+
+.. automodule:: fastvpinns.utils.plot_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+fastvpinns.utils.print\_utils module
+------------------------------------
+
+.. automodule:: fastvpinns.utils.print_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: fastvpinns.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
