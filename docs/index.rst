@@ -46,11 +46,23 @@ For more details on the theory and implementation of hp-VPINNs, please refer to 
 .. image:: images/vpinns.png
    :alt: VPINNs Image
 
-.. toctree::
-    :maxdepth: 1
-    :caption: Installation:
+Installation
+------------
 
-    Installation <_rst/_installation>
+.. toctree::
+    :maxdepth: 3
+    :caption: Installation
+
+    Installation <_rst/_installation.rst>
+
+
+Tutorials
+---------
+.. toctree::
+    :maxdepth: 5
+    :caption: Tutorials
+
+      Tutorials <_rst/_tutorial.rst>
 
 .. automodule:: fastvpinns
    :members:

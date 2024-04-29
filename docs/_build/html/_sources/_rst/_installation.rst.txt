@@ -1,7 +1,7 @@
 Installation
 ============
 
-The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, 
+The build of the code is currently tested on Python 3.8, 3.9, 3.10 and 3.11. The code is CI tested on enviroinments provided by Github Actions such as `ubuntu-20.04`, `ubuntu-latest`, `macos-latest`,`windows-latest` , 
 refer to `Compatibility-CI <https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml>`_ page for more details.
 
 Setting up an Virtual Environment
@@ -40,6 +40,7 @@ On ubuntu/mac systems with libGL issues caused due to matplotlib or gmsh, please
 
 Installing from source
 ______________________
+
 The official distribution is on GitHub, and you can clone the repository using
 
 .. code-block:: bash

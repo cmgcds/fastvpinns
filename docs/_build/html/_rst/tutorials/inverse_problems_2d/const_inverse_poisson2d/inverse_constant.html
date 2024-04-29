@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solving Inverse Problems with FastVPINNs : Estimation of uniform diffusion parameter on a quadrilateral geometry. &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Solving Inverse Problems with FastVPINNs : Estimation of spatially varying parameter on a complex geometry." href="../domain_inverse_cd2d/domain_inverse.html" />
+    <link rel="prev" title="Solving forward problems with FastVPINNs : Enforcing hard boundary constraints with an ansatz function." href="../../forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            fastvpinns
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../_tutorial.html">  Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../_tutorial.html#forward-problems">Forward Problems</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../_tutorial.html#inverse-problems">Inverse Problems</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Inverse problems with constant inverse parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#contents">Contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-file">Example File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-file">Input file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-file">Main file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#solution">## Solution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">## References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../domain_inverse_cd2d/domain_inverse.html"> Inverse problems with spatially varying inverse parameter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../_tutorial.html">FastVPINNs Tutorials</a></li>
+      <li class="breadcrumb-item active">Solving Inverse Problems with FastVPINNs : Estimation of uniform diffusion parameter on a quadrilateral geometry.</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/_rst/tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solving-inverse-problems-with-fastvpinns-estimation-of-uniform-diffusion-parameter-on-a-quadrilateral-geometry">
+<h1>Solving Inverse Problems with FastVPINNs : Estimation of uniform diffusion parameter on a quadrilateral geometry.<a class="headerlink" href="#solving-inverse-problems-with-fastvpinns-estimation-of-uniform-diffusion-parameter-on-a-quadrilateral-geometry" title="Link to this heading"></a></h1>
+<p>In this example, we will learn how to solve inverse problems using
+FastVPINNs. In particular, we will solve the 2-dimensional Poisson
+equation, as shown below, while simultaneously estimating the uniform
+diffusion parameter <span class="math notranslate nohighlight">\(\epsilon\)</span> using synthetically generated
+sensor data.</p>
+<div class="math notranslate nohighlight">
+\[-\epsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2\]</div>
+<p>for the actual solution
+<span class="math notranslate nohighlight">\(u(x, y) = 10 \sin(x) \tanh(x) e^{-\epsilon x^2}\)</span> In this problem,
+the actual value of the diffusion parameter,
+<span class="math notranslate nohighlight">\(\epsilon_{\text{actual}}\)</span> is 0.3, and we start with an initial
+guess of <span class="math notranslate nohighlight">\(\epsilon_{\text{initial}}=2.0\)</span>.</p>
+<p>We begin by introducing the various files required to run this example</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#example-file">Example File - inverse_uniform.py</a>: The boundary
+conditions, forcing function <span class="math notranslate nohighlight">\(f\)</span> and parameters are defined in
+this file.</p></li>
+<li><p><a class="reference external" href="#input_file">Input File - input_inverse.py</a>: The input file
+contains parameters for the finite element space and neural networks
+that can be tuned.</p></li>
+<li><p><a class="reference external" href="#main-file">Main File - main_inverse.py</a>: The main file is the
+file that is actually run.</p></li>
+</ul>
+<p>The code in this example can be run using</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main_inverse.py<span class="w"> </span>input_inverse.yaml
+</pre></div>
+</div>
+</section>
+<section id="example-file">
+<h2>Example File<a class="headerlink" href="#example-file" title="Link to this heading"></a></h2>
+<p>The example file, <code class="docutils literal notranslate"><span class="pre">inverse_uniform.py</span></code>, defines the boundary
+conditions and boundary values, the forcing function and exact function
+(if test error needs to be calculated), bilinear parameters and the
+actual value of the parameter that needs to be estimated (if the error
+between the actual and estimated parameter needs to be calculated) ###
+Defining boundary values The current version of FastVPINNs only
+implements Dirichlet boundary conditions. The boundary values can be set
+defining a function for each boundary,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">EPS</span> <span class="o">=</span> <span class="mf">0.3</span>
+
+
+<span class="k">def</span> <span class="nf">left_boundary</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return the boundary value for given component of a boundary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">EPS</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="k">return</span> <span class="n">val</span>
+</pre></div>
+</div>
+<p>Here <code class="docutils literal notranslate"><span class="pre">EPS</span></code> is the actual value of the diffusion parameter to be
+estimated. In the above snippet, we define a function <code class="docutils literal notranslate"><span class="pre">left_boundary</span></code>
+which returns the Dirichlet values to be enforced at that boundary.
+Similarly, we can define more boundary functions like
+<code class="docutils literal notranslate"><span class="pre">right_boundary</span></code>, <code class="docutils literal notranslate"><span class="pre">top_boundary</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom_boundary</span></code>. Once these
+functions are defined, we can assign them to the respective boundaries
+using <code class="docutils literal notranslate"><span class="pre">get_boundary_function_dict</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_boundary_function_dict</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return a dictionary of boundary functions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="mi">1000</span><span class="p">:</span> <span class="n">bottom_boundary</span><span class="p">,</span> <span class="mi">1001</span><span class="p">:</span> <span class="n">right_boundary</span><span class="p">,</span> <span class="mi">1002</span><span class="p">:</span> <span class="n">top_boundary</span><span class="p">,</span> <span class="mi">1003</span><span class="p">:</span> <span class="n">left_boundary</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">1000</span></code>, <code class="docutils literal notranslate"><span class="pre">1001</span></code>, etc. are the boundary identifiers obtained
+from the geometry. Thus, each boundary gets mapped to it boundary value
+in the dictionary.</p>
+<section id="defining-boundary-conditions">
+<h3>Defining boundary conditions<a class="headerlink" href="#defining-boundary-conditions" title="Link to this heading"></a></h3>
+<p>As explained above, each boundary has an identifier. The function
+<code class="docutils literal notranslate"><span class="pre">get_bound_cond_dict</span></code> maps the boundary identifier to the boundary
+condition (only Dirichlet boundary condition is implemented at this
+point).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_bound_cond_dict</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return a dictionary of boundary conditions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="mi">1000</span><span class="p">:</span> <span class="s2">&quot;dirichlet&quot;</span><span class="p">,</span> <span class="mi">1001</span><span class="p">:</span> <span class="s2">&quot;dirichlet&quot;</span><span class="p">,</span> <span class="mi">1002</span><span class="p">:</span> <span class="s2">&quot;dirichlet&quot;</span><span class="p">,</span> <span class="mi">1003</span><span class="p">:</span> <span class="s2">&quot;dirichlet&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-the-forcing-function">
+<h3>Defining the forcing function<a class="headerlink" href="#defining-the-forcing-function" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rhs</span></code> can be used to define the forcing function <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rhs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return the value of the rhs at a given point</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">EPS</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">-</span><span class="n">EPS</span>
+        <span class="o">*</span> <span class="p">(</span>
+            <span class="mf">40.0</span> <span class="o">*</span> <span class="n">X</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mf">40.0</span> <span class="o">*</span> <span class="n">X</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">20</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">X</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-bilinear-parameters">
+<h3>Defining bilinear parameters<a class="headerlink" href="#defining-bilinear-parameters" title="Link to this heading"></a></h3>
+<p>The bilinear parameters like diffusion constant and convective velocity
+can be defined by <code class="docutils literal notranslate"><span class="pre">get_bilinear_params_dict</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_bilinear_params_dict</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return a dictionary of bilinear parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initial Guess</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">EPS</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;eps&quot;</span><span class="p">:</span> <span class="n">eps</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">eps</span></code> denoted the diffusion constant.</p>
+</section>
+<section id="defining-the-target-parameter-values-for-testing">
+<h3>Defining the target parameter values for testing<a class="headerlink" href="#defining-the-target-parameter-values-for-testing" title="Link to this heading"></a></h3>
+<p>To test if our solver converges to the correct value of the parameter to
+be estimated, we use the function <code class="docutils literal notranslate"><span class="pre">get_inverse_params_actual_dict</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_inverse_params_actual_dict</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will return a dictionary of inverse parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initial Guess</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">EPS</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;eps&quot;</span><span class="p">:</span> <span class="n">eps</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This can then be used to calculate some error metric that assesses the
+performance of our solver.</p>
+<p><a class="reference external" href="#contents">Back to Contents</a></p>
+</section>
+</section>
+<section id="input-file">
+<h2>Input file<a class="headerlink" href="#input-file" title="Link to this heading"></a></h2>
+<p>The input file, <code class="docutils literal notranslate"><span class="pre">input_inverse.yaml</span></code>, is used to define inputs to your
+solver. These will usually parameters that will changed often throughout
+your experimentation, hence it is best practice to pass these parameters
+externally. The input file is divided based on the modules which use the
+parameter in question, as follows - ### <code class="docutils literal notranslate"><span class="pre">experimentation</span></code> This
+contains <code class="docutils literal notranslate"><span class="pre">output_path</span></code>, a string which specifies which folder will be
+used to store your outputs.</p>
+<section id="geometry">
+<h3><code class="docutils literal notranslate"><span class="pre">geometry</span></code><a class="headerlink" href="#geometry" title="Link to this heading"></a></h3>
+<p>This section defines the geometrical parameters for your domain. 1. In
+this example, we set the <code class="docutils literal notranslate"><span class="pre">mesh_generation_method</span></code> as <code class="docutils literal notranslate"><span class="pre">&quot;internal&quot;</span></code>.
+This generates a regular quadrilateral domain with a uniform mesh. 2.
+The parameters in <code class="docutils literal notranslate"><span class="pre">internal_mesh_params</span></code> define the x and y limits of
+the quadrilateral domain(<code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code> and <code class="docutils literal notranslate"><span class="pre">ymax</span></code>),
+number of cells in the domain in the x and y direction (<code class="docutils literal notranslate"><span class="pre">n_cells_x</span></code>
+and <code class="docutils literal notranslate"><span class="pre">n_cells_y</span></code>), number of total boundary points
+(<code class="docutils literal notranslate"><span class="pre">n_boundary_points</span></code>) and number of test points in x and y direction
+(<code class="docutils literal notranslate"><span class="pre">n_test_points_x</span></code> and <code class="docutils literal notranslate"><span class="pre">n_test_points_y</span></code>). 3. <code class="docutils literal notranslate"><span class="pre">mesh_type</span></code> :
+FastVPINNs currently provides support for quadrilateral elements only.
+4. <code class="docutils literal notranslate"><span class="pre">external_mesh_params</span></code> can be used to specify parameters for the
+external mesh, and can be ignored for this example</p>
+</section>
+<section id="fe">
+<h3><code class="docutils literal notranslate"><span class="pre">fe</span></code><a class="headerlink" href="#fe" title="Link to this heading"></a></h3>
+<p>The parameters related to the finite element space are defined here.
+1. <code class="docutils literal notranslate"><span class="pre">fe_order</span></code> sets the order of the finite element test functions.</p>
+<p>2. <code class="docutils literal notranslate"><span class="pre">fe_type</span></code> set which type of polynomial will be used as the finite
+element test function.</p>
+<p>3. <code class="docutils literal notranslate"><span class="pre">quad_order</span></code> is the number of quadrature in
+each direction in each cell. Thus the total number of quadrature points
+in each cell will be <code class="docutils literal notranslate"><span class="pre">quad_order</span></code><span class="math notranslate nohighlight">\(^2\)</span></p>
+<ol class="arabic simple" start="4">
+<li><p><code class="docutils literal notranslate"><span class="pre">quad_type</span></code> specifies the quadrature rule to be used.</p></li>
+</ol>
+</section>
+<section id="pde">
+<h3><code class="docutils literal notranslate"><span class="pre">pde</span></code><a class="headerlink" href="#pde" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">beta</span></code> specifies the weight by which the boundary loss will be
+multiplied before being added to the PDE loss.</p>
+</section>
+<section id="model">
+<h3><code class="docutils literal notranslate"><span class="pre">model</span></code><a class="headerlink" href="#model" title="Link to this heading"></a></h3>
+<p>The parameters pertaining to the neural network are specified here. 1.
+<code class="docutils literal notranslate"><span class="pre">model_architecture</span></code> is used to specify the dimensions of the neural
+network. In this example, [2, 30, 30, 30, 1] corresponds to a neural
+network with 2 inputs (for a 2-dimensional problem), 1 output (for a
+scalar problem) and 3 hidden layers with 30 neurons each. 2.
+<code class="docutils literal notranslate"><span class="pre">activation</span></code> specifies the activation function to be used. 3.
+<code class="docutils literal notranslate"><span class="pre">use_attention</span></code> specifies if attnention layers are to be used in the
+model. This feature is currently under development and hence should be
+set to <code class="docutils literal notranslate"><span class="pre">false</span></code> for now. 4. <code class="docutils literal notranslate"><span class="pre">epochs</span></code> is the number of iterations for
+which the network must be trained. 5. <code class="docutils literal notranslate"><span class="pre">dtype</span></code> specifies which datatype
+(<code class="docutils literal notranslate"><span class="pre">float32</span></code> or <code class="docutils literal notranslate"><span class="pre">float64</span></code>) will be used for the tensor calculations.
+6. <code class="docutils literal notranslate"><span class="pre">set_memory_growth</span></code>, when set to <code class="docutils literal notranslate"><span class="pre">True</span></code> will enable tensorflow’s
+memory growth function, restricting the memory usage on the GPU. This is
+currently under development and must be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> for now. 7.
+<code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> sets the learning rate <code class="docutils literal notranslate"><span class="pre">initial_learning_rate</span></code> if a
+constant learning rate is used. A learning rate scheduler can be used by
+toggling <code class="docutils literal notranslate"><span class="pre">use_lr_scheduler</span></code> to True and setting the corresponding
+decay parameters below it.</p>
+</section>
+<section id="logging">
+<h3><code class="docutils literal notranslate"><span class="pre">logging</span></code><a class="headerlink" href="#logging" title="Link to this heading"></a></h3>
+<p>It specifies the frequency with which the progress bar and console
+output will be updated, and at what interval will inference be carried
+out to print the solution image in the output folder.</p>
+</section>
+<section id="inverse">
+<h3><code class="docutils literal notranslate"><span class="pre">inverse</span></code><a class="headerlink" href="#inverse" title="Link to this heading"></a></h3>
+<p>Specific inputs only for inverse problems. <code class="docutils literal notranslate"><span class="pre">num_sensor_points</span></code>
+specifies the number of points in the domain at which the solution is
+known (or “sensed”).</p>
+<p><a class="reference external" href="#contents">Back to contents</a></p>
+</section>
+</section>
+<section id="main-file">
+<h2>Main file<a class="headerlink" href="#main-file" title="Link to this heading"></a></h2>
+<p>This is the main file which needs to be run for the experiment, with the
+input file as an argument. For the example, we will use the main file
+<code class="docutils literal notranslate"><span class="pre">main_inverse.py</span></code></p>
+<p>Following are the key components of a FastVPINNs main file</p>
+<section id="import-relevant-fastvpinns-methods">
+<h3>Import relevant FastVPINNs methods<a class="headerlink" href="#import-relevant-fastvpinns-methods" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastvpinns.data.datahandler2d</span> <span class="kn">import</span> <span class="n">DataHandler2D</span>
+<span class="kn">from</span> <span class="nn">fastvpinns.FE_2D.fespace2d</span> <span class="kn">import</span> <span class="n">Fespace2D</span>
+<span class="kn">from</span> <span class="nn">fastvpinns.Geometry.geometry_2d</span> <span class="kn">import</span> <span class="n">Geometry_2D</span>
+</pre></div>
+</div>
+<p>Will import the functions related to setting up the finite element
+space, 2D Geometry and the datahandler required to manage data and make
+it available to the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastvpinns.model.model_inverse</span> <span class="kn">import</span> <span class="n">DenseModel_Inverse</span>
+</pre></div>
+</div>
+<p>Will import the model file where the neural network and its training
+function is defined. The model file <code class="docutils literal notranslate"><span class="pre">model_inverse.py</span></code> contains the
+<code class="docutils literal notranslate"><span class="pre">DenseModel_Inverse</span></code> class specifically designed for inverse problems
+where a spatially varying parameter has to be estimated along with the
+solution.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastvpinns.physics.poisson2d_inverse</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Imports the loss function specifically designed for this problem, with a
+sensor loss added to the PDE and boundary losses.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastvpinns.utils.compute_utils</span> <span class="kn">import</span> <span class="n">compute_errors_combined</span>
+<span class="kn">from</span> <span class="nn">fastvpinns.utils.plot_utils</span> <span class="kn">import</span> <span class="n">plot_contour</span><span class="p">,</span> <span class="n">plot_loss_function</span><span class="p">,</span> <span class="n">plot_test_loss_function</span>
+<span class="kn">from</span> <span class="nn">fastvpinns.utils.print_utils</span> <span class="kn">import</span> <span class="n">print_table</span>
+</pre></div>
+</div>
+<p>Imports functions to calculate the loss, plot the results and print
+outputs to the console.</p>
+</section>
+<section id="reading-the-input-file">
+<h3>Reading the Input File<a class="headerlink" href="#reading-the-input-file" title="Link to this heading"></a></h3>
+<p>The input file is loaded into <code class="docutils literal notranslate"><span class="pre">config</span></code> and the input parameters are
+read and assigned to their respective variables.</p>
+</section>
+<section id="setting-up-a-geometry-2d-object">
+<h3>Setting up a <code class="docutils literal notranslate"><span class="pre">Geometry_2D</span></code> object<a class="headerlink" href="#setting-up-a-geometry-2d-object" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">Geometry_2D</span><span class="p">(</span><span class="n">i_mesh_type</span><span class="p">,</span> <span class="n">i_mesh_generation_method</span><span class="p">,</span> <span class="n">i_n_test_points_x</span><span class="p">,</span> <span class="n">i_n_test_points_y</span><span class="p">,</span> <span class="n">i_output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will instantiate a <code class="docutils literal notranslate"><span class="pre">Geometry_2D</span></code> object, <code class="docutils literal notranslate"><span class="pre">domain</span></code>, with the mesh
+type, mesh generation method and test points. In our example, the mesh
+generation method is <code class="docutils literal notranslate"><span class="pre">internal</span></code>, so the cells and boundary points will
+be obtained using the <code class="docutils literal notranslate"><span class="pre">generate_quad_mesh_internal</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cells</span><span class="p">,</span> <span class="n">boundary_points</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">generate_quad_mesh_internal</span><span class="p">(</span>
+    <span class="n">x_limits</span><span class="o">=</span><span class="p">[</span><span class="n">i_x_min</span><span class="p">,</span> <span class="n">i_x_max</span><span class="p">],</span>
+    <span class="n">y_limits</span><span class="o">=</span><span class="p">[</span><span class="n">i_y_min</span><span class="p">,</span> <span class="n">i_y_max</span><span class="p">],</span>
+    <span class="n">n_cells_x</span><span class="o">=</span><span class="n">i_n_cells_x</span><span class="p">,</span>
+    <span class="n">n_cells_y</span><span class="o">=</span><span class="n">i_n_cells_y</span><span class="p">,</span>
+    <span class="n">num_boundary_points</span><span class="o">=</span><span class="n">i_n_boundary_points</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-the-boundary-conditions-and-values">
+<h3>Reading the boundary conditions and values<a class="headerlink" href="#reading-the-boundary-conditions-and-values" title="Link to this heading"></a></h3>
+<p>As explained in <a class="reference external" href="#example-file">the example file section</a>, the
+boundary conditions and values are read as a dictionary from the example
+file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bound_function_dict</span><span class="p">,</span> <span class="n">bound_condition_dict</span> <span class="o">=</span> <span class="n">get_boundary_function_dict</span><span class="p">(),</span> <span class="n">get_bound_cond_dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-up-the-finite-element-space">
+<h3>Setting up the finite element space<a class="headerlink" href="#setting-up-the-finite-element-space" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fespace</span> <span class="o">=</span> <span class="n">Fespace2D</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="o">=</span><span class="n">domain</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
+    <span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span>
+    <span class="n">boundary_points</span><span class="o">=</span><span class="n">boundary_points</span><span class="p">,</span>
+    <span class="n">cell_type</span><span class="o">=</span><span class="n">domain</span><span class="o">.</span><span class="n">mesh_type</span><span class="p">,</span>
+    <span class="n">fe_order</span><span class="o">=</span><span class="n">i_fe_order</span><span class="p">,</span>
+    <span class="n">fe_type</span><span class="o">=</span><span class="n">i_fe_type</span><span class="p">,</span>
+    <span class="n">quad_order</span><span class="o">=</span><span class="n">i_quad_order</span><span class="p">,</span>
+    <span class="n">quad_type</span><span class="o">=</span><span class="n">i_quad_type</span><span class="p">,</span>
+    <span class="n">fe_transformation_type</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">,</span>
+    <span class="n">bound_function_dict</span><span class="o">=</span><span class="n">bound_function_dict</span><span class="p">,</span>
+    <span class="n">bound_condition_dict</span><span class="o">=</span><span class="n">bound_condition_dict</span><span class="p">,</span>
+    <span class="n">forcing_function</span><span class="o">=</span><span class="n">rhs</span><span class="p">,</span>
+    <span class="n">output_path</span><span class="o">=</span><span class="n">i_output_path</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fespace</span></code> will contain all the information about the finite element
+space, including those read from the <a class="reference external" href="#input-file">input file</a></p>
+</section>
+<section id="instantiating-an-inverse-problem-model">
+<h3>Instantiating an inverse problem model<a class="headerlink" href="#instantiating-an-inverse-problem-model" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DenseModel_Inverse</span><span class="p">(</span>
+    <span class="n">layer_dims</span><span class="o">=</span><span class="n">i_model_architecture</span><span class="p">,</span>
+    <span class="n">learning_rate_dict</span><span class="o">=</span><span class="n">i_learning_rate_dict</span><span class="p">,</span>
+    <span class="n">params_dict</span><span class="o">=</span><span class="n">params_dict</span><span class="p">,</span>
+    <span class="n">loss_function</span><span class="o">=</span><span class="n">pde_loss_poisson_inverse</span><span class="p">,</span>
+    <span class="n">input_tensors_list</span><span class="o">=</span><span class="p">[</span><span class="n">datahandler</span><span class="o">.</span><span class="n">x_pde_list</span><span class="p">,</span> <span class="n">train_dirichlet_input</span><span class="p">,</span> <span class="n">train_dirichlet_output</span><span class="p">],</span>
+    <span class="n">orig_factor_matrices</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">datahandler</span><span class="o">.</span><span class="n">shape_val_mat_list</span><span class="p">,</span>
+        <span class="n">datahandler</span><span class="o">.</span><span class="n">grad_x_mat_list</span><span class="p">,</span>
+        <span class="n">datahandler</span><span class="o">.</span><span class="n">grad_y_mat_list</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">force_function_list</span><span class="o">=</span><span class="n">datahandler</span><span class="o">.</span><span class="n">forcing_function_list</span><span class="p">,</span>
+    <span class="n">sensor_list</span><span class="o">=</span><span class="p">[</span><span class="n">points</span><span class="p">,</span> <span class="n">sensor_values</span><span class="p">],</span>
+    <span class="n">inverse_params_dict</span><span class="o">=</span><span class="n">inverse_params_dict</span><span class="p">,</span>
+    <span class="n">tensor_dtype</span><span class="o">=</span><span class="n">i_dtype</span><span class="p">,</span>
+    <span class="n">use_attention</span><span class="o">=</span><span class="n">i_use_attention</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="n">i_activation</span><span class="p">,</span>
+    <span class="n">hessian</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DenseModel_Inverse</span></code> is a model written for inverse problems with
+spatially varying parameter estimation. In this problem, we pass the
+loss function <code class="docutils literal notranslate"><span class="pre">pde_loss_poisson_inverse</span></code> from the <code class="docutils literal notranslate"><span class="pre">physics</span></code> file
+<code class="docutils literal notranslate"><span class="pre">poisson_inverse.py</span></code>.</p>
+<p>We are now ready to train the model to approximate the solution of the
+PDE while estimating the unknown diffusion parameter using the sensor
+data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+
+        <span class="c1"># Train the model</span>
+        <span class="n">batch_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">train_step</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span> <span class="n">bilinear_params_dict</span><span class="o">=</span><span class="n">bilinear_params_dict</span><span class="p">)</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="#contents">Back to contents</a></p>
+</section>
+</section>
+<section id="solution">
+<h2>## Solution<a class="headerlink" href="#solution" title="Link to this heading"></a></h2>
+<div class="docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;exact_solution.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;Exact Solution&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">Exact</span> <span class="n">Solution</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;predicted_solution.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;Predicted Solution&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">Predicted</span> <span class="n">Solution</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;error.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">Error</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;sensor_points.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;Sensor points&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">Sensor</span> <span class="n">points</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;inverse_eps_prediction.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;inverse_eps_prediction&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">inverse_eps_prediction</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">figure</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;loss_function.png&quot;</span> <span class="n">alt</span><span class="o">=</span><span class="s2">&quot;Train Loss&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">figcaption</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;text-align: center;&quot;</span><span class="o">&gt;</span><span class="n">Train</span> <span class="n">Loss</span><span class="o">&lt;/</span><span class="n">figcaption</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">figure</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="references">
+<h2>## References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://arxiv.org/abs/2404.12063">FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
+Geometries.</a></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.html" class="btn btn-neutral float-left" title="Solving forward problems with FastVPINNs : Enforcing hard boundary constraints with an ansatz function." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../domain_inverse_cd2d/domain_inverse.html" class="btn btn-neutral float-right" title="Solving Inverse Problems with FastVPINNs : Estimation of spatially varying parameter on a complex geometry." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
