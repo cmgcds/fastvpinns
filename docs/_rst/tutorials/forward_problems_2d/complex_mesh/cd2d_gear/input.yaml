@@ -1,0 +1,53 @@
+# This YAML file contains configuration parameters for FastVPINNs
+
+experimentation:
+  output_path: "output/cd2d_gear"
+
+geometry:
+  mesh_generation_method: "external"
+  generate_mesh_plot: False
+  internal_mesh_params:
+    x_min: 0
+    x_max: 1
+    y_min: 0
+    y_max: 1
+    n_cells_x: 8
+    n_cells_y: 8
+    n_boundary_points: 2000
+    n_test_points_x: 100
+    n_test_points_y: 100
+  
+  exact_solution:
+    exact_solution_generation: "external" # whether the exact solution needs to be read from external file.
+    exact_solution_file_name: "fem_output_gear_forward_sin.csv" # External solution file name.
+
+  mesh_type: "quadrilateral"
+  external_mesh_params:
+    mesh_file_name: "../meshes/gear.mesh"  # should be a .mesh file
+    boundary_refinement_level: 2
+    boundary_sampling_method: "uniform"  # "uniform" 
+
+fe:
+  fe_order: 4    
+  fe_type: "jacobi"   
+  quad_order: 5
+  quad_type: "gauss-jacobi"  
+
+pde:
+  beta: 5
+model:
+  model_architecture: [2, 50,50,50, 1]
+  activation: "tanh"
+  use_attention: False
+  epochs: 150000
+  dtype: "float32"
+  set_memory_growth: False
+  learning_rate:
+    initial_learning_rate: 0.005
+    use_lr_scheduler: True
+    decay_steps: 1000
+    decay_rate: 0.99
+    staircase: False
+
+logging:
+  update_console_output: 10000

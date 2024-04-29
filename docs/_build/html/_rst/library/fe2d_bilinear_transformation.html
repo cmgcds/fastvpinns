@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.FE_2D.quad_bilinear module &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            fastvpinns
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../fastvpinns.html">fastvpinns</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">fastvpinns.FE_2D.quad_bilinear module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/_rst/library/fe2d_bilinear_transformation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fastvpinns.FE_2D.quad_bilinear">
+<span id="fastvpinns-fe-2d-quad-bilinear-module"></span><h1>fastvpinns.FE_2D.quad_bilinear module<a class="headerlink" href="#module-fastvpinns.FE_2D.quad_bilinear" title="Link to this heading"></a></h1>
+<p>file: quad_bilinear.py
+description: This file defines the Quad Affine transformation of the reference element.</p>
+<blockquote>
+<div><p>The implementation is referenced from the ParMooN project (File: QuadBilineare.C).</p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: Second derivative Calculations are not implemented as of now.
+dependencies: None specified.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.FE_2D.quad_bilinear.</span></span><span class="sig-name descname"><span class="pre">QuadBilinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">co_ordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="fe2d_transformation.html#fastvpinns.FE_2D.fe_transformation_2d.FETransforamtion2D" title="fastvpinns.FE_2D.fe_transformation_2d.FETransforamtion2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">FETransforamtion2D</span></code></a></p>
+<p>Defines the Quad Bilinear transformation of the reference element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>co_ordinates</strong> (<em>numpy.ndarray</em>) – The coordinates of the reference element.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_jacobian">
+<span class="sig-name descname"><span class="pre">get_jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear.get_jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_jacobian" title="Link to this definition"></a></dt>
+<dd><p>This method returns the Jacobian of the transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate in the reference element.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate in the reference element.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Jacobian of the transformation at the given reference co-ordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_orig_from_ref_derivative">
+<span class="sig-name descname"><span class="pre">get_orig_from_ref_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_gradx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_grady</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear.get_orig_from_ref_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_orig_from_ref_derivative" title="Link to this definition"></a></dt>
+<dd><p>This method returns the derivatives of the original co-ordinates with respect to the reference co-ordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ref_gradx</strong> (<em>numpy.ndarray</em>) – The gradient of the xi coordinate in the reference element.</p></li>
+<li><p><strong>ref_grady</strong> (<em>numpy.ndarray</em>) – The gradient of the eta coordinate in the reference element.</p></li>
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate in the reference element.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate in the reference element.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The derivatives of the original co-ordinates [x, y] with respect to the reference co-ordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_orig_from_ref_second_derivative">
+<span class="sig-name descname"><span class="pre">get_orig_from_ref_second_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_xx_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_xy_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_yy_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear.get_orig_from_ref_second_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_orig_from_ref_second_derivative" title="Link to this definition"></a></dt>
+<dd><p>This method returns the second derivatives of the original co-ordinates with respect to the reference co-ordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad_xx_ref</strong> (<em>numpy.ndarray</em>) – The second derivative of the xi coordinate in the reference element.</p></li>
+<li><p><strong>grad_xy_ref</strong> (<em>numpy.ndarray</em>) – The mixed second derivative of the xi and eta coordinates in the reference element.</p></li>
+<li><p><strong>grad_yy_ref</strong> (<em>numpy.ndarray</em>) – The second derivative of the eta coordinate in the reference element.</p></li>
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate in the reference element.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate in the reference element.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The second derivatives of the original co-ordinates [xx, xy, yy] with respect to the reference co-ordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_original_from_ref">
+<span class="sig-name descname"><span class="pre">get_original_from_ref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear.get_original_from_ref"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear.get_original_from_ref" title="Link to this definition"></a></dt>
+<dd><p>This method returns the original co-ordinates from the reference co-ordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – The xi coordinate in the reference element.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – The eta coordinate in the reference element.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The original co-ordinates [x, y] corresponding to the given reference co-ordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.FE_2D.quad_bilinear.QuadBilinear.set_cell">
+<span class="sig-name descname"><span class="pre">set_cell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fastvpinns/FE_2D/quad_bilinear.html#QuadBilinear.set_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.FE_2D.quad_bilinear.QuadBilinear.set_cell" title="Link to this definition"></a></dt>
+<dd><p>Set the cell co-ordinates, which will be used as intermediate values to calculate the Jacobian and actual values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

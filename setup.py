@@ -6,7 +6,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="fastvpinns",
-    version="1.0.2",
+    version="1.0.0",
     author="Thivin Anandh, Divij Ghose, Sashikumaar Ganesan",
     author_email="thivinanandh@gmail.com",
     description="An Efficient tensor-based implementation of hp-Variational Physics-informed Neural Networks (VPINNs) for solving PDEs",

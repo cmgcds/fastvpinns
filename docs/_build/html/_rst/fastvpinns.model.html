@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.model package &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="fastvpinns.physics package" href="fastvpinns.physics.html" />
+    <link rel="prev" title="fastvpinns.data package" href="fastvpinns.data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fastvpinns
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="fastvpinns.html">fastvpinns</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fastvpinns.html#fe-2d">FE_2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastvpinns.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="fastvpinns.html#model">Model</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fastvpinns.model package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fastvpinns.model.model">fastvpinns.model.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fastvpinns.model.model_hard">fastvpinns.model.model_hard module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fastvpinns.model.model_inverse">fastvpinns.model.model_inverse module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fastvpinns.model.model_inverse_domain">fastvpinns.model.model_inverse_domain module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fastvpinns.model">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastvpinns.html#utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="fastvpinns.html">FastVPINNs Module Documentation</a></li>
+      <li class="breadcrumb-item active">fastvpinns.model package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_rst/fastvpinns.model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fastvpinns-model-package">
+<h1>fastvpinns.model package<a class="headerlink" href="#fastvpinns-model-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-fastvpinns.model.model">
+<span id="fastvpinns-model-model-module"></span><h2>fastvpinns.model.model module<a class="headerlink" href="#module-fastvpinns.model.model" title="Link to this heading"></a></h2>
+<p>file: model.py
+description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).</p>
+<blockquote>
+<div><p>The focus is on the model architecture and the training loop, and not on the loss functions.</p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+known_issues: None
+dependencies: None specified.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.model.model.DenseModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.model.model.</span></span><span class="sig-name descname"><span class="pre">DenseModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model.html#DenseModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model.DenseModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Defines the Dense Model for the Neural Network for solving Variational PINNs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer_dims</strong> (<em>list</em>) – List of dimensions of the dense layers.</p></li>
+<li><p><strong>learning_rate_dict</strong> (<em>dict</em>) – The dictionary containing the learning rate parameters.</p></li>
+<li><p><strong>params_dict</strong> (<em>dict</em>) – The dictionary containing the parameters.</p></li>
+<li><p><strong>loss_function</strong> (<em>function</em>) – The loss function for the PDE.</p></li>
+<li><p><strong>input_tensors_list</strong> (<em>list</em>) – The list containing the input tensors.</p></li>
+<li><p><strong>orig_factor_matrices</strong> (<em>list</em>) – The list containing the original factor matrices.</p></li>
+<li><p><strong>force_function_list</strong> (<em>tf.Tensor</em>) – The force function matrix.</p></li>
+<li><p><strong>tensor_dtype</strong> (<em>tf.DType</em>) – The tensorflow dtype to be used for all the tensors.</p></li>
+<li><p><strong>use_attention</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to use attention layer after input, defaults to False.</p></li>
+<li><p><strong>activation</strong> (<em>str</em><em>, </em><em>optional</em>) – The activation function to be used for the dense layers, defaults to “tanh”.</p></li>
+<li><p><strong>hessian</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to use hessian loss, defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model.DenseModel.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model.html#DenseModel.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model.DenseModel.call" title="Link to this definition"></a></dt>
+<dd><p>The call method for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>tf.Tensor</em>) – The input tensor for the model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output tensor of the model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model.DenseModel.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model.html#DenseModel.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model.DenseModel.get_config" title="Link to this definition"></a></dt>
+<dd><p>Get the configuration of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The configuration of the model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model.DenseModel.train_step">
+<span class="sig-name descname"><span class="pre">train_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_params_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model.html#DenseModel.train_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model.DenseModel.train_step" title="Link to this definition"></a></dt>
+<dd><p>The train step method for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>int</em><em>, </em><em>optional</em>) – The beta parameter for the training step, defaults to 10.</p></li>
+<li><p><strong>bilinear_params_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – The dictionary containing the bilinear parameters, defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output of the training step.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>varies based on implementation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fastvpinns.model.model_hard">
+<span id="fastvpinns-model-model-hard-module"></span><h2>fastvpinns.model.model_hard module<a class="headerlink" href="#module-fastvpinns.model.model_hard" title="Link to this heading"></a></h2>
+<p>file: model_hard.py
+description: This file contains the DenseModel class which is a custom model for the Neural Network</p>
+<blockquote>
+<div><p>for solving Variational PINNs. This model is used for enforcing hard boundary constraints
+on the solution.</p>
+</div></blockquote>
+<p>author: Thivin Anandh D, Divij Ghose, Sashikumaar Ganesan
+date: 22/01/2024
+changelog: 22/01/2024 - file created</p>
+<blockquote>
+<div><p>22/01/2024 -</p>
+</div></blockquote>
+<p>known issues: None</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.model.model_hard.DenseModel_Hard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.model.model_hard.</span></span><span class="sig-name descname"><span class="pre">DenseModel_Hard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_hard.DenseModel_Hard" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>The DenseModel_Hard class is a custom model class that hosts the neural network model.</p>
+<p>The class inherits from the tf.keras.Model class and is used
+to define the neural network model architecture and the training loop for FastVPINNs.
+:param layer_dims: List of integers representing the number of neurons in each layer
+:type layer_dims: list
+:param learning_rate_dict: Dictionary containing the learning rate parameters
+:type learning_rate_dict: dict
+:param params_dict: Dictionary containing the parameters for the model
+:type params_dict: dict
+:param loss_function: Loss function for the model
+:type loss_function: function
+:param input_tensors_list: List of input tensors for the model
+:type input_tensors_list: list
+:param orig_factor_matrices: List of original factor matrices
+:type orig_factor_matrices: list
+:param force_function_list: List of force functions
+:type force_function_list: list
+:param tensor_dtype: Tensor data type
+:type tensor_dtype: tf.DType
+:param use_attention: Flag to use attention layer
+:type use_attention: bool
+:param activation: Activation function for the model
+:type activation: str
+:param hessian: Flag to compute hessian
+:type hessian: bool</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_hard.DenseModel_Hard.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_hard.DenseModel_Hard.call" title="Link to this definition"></a></dt>
+<dd><p>This method is used to define the forward pass of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_hard.DenseModel_Hard.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_hard.DenseModel_Hard.get_config" title="Link to this definition"></a></dt>
+<dd><p>This method is used to get the configuration of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_hard.DenseModel_Hard.train_step">
+<span class="sig-name descname"><span class="pre">train_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_params_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.train_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_hard.DenseModel_Hard.train_step" title="Link to this definition"></a></dt>
+<dd><p>This method is used to define the training step of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>This method is used to define the forward pass of the model.
+:param inputs: Input tensor
+:type inputs: tf.Tensor
+:return: Output tensor from the model
+:rtype: tf.Tensor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>This method is used to get the configuration of the model.
+:return: Configuration of the model
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">train_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_params_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_hard.html#DenseModel_Hard.train_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>This method is used to define the training step of the mode.
+:param bilinear_params_dict: Dictionary containing the bilinear parameters
+:type bilinear_params_dict: dict
+:return: Dictionary containing the loss values
+:rtype: dict</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fastvpinns.model.model_inverse">
+<span id="fastvpinns-model-model-inverse-module"></span><h2>fastvpinns.model.model_inverse module<a class="headerlink" href="#module-fastvpinns.model.model_inverse" title="Link to this heading"></a></h2>
+<p>file: model_inverse.py
+description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).</p>
+<blockquote>
+<div><p>This focuses on training variational PINNs for inverse problems where the inverse parameter is constant on the domain.
+The focus is on the model architecture and the training loop, and not on the loss functions.</p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+known_issues: Currently out of the box, supports only one constant inverse parameters.
+dependencies: None specified.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse.DenseModel_Inverse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.model.model_inverse.</span></span><span class="sig-name descname"><span class="pre">DenseModel_Inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse.html#DenseModel_Inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse.DenseModel_Inverse" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A subclass of tf.keras.Model that defines a dense model for an inverse problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer_dims</strong> (<em>list</em>) – The dimensions of the layers in the model.</p></li>
+<li><p><strong>learning_rate_dict</strong> (<em>dict</em>) – A dictionary containing the learning rates.</p></li>
+<li><p><strong>params_dict</strong> (<em>dict</em>) – A dictionary containing the parameters of the model.</p></li>
+<li><p><strong>loss_function</strong> (<em>function</em>) – The loss function to be used in the model.</p></li>
+<li><p><strong>input_tensors_list</strong> (<em>list</em>) – A list of input tensors.</p></li>
+<li><p><strong>orig_factor_matrices</strong> (<em>list</em>) – The original factor matrices.</p></li>
+<li><p><strong>force_function_list</strong> (<em>list</em>) – A list of force functions.</p></li>
+<li><p><strong>sensor_list</strong> (<em>list</em>) – A list of sensors for the inverse problem.</p></li>
+<li><p><strong>inverse_params_dict</strong> (<em>dict</em>) – A dictionary containing the parameters for the inverse problem.</p></li>
+<li><p><strong>tensor_dtype</strong> (<em>tf.DType</em>) – The data type of the tensors.</p></li>
+<li><p><strong>use_attention</strong> (<em>bool</em>) – Whether to use attention mechanism in the model. Defaults to False.</p></li>
+<li><p><strong>activation</strong> (<em>str</em>) – The activation function to be used in the model. Defaults to ‘tanh’.</p></li>
+<li><p><strong>hessian</strong> (<em>bool</em>) – Whether to use Hessian in the model. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse.DenseModel_Inverse.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse.html#DenseModel_Inverse.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse.DenseModel_Inverse.call" title="Link to this definition"></a></dt>
+<dd><p>Applies the model to the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> – The input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output of the model after applying all the layers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse.DenseModel_Inverse.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse.html#DenseModel_Inverse.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse.DenseModel_Inverse.get_config" title="Link to this definition"></a></dt>
+<dd><p>Returns the configuration of the model.</p>
+<p>This method is used to serialize the model configuration. It returns a dictionary
+containing all the necessary information to recreate the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The configuration dictionary of the model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse.DenseModel_Inverse.train_step">
+<span class="sig-name descname"><span class="pre">train_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_params_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse.html#DenseModel_Inverse.train_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse.DenseModel_Inverse.train_step" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fastvpinns.model.model_inverse_domain">
+<span id="fastvpinns-model-model-inverse-domain-module"></span><h2>fastvpinns.model.model_inverse_domain module<a class="headerlink" href="#module-fastvpinns.model.model_inverse_domain" title="Link to this heading"></a></h2>
+<p>file: model_inverse_domain.py
+description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).</p>
+<blockquote>
+<div><p>This focuses on training variational PINNs for inverse problems where the inverse parameter is constant over the entire domain.
+The focus is on the model architecture and the training loop, and not on the loss functions.</p>
+</div></blockquote>
+<p>authors: Thivin Anandh D
+changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+known_issues: None
+dependencies: None specified.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.model.model_inverse_domain.</span></span><span class="sig-name descname"><span class="pre">DenseModel_Inverse_Domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse_domain.html#DenseModel_Inverse_Domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A subclass of tf.keras.Model that defines a dense model for an inverse problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer_dims</strong> (<em>list</em>) – The dimensions of the layers in the model.</p></li>
+<li><p><strong>learning_rate_dict</strong> (<em>dict</em>) – A dictionary containing the learning rates.</p></li>
+<li><p><strong>params_dict</strong> (<em>dict</em>) – A dictionary containing the parameters of the model.</p></li>
+<li><p><strong>loss_function</strong> (<em>function</em>) – The loss function to be used in the model.</p></li>
+<li><p><strong>input_tensors_list</strong> (<em>list</em>) – A list of input tensors.</p></li>
+<li><p><strong>orig_factor_matrices</strong> (<em>list</em>) – The original factor matrices.</p></li>
+<li><p><strong>force_function_list</strong> (<em>list</em>) – A list of force functions.</p></li>
+<li><p><strong>sensor_list</strong> (<em>list</em>) – A list of sensors for the inverse problem.</p></li>
+<li><p><strong>inverse_params_dict</strong> (<em>dict</em>) – A dictionary containing the parameters for the inverse problem.</p></li>
+<li><p><strong>tensor_dtype</strong> (<em>tf.DType</em>) – The data type of the tensors.</p></li>
+<li><p><strong>use_attention</strong> (<em>bool</em>) – Whether to use attention mechanism in the model. Defaults to False.</p></li>
+<li><p><strong>activation</strong> (<em>str</em>) – The activation function to be used in the model. Defaults to ‘tanh’.</p></li>
+<li><p><strong>hessian</strong> (<em>bool</em>) – Whether to use Hessian in the model. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse_domain.html#DenseModel_Inverse_Domain.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.call" title="Link to this definition"></a></dt>
+<dd><p>The call method for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>tf.Tensor</em>) – The input tensor for the model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output tensor of the model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse_domain.html#DenseModel_Inverse_Domain.get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.get_config" title="Link to this definition"></a></dt>
+<dd><p>Get the configuration of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The configuration of the model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.train_step">
+<span class="sig-name descname"><span class="pre">train_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_params_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fastvpinns/model/model_inverse_domain.html#DenseModel_Inverse_Domain.train_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.model.model_inverse_domain.DenseModel_Inverse_Domain.train_step" title="Link to this definition"></a></dt>
+<dd><p>The train step method for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>int</em><em>, </em><em>optional</em>) – The beta parameter for the training step, defaults to 10.</p></li>
+<li><p><strong>bilinear_params_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – The dictionary containing the bilinear parameters, defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The output of the training step.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>varies based on implementation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fastvpinns.model">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fastvpinns.model" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fastvpinns.data.html" class="btn btn-neutral float-left" title="fastvpinns.data package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fastvpinns.physics.html" class="btn btn-neutral float-right" title="fastvpinns.physics package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

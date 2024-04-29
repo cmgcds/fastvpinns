@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.Geometry.geometry_2d module &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="fastvpinns.model.model module" href="../model/model.html" />
+    <link rel="prev" title="fastvpinns.FE_2D.FE2D_Cell module" href="../fe2d/fe2d_fe2d_cell.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../fastvpinns.html">fastvpinns</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#fe-2d">FE_2D</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../fastvpinns.html#geometry">Geometry</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">   Geometry2D - Class for Geometry related functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D"><code class="docutils literal notranslate"><span class="pre">Geometry_2D</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../fastvpinns.html">FastVPINNs Module Documentation</a></li>
+      <li class="breadcrumb-item active">fastvpinns.Geometry.geometry_2d module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/_rst/library/geometry/geometry2d.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fastvpinns.Geometry.geometry_2d">
+<span id="fastvpinns-geometry-geometry-2d-module"></span><h1>fastvpinns.Geometry.geometry_2d module<a class="headerlink" href="#module-fastvpinns.Geometry.geometry_2d" title="Link to this heading"></a></h1>
+<p>This module, <cite>geometry_2d.py</cite>, contains the <cite>Geometry_2D</cite> class which defines functions to read mesh from Gmsh and
+generate internal mesh for 2D problems. It supports different types of meshes and mesh generation methods.
+The class also allows for specifying the number of test points in the x and y directions, and the output folder for storing results.</p>
+<p>Author: Thivin Anandh D
+Date: 21-Sep-2023</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fastvpinns.Geometry.geometry_2d.</span></span><span class="sig-name descname"><span class="pre">Geometry_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_generation_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_test_points_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_test_points_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines functions to read mesh from Gmsh and internal mesh for 2D problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh_type</strong> (<em>str</em>) – The type of mesh to be used.</p></li>
+<li><p><strong>mesh_generation_method</strong> (<em>str</em>) – The method used to generate the mesh.</p></li>
+<li><p><strong>n_test_points_x</strong> (<em>int</em>) – The number of test points in the x-direction.</p></li>
+<li><p><strong>n_test_points_y</strong> (<em>int</em>) – The number of test points in the y-direction.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em>) – The path to the output folder.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.generate_quad_mesh_internal">
+<span class="sig-name descname"><span class="pre">generate_quad_mesh_internal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_limits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_limits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cells_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cells_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_boundary_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.generate_quad_mesh_internal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.generate_quad_mesh_internal" title="Link to this definition"></a></dt>
+<dd><p>Generate and save a quadrilateral mesh with physical curves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_limits</strong> (<em>tuple</em>) – The lower and upper limits in the x-direction (x_min, x_max).</p></li>
+<li><p><strong>y_limits</strong> (<em>tuple</em>) – The lower and upper limits in the y-direction (y_min, y_max).</p></li>
+<li><p><strong>n_cells_x</strong> (<em>int</em>) – The number of cells in the x-direction.</p></li>
+<li><p><strong>n_cells_y</strong> (<em>int</em>) – The number of cells in the y-direction.</p></li>
+<li><p><strong>num_boundary_points</strong> (<em>int</em>) – The number of boundary points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cell points and the dictionary of boundary points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[numpy.ndarray, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.generate_vtk_for_test">
+<span class="sig-name descname"><span class="pre">generate_vtk_for_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.generate_vtk_for_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.generate_vtk_for_test" title="Link to this definition"></a></dt>
+<dd><p>Generates a VTK from Mesh file (External) or using gmsh (for Internal).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.get_test_points">
+<span class="sig-name descname"><span class="pre">get_test_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.get_test_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.get_test_points" title="Link to this definition"></a></dt>
+<dd><p>This function is used to extract the test points from the given mesh</p>
+<p>Parameters:
+None</p>
+<p>Returns:
+test_points (numpy.ndarray): The test points for the given domain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.plot_adaptive_mesh">
+<span class="sig-name descname"><span class="pre">plot_adaptive_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_averaged_cell_loss_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cell_residual'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.plot_adaptive_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.plot_adaptive_mesh" title="Link to this definition"></a></dt>
+<dd><p>Plots the residuals in each cell of the mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cells_list</strong> (<em>list</em>) – The list of cells.</p></li>
+<li><p><strong>area_averaged_cell_loss_list</strong> (<em>list</em>) – The list of area averaged cell residual (or the normal residual).</p></li>
+<li><p><strong>epoch</strong> (<em>int</em>) – The epoch number (for file name).</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the output file, defaults to “cell_residual”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.read_mesh">
+<span class="sig-name descname"><span class="pre">read_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_point_refinement_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_sampling_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refinement_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.read_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.read_mesh" title="Link to this definition"></a></dt>
+<dd><p>Reads mesh from a Gmsh .msh file and extracts cell information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh_file</strong> (<em>str</em>) – The path to the mesh file.</p></li>
+<li><p><strong>boundary_point_refinement_level</strong> (<em>int</em>) – The number of boundary points to be generated.</p></li>
+<li><p><strong>bd_sampling_method</strong> (<em>str</em>) – The method used to generate the boundary points.</p></li>
+<li><p><strong>refinement_level</strong> (<em>int</em>) – The number of times the mesh should be refined.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cell points and the dictionary of boundary points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fastvpinns.Geometry.geometry_2d.Geometry_2D.write_vtk">
+<span class="sig-name descname"><span class="pre">write_vtk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/Geometry/geometry_2d.html#Geometry_2D.write_vtk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.Geometry.geometry_2d.Geometry_2D.write_vtk" title="Link to this definition"></a></dt>
+<dd><p>Writes the data to a VTK file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solution</strong> (<em>numpy.ndarray</em>) – The solution vector.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – The path to the output folder.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the output file.</p></li>
+<li><p><strong>data_names</strong> (<em>list</em>) – The list of data names in the VTK file to be written as scalars.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fe2d/fe2d_fe2d_cell.html" class="btn btn-neutral float-left" title="fastvpinns.FE_2D.FE2D_Cell module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../model/model.html" class="btn btn-neutral float-right" title="fastvpinns.model.model module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
