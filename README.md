@@ -26,7 +26,7 @@ STARS Lab, Department of Computational and Data Sciences, Indian Institute of Sc
 ## Installation
 ---
 
-The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details.
+The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest(refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details).
 
 You can simply install the package using pip as follows:
 
