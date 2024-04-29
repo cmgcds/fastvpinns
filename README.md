@@ -42,7 +42,7 @@ sudo apt-get install -y libglu1-mesa
 ## Usage
 ---
 
-For detailed usage, please refer to the README file in the [examples](examples) directory. 
+For detailed usage, please refer to the README file in the [examples](examples) directory or on the documentation page [here](https://cmgcds.github.io/fastvpinns/).
 
 The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 15 lines of code.
 
