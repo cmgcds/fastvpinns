@@ -1,6 +1,7 @@
 name: documentation
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch
 
 permissions:
   contents: write
@@ -9,20 +10,22 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-      - name: Install dependencies
-        run: |
-          pip install sphinx sphinx_rtd_theme myst_parser sphinx_copybutton
-      - name: Make HTML
-        run: |
-          cd docs
-          make html
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/html
-          force_orphan: true
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx sphinx_rtd_theme myst_parser sphinx_copybutton
+        pip install -r requirements.txt
+
+    - name: Make HTML
+      run: |
+        cd docs
+        make html
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/_build/html
+        force_orphan: true
