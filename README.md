@@ -24,7 +24,7 @@ A robust tensor-based deep learning framework for solving PDE's using hp-Variati
 }
 ```
 
-This library is an highly optimised version of the the initial [implementation](https://github.com/ehsankharazmi/hp-VPINNs) of [hp-VPINNs](https://arxiv.org/abs/2003.05385).
+This library is a highly optimised version of the the initial [implementation](https://github.com/ehsankharazmi/hp-VPINNs) of [hp-VPINNs](https://arxiv.org/abs/2003.05385).
 
 ## Authors
 ---
@@ -44,7 +44,7 @@ You can simply install the package using pip as follows:
 pip install fastvpinns
 ```
 
- On ubuntu systems with libGL issues caused due to matplotlib or gmsh, please run the following command to install the required dependencies.
+ On ubuntu systems with libGL issues caused due to matplotlib or gmsh, please run the following command to install the required dependencies:
 ```bash
 sudo apt-get install -y libglu1-mesa 
 ```
@@ -54,7 +54,7 @@ sudo apt-get install -y libglu1-mesa
 
 For detailed usage, please refer to the README file in the [examples](examples) directory or on the documentation page [here](https://cmgcds.github.io/fastvpinns/).
 
-The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 15 lines of code.
+The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can solve a PDE using fastvpinns using 15 lines of code.
 
 ```python
 #load the geometry 
@@ -83,7 +83,7 @@ for epoch in range(1000):
     model.train_step()
 ```
 
-Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code
+Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code.
 
 ## Contributing
 ---
