@@ -1,5 +1,4 @@
-# FastVPINNs - Fast hp-Variational Physics-Informed Neural Networks for solving PDE's
---- 
+
 [![Unit tests](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml)
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
 [![Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)
@@ -9,26 +8,52 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11-blue)
 
-<img src="Fastvpinns_logo.png" alt="Fastvpinns Logo" style="display: block; margin-left: auto; margin-right: auto; width: 30%">
 
+
+<br />
+<div align="center">
+  <a href="https://github.com/cmgcds/fastvpinns">
+    <img alt="FastVPINNs logo" src="https://raw.githubusercontent.com/cmgcds/fastvpinns/main/Fastvpinns_logo.png" width="500">
+  </a>
+
+<h3 align="center">Tensor-driven accelerated framework for hp-variational pinns</h3>
+
+  <p align="center">
+    <br />
+    <a href="https://cmgcds.github.io/fastvpinns"><strong>Link to Documentation 📚</strong></a>
+    <br />
+
+  </p>
+</div>
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
-This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).
+```bibtex
+@misc{anandh2024fastvpinns,
+      title={FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex Geometries}, 
+      author={Thivin Anandh and Divij Ghose and Himanshu Jain and Sashikumaar Ganesan},
+      year={2024},
+      eprint={2404.12063},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
-## Authors
+*This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
+
+## Authors 👨‍💻
 ---
 
 [Thivin Anandh](https://github.com/thivinanandh), [Divij Ghose](https://divijghose.github.io/), [Sashikumaar Ganesan](https://cds.iisc.ac.in/faculty/sashi)
 
 STARS Lab, Department of Computational and Data Sciences, Indian Institute of Science, Bangalore, India
 
-## Installation
+## Installation 🛠️
 ---
 
-The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest(refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details).
+The build of the code is currently tested on Python versions (3.8, 3.9, 3.10, 3.11), on OS Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest (refer compatibility build [Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)).
 
-You can simply install the package using pip as follows:
+You can install the package using pip as follows:
 
 ```bash
 pip install fastvpinns
@@ -39,10 +64,12 @@ pip install fastvpinns
 sudo apt-get install -y libglu1-mesa 
 ```
 
-## Usage
+For more information on the installation process, please refer to our documentation [here](https://cmgcds.github.io/fastvpinns/).
+
+## Usage 🚀
 ---
 
-For detailed usage, please refer to the README file in the [examples](examples) directory or on the documentation page [here](https://cmgcds.github.io/fastvpinns/).
+For detailed usage, please refer to our documentation [here](https://cmgcds.github.io/fastvpinns/).
 
 The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 15 lines of code.
 
@@ -75,9 +102,11 @@ for epoch in range(1000):
 
 Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code
 
-## Contributing
+## Contributing 🤝
 ---
-This code is currently maintained by the [Authors](#Authors). We welcome contributions from the community. Please create a pull request with the changes you would like to make.
+This code is currently maintained by the Authors as mentioned in the section above. We welcome contributions from the community. please refer to the 
 
-## License
+## License 📑
+---
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 

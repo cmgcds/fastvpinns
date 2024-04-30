@@ -360,7 +360,7 @@ def test_poisson_accuracy_activation_lr(poisson_test_data, activation, lr_type):
 
     # generate a model
     model = DenseModel(
-        layer_dims=[2, 50, 50, 50, 1],
+        layer_dims=[2, 30, 30, 30, 1],
         learning_rate_dict=lr_dict,
         params_dict=params_dict,
         loss_function=pde_loss_poisson,
@@ -381,7 +381,7 @@ def test_poisson_accuracy_activation_lr(poisson_test_data, activation, lr_type):
     y_exact = exact_solution(test_points[:, 0], test_points[:, 1])
 
     # train the model
-    for epoch in range(6000):
+    for epoch in range(6500):
         model.train_step(beta=10, bilinear_params_dict=bilinear_params_dict)
 
     # check the l2 error l1 error of the model
