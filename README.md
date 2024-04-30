@@ -59,7 +59,7 @@ You can install the package using pip as follows:
 pip install fastvpinns
 ```
 
- On ubuntu systems with libGL issues caused due to matplotlib or gmsh, please run the following command to install the required dependencies.
+ On ubuntu systems with libGL issues caused due to matplotlib or gmsh, please run the following command to install the required dependencies:
 ```bash
 sudo apt-get install -y libglu1-mesa 
 ```
@@ -71,7 +71,7 @@ For more information on the installation process, please refer to our documentat
 
 For detailed usage, please refer to our documentation [here](https://cmgcds.github.io/fastvpinns/).
 
-The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can  solve a PDE using fastvpinns using effectively 15 lines of code.
+The package provides a simple API to train and solve PDE using VPINNs. The following code snippet demonstrates how to train a hp-VPINN model for the 2D Poisson equation for a structured grid. We could observe that we can solve a PDE using fastvpinns using 15 lines of code.
 
 ```python
 #load the geometry 
@@ -100,11 +100,11 @@ for epoch in range(1000):
     model.train_step()
 ```
 
-Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code
+Note : Supporting functions which define the actual solution and boundary conditions have to be passed to the main code.
 
 ## Contributing 🤝
 ---
-This code is currently maintained by the Authors as mentioned in the section above. We welcome contributions from the community. please refer to the 
+This code is currently maintained by the Authors as mentioned in the section above. We welcome contributions from the community. please refer to the [documentation](https://cmgcds.github.io/fastvpinns/) for guidelines on contributing to the project.
 
 ## License 📑
 ---
