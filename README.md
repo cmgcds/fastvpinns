@@ -12,9 +12,19 @@
 <img src="Fastvpinns_logo.png" alt="Fastvpinns Logo" style="display: block; margin-left: auto; margin-right: auto; width: 30%">
 
 
-A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
+A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the methodology presented in the [FastVPINNs Paper](https://arxiv.org/abs/2404.12063). If you use this code in your research work, please cite the following paper:
+```bibtex
+@misc{anandh2024fastvpinns,
+      title={FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex Geometries}, 
+      author={Thivin Anandh and Divij Ghose and Himanshu Jain and Sashikumaar Ganesan},
+      year={2024},
+      eprint={2404.12063},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
-This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).
+This library is an highly optimised version of the the initial [implementation](https://github.com/ehsankharazmi/hp-VPINNs) of [hp-VPINNs](https://arxiv.org/abs/2003.05385).
 
 ## Authors
 ---
@@ -26,7 +36,7 @@ STARS Lab, Department of Computational and Data Sciences, Indian Institute of Sc
 ## Installation
 ---
 
-The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest(refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details).
+The build of the code is currently tested on Python 3.8, 3.9 and 3.10. The code is tested on Ubuntu 20.04 and Ubuntu 22.04, macOS-latest and Windows-latest(refer to [Compatibility-CI](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml) page for more details).
 
 You can simply install the package using pip as follows:
 
@@ -77,7 +87,7 @@ Note : Supporting functions which define the actual solution and boundary condit
 
 ## Contributing
 ---
-This code is currently maintained by the [Authors](#Authors). We welcome contributions from the community. Please create a pull request with the changes you would like to make.
+This code is currently maintained by the [Authors](#authors). We welcome contributions from the community. Please create a pull request with the changes you would like to make.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
