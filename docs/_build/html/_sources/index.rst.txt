@@ -66,6 +66,15 @@ For more details on the theory and implementation of hp-VPINNs, please refer to 
 
       fastvpinns <_rst/fastvpinns.rst>
 
+.. toctree::
+      :maxdepth: 1
+      :caption: Community
+
+      License <_rst/_licence.rst>
+      Contributing <_rst/_contributing>
+      Cite FastVPINNs <_rst/_cite.rst>
+      Team & Fundings <_rst/_team.rst>
+
 Indices and tables
 ==================
 

@@ -3,6 +3,13 @@ name: documentation
 on:
   workflow_dispatch
 
+  # push with tags to main branch
+  push:
+    branches:
+      - main
+    tags:
+      - "*" # any tag
+
 permissions:
   contents: write
 
