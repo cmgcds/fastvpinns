@@ -1,3 +1,5 @@
+name: Joss Paper Compiler
+
 on:
     push:
       branches: [ "joss_paper" ]
