@@ -13,6 +13,9 @@ build/
 # dist
 dist/
 
+# docs build
+docs/_build/
+
 # add vtk and mesh files
 *.vtk
 *.msh
