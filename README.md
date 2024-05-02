@@ -30,8 +30,10 @@ A robust tensor-based deep learning framework for solving PDE's using hp-Variati
 
 ```bibtex
 @misc{anandh2024fastvpinns,
-      title={FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex Geometries}, 
-      author={Thivin Anandh and Divij Ghose and Himanshu Jain and Sashikumaar Ganesan},
+      title={FastVPINNs: Tensor-Driven Acceleration
+             of VPINNs for Complex Geometries}, 
+      author={Thivin Anandh, Divij Ghose, Himanshu Jain
+               and Sashikumaar Ganesan},
       year={2024},
       eprint={2404.12063},
       archivePrefix={arXiv},
