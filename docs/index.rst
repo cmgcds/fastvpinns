@@ -18,8 +18,9 @@ Welcome to FastVPINNs's documentation!
    :alt: Compatibility check
    :target: https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml
 
-.. image:: https://img.shields.io/badge/Coverage-92%25-brightgreen
-   :alt: Coverage
+.. image:: https://codecov.io/gh/cmgcds/fastvpinns/graph/badge.svg?token=NI9G37R2Q7 
+   :target: https://codecov.io/gh/cmgcds/fastvpinns
+   :alt: Code coverage
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
    :alt: MIT License
