@@ -1,7 +1,7 @@
-fastvpinns.FE.quad\_bilinear module
+fastvpinns.FE.quadratureformulas module
 ---------------------------------------
 
-.. automodule:: fastvpinns.FE.quad_bilinear
+.. automodule:: fastvpinns.FE.quadratureformulas
    :members:
    :undoc-members:
    :show-inheritance:

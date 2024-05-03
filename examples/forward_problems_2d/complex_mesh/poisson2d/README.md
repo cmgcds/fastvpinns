@@ -329,9 +329,9 @@ The following imports are used from the `fastvpinns` package.
 ```python
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
 ```
-- Imports the fespace module from the `fastvpinns` package, which contains the `FE_2D` class responsible for setting up the finite element spaces.
+- Imports the fespace module from the `fastvpinns` package, which contains the `FE` class responsible for setting up the finite element spaces.
 ```python
-from fastvpinns.FE_2D.fespace2d import Fespace2D
+from fastvpinns.FE.fespace2d import Fespace2D
 ```
 - Imports the datahandler module from the `fastvpinns` package, which contains the `DataHandler` class responsible for handling and converting the data to necessary shape for training purposes
 ```python

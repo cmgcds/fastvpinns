@@ -268,7 +268,7 @@ Import relevant FastVPINNs methods
 .. code:: python
 
    from fastvpinns.data.datahandler2d import DataHandler2D
-   from fastvpinns.FE_2D.fespace2d import Fespace2D
+   from fastvpinns.FE.fespace2d import Fespace2D
    from fastvpinns.Geometry.geometry_2d import Geometry_2D
 
 Will import the functions related to setting up the finite element
@@ -410,45 +410,47 @@ data.
 
 `Back to contents <#contents>`__
 
-## Solution
+Solution
 -----------
 
-.. container::
+      .. figure:: exact_solution.png
+         :alt: Exact Solution
+         :align: center
 
-   ::
+         Exact Solution
 
-      <figure>
-          <img src="exact_solution.png" alt="Exact Solution">
-          <figcaption style="text-align: center;">Exact Solution</figcaption>
-      </figure>
-      <figure>
-          <img src="predicted_solution.png" alt="Predicted Solution">
-          <figcaption style="text-align: center;">Predicted Solution</figcaption>
-      </figure>
-      <figure>
-          <img src="error.png" alt="Error">
-          <figcaption style="text-align: center;">Error</figcaption>
-      </figure>
+      .. figure:: predicted_solution.png
+         :alt: Predicted Solution
+         :align: center
 
-.. container::
+         Predicted Solution
 
-   ::
+      .. figure:: error.png
+         :alt: Error
+         :align: center
 
-      <figure>
-          <img src="sensor_points.png" alt="Sensor points">
-          <figcaption style="text-align: center;">Sensor points</figcaption>
-      </figure>
-      <figure>
-          <img src="inverse_eps_prediction.png" alt="inverse_eps_prediction">
-          <figcaption style="text-align: center;">inverse_eps_prediction</figcaption>
-      </figure>
-      <figure>
-          <img src="loss_function.png" alt="Train Loss">
-          <figcaption style="text-align: center;">Train Loss</figcaption>
-      </figure>
+         Error
 
-## References
--------------
+      .. figure:: sensor_points.png
+         :alt: Sensor points
+         :align: center
+
+         Sensor points
+
+      .. figure:: inverse_eps_prediction.png
+         :alt: inverse_eps_prediction
+         :align: center
+
+         inverse_eps_prediction
+
+      .. figure:: loss_function.png
+         :alt: Train Loss
+         :align: center
+
+         Train Loss
+
+References
+-----------
 
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__

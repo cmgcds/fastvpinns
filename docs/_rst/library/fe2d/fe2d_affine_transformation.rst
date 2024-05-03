@@ -1,7 +1,7 @@
-fastvpinns.FE\_2D.quad\_affine module
+fastvpinns.FE.quad\_affine module
 -------------------------------------
 
-.. automodule:: fastvpinns.FE_2D.quad_affine
+.. automodule:: fastvpinns.FE.quad_affine
    :members:
    :undoc-members:
    :show-inheritance:

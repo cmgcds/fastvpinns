@@ -9,7 +9,7 @@ from pathlib import Path
 import tensorflow as tf
 
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
-from fastvpinns.FE_2D.fespace2d import Fespace2D
+from fastvpinns.FE.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 from fastvpinns.model.model import DenseModel
 from fastvpinns.physics.helmholtz2d import pde_loss_helmholtz

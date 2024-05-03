@@ -66,8 +66,11 @@ The example file, ``sin_cos.py``, defines the boundary conditions and
 boundary values, the forcing function and exact function (if test error
 needs to be calculated), bilinear parameters and the actual value of the
 parameter that needs to be estimated (if the error between the actual
-and estimated parameter needs to be calculated) #Defining boundary
-values Since this example ecforces zero Dirichlet boundary conditions
+and estimated parameter needs to be calculated) 
+
+Defining boundary
+~~~~~~~~~~~~~~~~~
+values Since this example enforces zero Dirichlet boundary conditions
 using hard constraints, the boundary functions defined in the example
 file are not used. Instead, the ansatz function for hard boundary
 constraints is defined in the `main file <#main-file>`__
@@ -202,7 +205,7 @@ Import relevant FastVPINNs methods
 .. code:: python
 
    from fastvpinns.data.datahandler2d import DataHandler2D
-   from fastvpinns.FE_2D.fespace2d import Fespace2D
+   from fastvpinns.FE.fespace2d import Fespace2D
    from fastvpinns.Geometry.geometry_2d import Geometry_2D
 
 Will import the functions related to setting up the finite element
