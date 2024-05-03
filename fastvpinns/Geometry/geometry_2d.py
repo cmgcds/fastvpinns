@@ -16,8 +16,10 @@ from pyDOE import lhs
 
 import gmsh
 
+from .geometry import Geometry
 
-class Geometry_2D:
+
+class Geometry_2D(Geometry):
     """
     Defines functions to read mesh from Gmsh and internal mesh for 2D problems.
 
@@ -54,6 +56,8 @@ class Geometry_2D:
         :param output_folder: The path to the output folder.
         :type output_folder: str
         """
+        # Call the super class constructor
+        super().__init__(mesh_type, mesh_generation_method)
         self.mesh_type = mesh_type
         self.mesh_generation_method = mesh_generation_method
         self.n_test_points_x = n_test_points_x

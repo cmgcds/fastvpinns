@@ -54,8 +54,10 @@ plt.rcParams["axes.prop_cycle"] = cycler(
     ]
 )
 
+from .fespace import Fespace
 
-class Fespace2D:
+
+class Fespace2D(Fespace):
     """
     Represents a finite element space in 2D.
 
@@ -109,26 +111,28 @@ class Fespace2D:
         """
         The constructor of the Fespace2D class.
         """
-        self.mesh = mesh
-        self.boundary_points = boundary_points
-        self.cells = cells
-        self.cell_type = cell_type
-        self.fe_order = fe_order
-        self.fe_type = fe_type
-        self.quad_order = quad_order
-        self.quad_type = quad_type
+        # call the constructor of the parent class
+        super().__init__(
+            mesh=mesh,
+            cells=cells,
+            boundary_points=boundary_points,
+            cell_type=cell_type,
+            fe_order=fe_order,
+            fe_type=fe_type,
+            quad_order=quad_order,
+            quad_type=quad_type,
+            fe_transformation_type=fe_transformation_type,
+            bound_function_dict=bound_function_dict,
+            bound_condition_dict=bound_condition_dict,
+            forcing_function=forcing_function,
+            output_path=output_path,
+        )
 
-        self.fe_transformation_type = fe_transformation_type
-
-        if cell_type == "triangle":
+        if self.cell_type == "triangle":
             raise ValueError(
                 "Triangle Mesh is not supported yet"
             )  # added by thivin - to remove support for triangular mesh
 
-        self.output_path = output_path
-        self.bound_function_dict = bound_function_dict
-        self.bound_condition_dict = bound_condition_dict
-        self.forcing_function = forcing_function
         self.generate_mesh_plot = generate_mesh_plot
 
         # to be calculated in the plot function

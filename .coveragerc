@@ -1,3 +1,7 @@
 [run]
 source = fastvpinns
 omit = */__init__.py
+[report]
+exclude_lines =
+    @abstractmethod
+    @abc.abstractmethod

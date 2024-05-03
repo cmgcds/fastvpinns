@@ -20,6 +20,9 @@ docs/_build/
 *.vtk
 *.msh
 
+# Html
+htmlcov/
+
 fastvpinns.egg-info/
 
 #ignore output files

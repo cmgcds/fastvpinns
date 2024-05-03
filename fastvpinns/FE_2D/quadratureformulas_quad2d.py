@@ -14,8 +14,10 @@ from scipy.special import roots_legendre, roots_jacobi, jacobi, gamma
 from scipy.special import legendre
 from scipy.special import eval_legendre, legendre
 
+from .quadratureformulas import Quadratureformulas
 
-class Quadratureformulas_Quad2D:
+
+class Quadratureformulas_Quad2D(Quadratureformulas):
     """
     Defines the Quadrature Formulas for the 2D Quadrilateral elements.
 
@@ -34,9 +36,10 @@ class Quadratureformulas_Quad2D:
         :param quad_type: The type of the quadrature.
         :type quad_type: str
         """
-        self.quad_order = quad_order
-        self.quad_type = quad_type
-        self.num_quad_points = quad_order * quad_order
+        # initialize the super class
+        super().__init__(
+            quad_order=quad_order, quad_type=quad_type, num_quad_points=quad_order * quad_order
+        )
 
         # Calculate the Gauss-Legendre quadrature points and weights for 1D
         # nodes_1d, weights_1d = roots_jacobi(self.quad_order, 1, 1)
