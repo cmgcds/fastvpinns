@@ -35,7 +35,7 @@ class QuadAffin(FETransforamtion2D):
 
     def set_cell(self):
         """
-        Set the cell co-ordinates, which will be used to calculate the Jacobian and actual values.
+        Set the cell coordinates, which will be used to calculate the Jacobian and actual values.
 
         :param None:
             There are no parameters for this method.
@@ -49,7 +49,7 @@ class QuadAffin(FETransforamtion2D):
         self.x2 = self.co_ordinates[2][0]
         self.x3 = self.co_ordinates[3][0]
 
-        # get the y-co-ordinates of the cell
+        # get the y-coordinates of the cell
         self.y0 = self.co_ordinates[0][1]
         self.y1 = self.co_ordinates[1][1]
         self.y2 = self.co_ordinates[2][1]
@@ -65,12 +65,12 @@ class QuadAffin(FETransforamtion2D):
 
     def get_original_from_ref(self, xi, eta):
         """
-        Returns the original co-ordinates from the reference co-ordinates.
+        Returns the original coordinates from the reference coordinates.
 
         :param float xi: The xi coordinate.
         :param float eta: The eta coordinate.
         :return: numpy.ndarray
-            The original co-ordinates.
+            The original coordinates.
         """
         x = self.xc0 + self.xc1 * xi + self.xc2 * eta
         y = self.yc0 + self.yc1 * xi + self.yc2 * eta
@@ -96,7 +96,7 @@ class QuadAffin(FETransforamtion2D):
 
     def get_orig_from_ref_derivative(self, ref_gradx, ref_grady, xi, eta):
         """
-        Returns the derivatives of the original co-ordinates with respect to the reference co-ordinates.
+        Returns the derivatives of the original coordinates with respect to the reference coordinates.
 
         :param ref_gradx: The reference gradient in the x-direction.
         :type ref_gradx: numpy.ndarray
@@ -107,7 +107,7 @@ class QuadAffin(FETransforamtion2D):
         :param eta: The eta coordinate.
         :type eta: float
 
-        :return: The derivatives of the original co-ordinates with respect to the reference co-ordinates.
+        :return: The derivatives of the original coordinates with respect to the reference coordinates.
         :rtype: tuple
         """
         gradx_orig = np.zeros(ref_gradx.shape)
@@ -121,7 +121,7 @@ class QuadAffin(FETransforamtion2D):
 
     def get_orig_from_ref_second_derivative(self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta):
         """
-        Returns the second derivatives (xx, xy, yy) of the original co-ordinates with respect to the reference co-ordinates.
+        Returns the second derivatives (xx, xy, yy) of the original coordinates with respect to the reference coordinates.
 
         :param grad_xx_ref: The reference second derivative in the xx-direction.
         :type grad_xx_ref: numpy.ndarray
@@ -134,7 +134,7 @@ class QuadAffin(FETransforamtion2D):
         :param eta: The eta coordinate.
         :type eta: float
 
-        :return: The second derivatives (xx, xy, yy) of the original co-ordinates with respect to the reference co-ordinates.
+        :return: The second derivatives (xx, xy, yy) of the original coordinates with respect to the reference coordinates.
         :rtype: tuple
         """
         GeoData = np.zeros((3, 3))

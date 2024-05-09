@@ -46,7 +46,7 @@ Defining boundary values
 
 The current version of FastVPINNs only
 implements Dirichlet boundary conditions. The boundary values can be set
-defining a function for each boundary,
+by defining a function for each boundary,
 
 .. code:: python
 

@@ -2,7 +2,7 @@ Solving forward problems with FastVPINNs : Poisson - 2D
 =======================================================
 
 In this example, we will learn how to solve a 2-dimensional Poisson problem using FastVPINNs. 
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 .. math::
 
@@ -124,7 +124,7 @@ The input file, ``input.yaml``, is used to define inputs to your solver.
 These will usually parameters that will changed often throughout your
 experimentation, hence it is best practice to pass these parameters
 externally. The input file is divided based on the modules which use the
-parameter in question, as follows - ### ``experimentation`` This
+parameter in question, as follows - ``experimentation`` This
 contains ``output_path``, a string which specifies which folder will be
 used to store your outputs.
 
@@ -346,8 +346,8 @@ PDE.
 
 `Back to contents <#contents>`__
 
-## Solution
------------
+Solution
+--------
 .. image:: exact_solution.png
    :alt: Exact Solution
    :align: center
@@ -365,8 +365,8 @@ PDE.
 
 `Back to contents <#contents>`__
 
-## References
--------------
+References
+----------
 
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__

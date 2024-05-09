@@ -75,7 +75,6 @@ Finite Element Setup
    :maxdepth: 2
    :titlesonly:
    
-      Fespace(Abstract) <library/fe2d/fe2d_fespace.rst>
       Fespace2D  <library/fe2d/fe2d_fespace2d.rst>
       FE2DSetupMain <library/fe2d/fe2d_fe2d_setup.rst>
       FE2DCell <library/fe2d/fe2d_fe2d_cell.rst>

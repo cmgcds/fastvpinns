@@ -47,7 +47,7 @@ actual value of the parameter that needs to be estimated (if the error
 between the actual and estimated parameter needs to be calculated) ###
 Defining boundary values The current version of FastVPINNs only
 implements Dirichlet boundary conditions. The boundary values can be set
-defining a function for each boundary,
+by defining a function for each boundary,
 
 .. code:: python
 
@@ -430,12 +430,6 @@ Solution
          :align: center
 
          Error
-
-      .. figure:: sensor_points.png
-         :alt: Sensor points
-         :align: center
-
-         Sensor points
 
       .. figure:: inverse_eps_prediction.png
          :alt: inverse_eps_prediction

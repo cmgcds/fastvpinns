@@ -2,7 +2,7 @@ Solving forward problems with FastVPINNs : Enforcing hard boundary constraints w
 =======================================================================================================
 
 In this example, we will learn how to use hard boundary constraints using FastVPINNs.
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 .. math::
 

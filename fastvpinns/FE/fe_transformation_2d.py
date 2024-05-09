@@ -35,7 +35,7 @@ class FETransforamtion2D:
     @abstractmethod
     def set_cell(self):
         """
-        Set the cell co-ordinates, which will be used to calculate the Jacobian and actual values.
+        Set the cell coordinates, which will be used to calculate the Jacobian and actual values.
 
         :return: None
         """
@@ -56,13 +56,13 @@ class FETransforamtion2D:
     @abstractmethod
     def get_original_from_ref(self, xi, eta):
         """
-        This method returns the original co-ordinates from the reference co-ordinates.
+        This method returns the original coordinates from the reference coordinates.
 
-        :param xi: The xi value of the reference co-ordinates.
+        :param xi: The xi value of the reference coordinates.
         :type xi: float
-        :param eta: The eta value of the reference co-ordinates.
+        :param eta: The eta value of the reference coordinates.
         :type eta: float
-        :return: The original co-ordinates corresponding to the given reference co-ordinates.
+        :return: The original coordinates corresponding to the given reference coordinates.
         :rtype: tuple
         """
 

@@ -4,7 +4,7 @@ Poisson 2D Example on Circular Domain
 
 This example demonstrates how to solve a Poisson equation in 2D on a
 circular domain using the ``fastvpinns`` package. 
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 The Poisson equation is given by
 
@@ -32,8 +32,6 @@ The computational domain is a circular domain with radius 1 centered at
 
 .. figure:: mesh.png
    :alt: alt text
-
-   alt text
 
 Contents
 -----------
@@ -307,7 +305,7 @@ special type of Jacobi polynomials defined by
 
 .. math:: J_{n} = J_{n-1} - J_{n+1}
 
-, where $J_{n} is the nth Jacobi polynomial.
+, where J :sub:`n` is the nth Jacobi polynomial.
 
 `Return to top <#contents>`__
 
@@ -597,7 +595,7 @@ Initialise the ``DataHandler`` class with the required parameters.
 Setup model
 ^^^^^^^^^^^
 
-Setup the necesary parameters for the model and initialise the ``Model``
+Setup the necessary parameters for the model and initialise the ``Model``
 class. Before that fill the ``params`` dictionary with the required
 parameters.
 

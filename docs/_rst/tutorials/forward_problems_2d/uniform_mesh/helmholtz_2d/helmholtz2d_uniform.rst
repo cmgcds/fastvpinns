@@ -2,7 +2,7 @@ Solving forward problems with FastVPINNs : Helmholtz - 2D
 =========================================================
 
 In this example, we will learn to solve the Helmholtz equation in 2D
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 .. math::
 
@@ -13,8 +13,8 @@ where
 .. math::
 
 
-   f(x,y) = 2 \pi cos(\pi y)sin(\pi x) + 2 \pi cos(\pi x) sin(\pi y) 
-            + (x+y) sin(\pi x) sin(\pi y) - 2 \pi^2 (x+y) sin(\pi x) sin(\pi y),
+   f(x,y) = 2 \pi cos(\pi y)sin(\pi x) + 2 \pi cos(\pi x) sin(\pi y) + (x+y) sin(\pi x) sin(\pi y) - \\
+   2 \pi^2 (x+y) sin(\pi x) sin(\pi y),
 
 
 For this problem, the parameters are
