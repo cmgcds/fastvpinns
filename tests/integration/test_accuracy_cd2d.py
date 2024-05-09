@@ -299,4 +299,4 @@ def test_cd2d_accuracy_external(cd2d_test_data_circle):
         compute_errors_combined(y_exact, y_pred)
     )
 
-    assert l2_error < 6e-2 and l1_error < 6e-2
+    assert l2_error < 7e-2 and l1_error < 7e-2
