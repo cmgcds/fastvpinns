@@ -69,6 +69,10 @@ Similarly, we can define more boundary functions like
 functions are defined, we can assign them to the respective boundaries
 using ``get_boundary_function_dict``
 
+.. figure:: rect.png
+   :alt: Unit Square
+   :align: center
+
 .. code:: python
 
    def get_boundary_function_dict():

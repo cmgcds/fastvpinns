@@ -75,6 +75,13 @@ using hard constraints, the boundary functions defined in the example
 file are not used. Instead, the ansatz function for hard boundary
 constraints is defined in the `main file <#main-file>`__
 
+.. figure:: rect.png
+   :alt: Unit Square
+   :align: center
+
+For internally generated geometries, the boundary id's will be hardcoded to 
+1000  for bottom, 1001 for right, 1002 for top, and 1003 for left; as shown in figure.
+
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

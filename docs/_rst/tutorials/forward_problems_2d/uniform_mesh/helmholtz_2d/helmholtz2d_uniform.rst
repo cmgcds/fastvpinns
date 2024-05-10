@@ -84,7 +84,14 @@ between the actual and estimated parameter needs to be calculated)
 
 Defining boundary values
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Boundary values are defined using the functions ``get_boundary_function_dict`` and ``get_bound_cond_dict``
+Boundary values are defined using the functions ``get_boundary_function_dict`` and ``get_bound_cond_dict``.
+
+.. figure:: rect.png
+   :alt: Unit Square
+   :align: center
+
+For internally generated geometries, the boundary id's will be hardcoded to 
+1000  for bottom, 1001 for right, 1002 for top, and 1003 for left; as shown in figure.
 
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

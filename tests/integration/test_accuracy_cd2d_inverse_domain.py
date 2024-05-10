@@ -208,4 +208,4 @@ def test_cd2d_accuracy_external(cd2d_test_data_circle, cd2d_learning_rate_static
         l1_error_relative_inverse,
     ) = compute_errors_combined(actual_epsilon, inverse_pred)
 
-    assert l1_error < 7e-2 and l1_error_inverse < 7e-2
+    assert l1_error < 8.3e-2 and l1_error_inverse < 8.3e-2

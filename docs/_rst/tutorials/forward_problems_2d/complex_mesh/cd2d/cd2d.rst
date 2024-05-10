@@ -40,8 +40,6 @@ The computational domain is a circular domain with radius 1 centered at
 .. figure:: mesh.png
    :alt: alt text
 
-   alt text
-
 Contents
 --------
 
@@ -107,6 +105,14 @@ the boundary id and the value is the boundary function. The function
 ``get_bound_cond_dict`` returns a dictionary of boundary conditions. The
 key of the dictionary is the boundary id and the value is the boundary
 condition.
+
+.. figure:: unitcircle.png
+   :alt: Unit Circle
+   :align: center
+
+For externally created geometries from gmsh, the user needs to provide
+the physical tag for the boundaries present in the geometry. 
+In our case, we have used 1000 to define the circular boundary in mesh file. 
 
 Note : As of now, only Dirichlet boundary conditions are supported.
 

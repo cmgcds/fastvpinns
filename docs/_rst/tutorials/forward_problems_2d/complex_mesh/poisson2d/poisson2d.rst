@@ -104,6 +104,14 @@ the boundary id and the value is the boundary function. The function
 key of the dictionary is the boundary id and the value is the boundary
 condition.
 
+.. figure:: unitcircle.png
+   :alt: Unit Circle
+   :align: center
+
+For externally created geometries from gmsh, the user needs to provide
+the physical tag for the boundaries present in the geometry. 
+In our case, we have used 1000 to define the circular boundary in mesh file. 
+
 Note : As of now, only Dirichlet boundary conditions are supported.
 
 .. code:: python

@@ -110,6 +110,14 @@ gear geometry. The boundary ids are defined as 1000 and 1001
 respectively. The boundary conditions are defined as “dirichlet” for
 both the boundaries.
 
+.. figure:: gmeshcircle.png
+   :alt: Gmesh Circle
+   :align: center
+
+For externally created geometries from gmsh, the user needs to provide
+the physical tag for the boundaries present in the geometry. 
+In our case, we have used 1001, 1000 to define the internal and external boundary in mesh file. 
+
 Note : As of now, only Dirichlet boundary conditions are supported.
 
 .. code:: python
