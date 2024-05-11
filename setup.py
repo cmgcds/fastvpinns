@@ -11,7 +11,7 @@ setup(
     author_email="thivinanandh@gmail.com",
     description="An Efficient tensor-based implementation of hp-Variational Physics-informed Neural Networks (VPINNs) for solving PDEs",
     packages=find_packages(),
-    license="MIT",
+    # license="MIT",
     install_requires=requirements,
     keywords=['variational PINNs', 'VPINNs', 'PINNs', 'Physics-informed neural networks', 'Deep learning', 'Machine learning']
 )
