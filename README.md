@@ -3,7 +3,7 @@
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
 [![Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)
 [![codecov](https://codecov.io/gh/cmgcds/fastvpinns/graph/badge.svg?token=NI9G37R2Q7)](https://codecov.io/gh/cmgcds/fastvpinns)
-![PyPI](https://badge.fury.io/py/fastvpinns.svg)](https://badge.fury.io/py/fastvpinns)
+[![PyPI](https://badge.fury.io/py/fastvpinns.svg)](https://badge.fury.io/py/fastvpinns)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
