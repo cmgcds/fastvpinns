@@ -74,7 +74,7 @@ This ability of the framework to allow users to train a hp-VPINNs to solve a PDE
 The FastVPINNs framework consists of five core modules, They are 
 \begin{itemize}
     \item Geometry - Handles mesh generation
-    \item FE2D - Handles the finite element test functions and their gradients
+    \item FE - Handles the finite element test functions and their gradients
     \item Data - Handles tensor assembly
     \item Physics - Handles the tensor based loss computation for the weak form of the PDE
     \item Model - Handles the dense NN for training the PDE
@@ -85,8 +85,8 @@ The FastVPINNs framework consists of five core modules, They are
 ## Geometry Module: 
 This module provides the functionality to define the geometry of the domain. The module provides the functionalities to either generate a quadrilateral mesh internally or to read an external \verb|.mesh| file. The module also provides the functionality to obtain boundary points for complex geometries. 
 
-## FE2D Module:
-The FE2D module is responsible for handling the finite element test functions and their gradients. The module's functionality can be broadly classified into into four categories,
+## FE Module:
+The FE module is responsible for handling the finite element test functions and their gradients. The module's functionality can be broadly classified into into four categories,
 
 - **Finite Element Test functions**: 
     provides the test function values and its gradients for a given element. This has been implemented for basis functions like Lagrange, Jacobi polynomials etc.
