@@ -3,7 +3,7 @@
 [![Integration tests](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml)
 [![Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml/badge.svg)](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)
 [![codecov](https://codecov.io/gh/cmgcds/fastvpinns/graph/badge.svg?token=NI9G37R2Q7)](https://codecov.io/gh/cmgcds/fastvpinns)
-![PyPI](https://badge.fury.io/py/fastvpinns.svg)](https://badge.fury.io/py/fastvpinns)
+[![PyPI](https://badge.fury.io/py/fastvpinns.svg)](https://badge.fury.io/py/fastvpinns)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -29,18 +29,6 @@
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
-```bibtex
-@misc{anandh2024fastvpinns,
-      title={FastVPINNs: Tensor-Driven Acceleration
-             of VPINNs for Complex Geometries}, 
-      author={Thivin Anandh, Divij Ghose, Himanshu Jain
-               and Sashikumaar Ganesan},
-      year={2024},
-      eprint={2404.12063},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
-}
-```
 
 *This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
 
@@ -68,6 +56,24 @@ sudo apt-get install -y libglu1-mesa
 ```
 
 For more information on the installation process, please refer to our documentation [here](https://cmgcds.github.io/fastvpinns/).
+
+## Citing 📜
+---
+
+If you use this code in your research, please consider citing the following paper:
+
+```bibtex
+@misc{anandh2024fastvpinns,
+      title={FastVPINNs: Tensor-Driven Acceleration
+             of VPINNs for Complex Geometries}, 
+      author={Thivin Anandh, Divij Ghose, Himanshu Jain
+               and Sashikumaar Ganesan},
+      year={2024},
+      eprint={2404.12063},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
 ## Usage 🚀
 ---

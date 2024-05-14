@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fastvpinns"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Thivin Anandh", email="thivinanandh@gmail.com" },
   { name="Divij Ghose", email="divijghose@gmail.com" },
@@ -13,6 +13,7 @@ authors = [
 description = "A fast tensor-driven variational physics-informed neural network library for solving PDEs."
 readme = "README.md"
 requires-python = ">=3.8"
+keywords = ["PDE", "Neural Networks", "Physics", "AI", "Machine Learning","variational PINNs", "VPINNs", "PINNs", "Physics-informed neural networks"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
