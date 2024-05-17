@@ -102,7 +102,7 @@ This module contains custom subclasses of the `tensorflow.keras.Model` class, wh
 
 # Minimal Working Example {#sec:minimal-working-example}
 
-With the higher level of abstraction provided by the FastVPINNs framework, users can solve a PDE with just 5 API calls. Shown below is a minimal working example to solve a Poisson equation using the FastVPINNs framework.
+With the higher level of abstraction provided by the FastVPINNs framework, users can solve a PDE with just five API calls. Shown below is a minimal working example to solve the Poisson equation using the FastVPINNs framework.
 
 ```python
 #load the geometry 

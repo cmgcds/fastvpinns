@@ -313,7 +313,7 @@ a Creative Commons Attribution 4.0 International License (CC BY
     <p><italic>Remark: The module is named FE (Finite Element) Module
     because of its similarities with classical FEM routines, such as
     test functions, numerical quadratures and transformations. However,
-    We would like to reiterate that our framework is not an FEM solver,
+    we would like to reiterate that our framework is not an FEM solver,
     but a hp-VPINNs solver</italic></p>
   </sec>
   <sec id="data-module">
@@ -345,8 +345,8 @@ a Creative Commons Attribution 4.0 International License (CC BY
 <sec id="secU003Aminimal-working-example">
   <title>Minimal Working Example</title>
   <p>With the higher level of abstraction provided by the FastVPINNs
-  framework, users can solve a PDE with just 5 API calls. Shown below is
-  a minimal working example to solve a Poisson equation using the
+  framework, users can solve a PDE with just five API calls. Shown below
+  is a minimal working example to solve the Poisson equation using the
   FastVPINNs framework.</p>
   <code language="python">#load the geometry 
 domain = Geometry_2D(&quot;quadrilateral&quot;, &quot;internal&quot;,
