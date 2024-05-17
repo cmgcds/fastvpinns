@@ -47,7 +47,7 @@ Physics-informed neural networks (PINNs), introduced by [@raissi2019physics], wo
     \end{split}
 \end{align*}
 
-where $u_{\text{NN}}(x; W, b)$ is the approximate solution of the PDE obtained from neural network with weights $W$ and biases $b$. In addition, $N_T$ is the total number of training points in the interior of the domain $\Omega$, $N_D$ is the total number of training points on the boundary $\partial\Omega$, $\tau$ is a scaling factor applied to control the penalty on the boundary term and $L_{\text{PINN}}(W,b)$ is the loss function of the PINNs. 
+Here, $u_{\text{NN}}(x; W, b)$ is the approximate solution of the PDE obtained from neural network with weights $W$ and biases $b$. In addition, $N_T$ is the total number of training points in the interior of the domain $\Omega$, $N_D$ is the total number of training points on the boundary $\partial\Omega$, $\tau$ is a scaling factor applied to control the penalty on the boundary term and $L_{\text{PINN}}(W,b)$ is the loss function of the PINNs. 
 
 Variational Physics informed neural networks (VPINNs) [@kharazmi2019variational] are an extension of PINNs, where the weak form of the PDE is used in the loss function of the neural network. The weak form of the PDE is obtained by multiplying the PDE with a test function, integrating over the domain and applying integration by parts to the higher order derivative terms. The method of hp-VPINNs [@kharazmi2021hp] was subsequently developed to increase the accuracy using h-refinement (increasing number of elements) and p-refinement (increasing the number of test functions).The loss function of hp-VPINNs with $\texttt{N\_{elem}}$ elements in the domain can be written as follows
 
@@ -86,7 +86,7 @@ The FE module is responsible for handling the Finite Element test functions and 
     \item \textbf{Test functions}: Provides the test function values and its gradients for a given reference element. 
     \item \textbf{Quadrature functions}: Provides the quadrature points and weights for a given element based on the quadrature order selected by the user. These values will be used for numerical integration of the weak form of the PDE.
     \item \textbf{Transformation functions}: Provides the implementation of transformation routines such as `Affine` transformation and `Bilinear` transformation. This can be used to transform the test function values and gradients from the reference element to the actual element.
-    \item \textbf{Finite Element Setup}: Provides the functionality to set up the test functions, quadrature rules and the transformation for every element and save them in a common wrapper to access them. Further, it also hosts functions to plot the mesh with quadrature points, assign boundary values based on the boundary points obtained from the geometry module, calculation of the forcing term etc.
+    \item \textbf{Finite Element Setup}: Provides the functionality to set up the test functions, quadrature rules and the transformation for every element and save them in a common wrapper class to access them. Further, it also hosts functions to plot the mesh with quadrature points, assign boundary values based on the boundary points obtained from the geometry module and calculation of the forcing term.
 \end{itemize}
 
 *Remark: The module is named FE (Finite Element) Module because of its similarities with classical FEM routines, such as test functions, numerical quadratures and transformations.  However, We would like to reiterate that our framework is not an FEM solver, but a hp-VPINNs solver*
