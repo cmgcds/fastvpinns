@@ -5,7 +5,7 @@ import pytest
 import numpy as np
 import shutil
 from fastvpinns.Geometry.geometry_2d import Geometry_2D
-from fastvpinns.FE_2D.fespace2d import Fespace2D
+from fastvpinns.FE.fespace2d import Fespace2D
 from fastvpinns.data.datahandler2d import DataHandler2D
 
 import os

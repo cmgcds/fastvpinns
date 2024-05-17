@@ -4,7 +4,7 @@ Poisson 2D Example on Circular Domain
 
 This example demonstrates how to solve a Poisson equation in 2D on a
 circular domain using the ``fastvpinns`` package. 
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 The Poisson equation is given by
 
@@ -32,8 +32,6 @@ The computational domain is a circular domain with radius 1 centered at
 
 .. figure:: mesh.png
    :alt: alt text
-
-   alt text
 
 Contents
 -----------
@@ -105,6 +103,14 @@ the boundary id and the value is the boundary function. The function
 ``get_bound_cond_dict`` returns a dictionary of boundary conditions. The
 key of the dictionary is the boundary id and the value is the boundary
 condition.
+
+.. figure:: unitcircle.png
+   :alt: Unit Circle
+   :align: center
+
+For externally created geometries from gmsh, the user needs to provide
+the physical tag for the boundaries present in the geometry. 
+In our case, we have used 1000 to define the circular boundary in mesh file. 
 
 Note : As of now, only Dirichlet boundary conditions are supported.
 
@@ -307,7 +313,7 @@ special type of Jacobi polynomials defined by
 
 .. math:: J_{n} = J_{n-1} - J_{n+1}
 
-, where $J_{n} is the nth Jacobi polynomial.
+, where J :sub:`n` is the nth Jacobi polynomial.
 
 `Return to top <#contents>`__
 
@@ -423,12 +429,12 @@ The following imports are used from the ``fastvpinns`` package.
    from fastvpinns.Geometry.geometry_2d import Geometry_2D
 
 -  Imports the fespace module from the ``fastvpinns`` package, which
-   contains the ``FE_2D`` class responsible for setting up the finite
+   contains the ``FE`` class responsible for setting up the finite
    element spaces.
 
 .. code:: python
 
-   from fastvpinns.FE_2D.fespace2d import Fespace2D
+   from fastvpinns.FE.fespace2d import Fespace2D
 
 -  Imports the datahandler module from the ``fastvpinns`` package, which
    contains the ``DataHandler`` class responsible for handling and
@@ -597,7 +603,7 @@ Initialise the ``DataHandler`` class with the required parameters.
 Setup model
 ^^^^^^^^^^^
 
-Setup the necesary parameters for the model and initialise the ``Model``
+Setup the necessary parameters for the model and initialise the ``Model``
 class. Before that fill the ``params`` dictionary with the required
 parameters.
 

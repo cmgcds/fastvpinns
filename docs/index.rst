@@ -18,8 +18,9 @@ Welcome to FastVPINNs's documentation!
    :alt: Compatibility check
    :target: https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml
 
-.. image:: https://img.shields.io/badge/Coverage-92%25-brightgreen
-   :alt: Coverage
+.. image:: https://codecov.io/gh/cmgcds/fastvpinns/graph/badge.svg?token=NI9G37R2Q7 
+   :target: https://codecov.io/gh/cmgcds/fastvpinns
+   :alt: Code coverage
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
    :alt: MIT License
@@ -33,9 +34,9 @@ Welcome to FastVPINNs's documentation!
    :alt: Python Versions
 
 A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework supports handling complex geometries and uses tensor-based loss computation to accelerate the training of conventional hp-VPINNs. 
-The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_. The framework is written on `Tensorflow 2.0 <https://www.tensorflow.org/>` and has support for handling external meshes. 
+The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_. The framework is written on `Tensorflow 2.0 <https://www.tensorflow.org/>`_ and has support for handling external meshes. 
 
-*Note: This framework is an highly optimised version of the the initial implementation of hp-VPINNs by* `kharazmi <https://github.com/ehsankharazmi/hp-VPINNs>`_. Ref `hp-VPINNs(arXiv) <https://arxiv.org/abs/2003.05385>`_.
+*Note: This framework is a highly optimised version of the the initial implementation of hp-VPINNs by* `kharazmi <https://github.com/ehsankharazmi/hp-VPINNs>`_. Ref `hp-VPINNs(arXiv) <https://arxiv.org/abs/2003.05385>`_.
 
 Variational Physics-informed neural network
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

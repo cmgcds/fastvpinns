@@ -15,6 +15,15 @@ where
 
 We begin by introducing the various files required to run this example
 
+Computational Domain
+^^^^^^^^^^^^^^^^^^^^
+
+The computational domain is a circular domain with radius 1 centered at
+(0, 0).
+
+.. figure:: mesh.png
+   :alt: alt text
+
 Contents
 --------
 
@@ -46,23 +55,24 @@ Defining boundary values
 
 The current version of FastVPINNs only
 implements Dirichlet boundary conditions. The boundary values can be set
-defining a function for each boundary,
+by defining a function for each boundary,
 
 .. code:: python
 
-   def left_boundary(x, y):
+   def circle_boundary(x, y):
        """
        This function will return the boundary value for given component of a boundary
        """
        val = np.ones_like(x) * 0.0
        return val
 
-In the above snippet, we define a function ``left_boundary`` which
-returns the Dirichlet values to be enforced at that boundary. Similarly,
-we can define more boundary functions like ``right_boundary``,
-``top_boundary`` and ``bottom_boundary``. Once these functions are
-defined, we can assign them to the respective boundaries using
-``get_boundary_function_dict``
+The function ``circle_boundary`` returns the boundary value for a given
+component of the boundary. The function ``get_boundary_function_dict``
+returns a dictionary of boundary functions. The key of the dictionary is
+the boundary id and the value is the boundary function. The function
+``get_bound_cond_dict`` returns a dictionary of boundary conditions. The
+key of the dictionary is the boundary id and the value is the boundary
+condition.
 
 .. code:: python
 
@@ -70,11 +80,15 @@ defined, we can assign them to the respective boundaries using
        """
        This function will return a dictionary of boundary functions
        """
-       return {1000: bottom_boundary, 1001: right_boundary, 1002: top_boundary, 1003: left_boundary}
+       return {1000: circle_boundary}
 
-Here, ``1000``, ``1001``, etc. are the boundary identifiers obtained
-from the geometry. Thus, each boundary gets mapped to it boundary value
-in the dictionary.
+For externally created geometries from gmsh, the user needs to provide
+the physical tag for the boundaries present in the geometry. 
+In our case, we have used 1000 to define the circular boundary in mesh file. 
+
+.. figure:: unitcircle.png
+   :alt: Unit Circle
+   :align: center
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +104,7 @@ point).
        """
        This function will return a dictionary of boundary conditions
        """
-       return {1000: "dirichlet", 1001: "dirichlet", 1002: "dirichlet", 1003: "dirichlet"}
+       return {1000: circle_boundary}
 
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,7 +265,7 @@ Import relevant FastVPINNs methods
 .. code:: python
 
    from fastvpinns.data.datahandler2d import DataHandler2D
-   from fastvpinns.FE_2D.fespace2d import Fespace2D
+   from fastvpinns.FE.fespace2d import Fespace2D
    from fastvpinns.Geometry.geometry_2d import Geometry_2D
 
 Will import the functions related to setting up the finite element

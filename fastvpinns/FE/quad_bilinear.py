@@ -33,7 +33,7 @@ class QuadBilinear(FETransforamtion2D):
 
     def set_cell(self):
         """
-        Set the cell co-ordinates, which will be used as intermediate values to calculate the Jacobian and actual values.
+        Set the cell coordinates, which will be used as intermediate values to calculate the Jacobian and actual values.
 
         :param None:
         :type None:
@@ -46,7 +46,7 @@ class QuadBilinear(FETransforamtion2D):
         self.x2 = self.co_ordinates[2][0]
         self.x3 = self.co_ordinates[3][0]
 
-        # get the y-co-ordinates of the cell
+        # get the y-coordinates of the cell
         self.y0 = self.co_ordinates[0][1]
         self.y1 = self.co_ordinates[1][1]
         self.y2 = self.co_ordinates[2][1]
@@ -64,14 +64,14 @@ class QuadBilinear(FETransforamtion2D):
 
     def get_original_from_ref(self, xi, eta):
         """
-        This method returns the original co-ordinates from the reference co-ordinates.
+        This method returns the original coordinates from the reference coordinates.
 
         :param xi: The xi coordinate in the reference element.
         :type xi: float
         :param eta: The eta coordinate in the reference element.
         :type eta: float
 
-        :returns: The original co-ordinates [x, y] corresponding to the given reference co-ordinates.
+        :returns: The original coordinates [x, y] corresponding to the given reference coordinates.
         :rtype: numpy.ndarray
         """
         x = self.xc0 + self.xc1 * xi + self.xc2 * eta + self.xc3 * xi * eta
@@ -88,7 +88,7 @@ class QuadBilinear(FETransforamtion2D):
         :param eta: The eta coordinate in the reference element.
         :type eta: float
 
-        :returns: The Jacobian of the transformation at the given reference co-ordinates.
+        :returns: The Jacobian of the transformation at the given reference coordinates.
         :rtype: float
         """
         self.detjk = abs(
@@ -99,7 +99,7 @@ class QuadBilinear(FETransforamtion2D):
 
     def get_orig_from_ref_derivative(self, ref_gradx, ref_grady, xi, eta):
         """
-        This method returns the derivatives of the original co-ordinates with respect to the reference co-ordinates.
+        This method returns the derivatives of the original coordinates with respect to the reference coordinates.
 
         :param ref_gradx: The gradient of the xi coordinate in the reference element.
         :type ref_gradx: numpy.ndarray
@@ -110,7 +110,7 @@ class QuadBilinear(FETransforamtion2D):
         :param eta: The eta coordinate in the reference element.
         :type eta: float
 
-        :returns: The derivatives of the original co-ordinates [x, y] with respect to the reference co-ordinates.
+        :returns: The derivatives of the original coordinates [x, y] with respect to the reference coordinates.
         :rtype: numpy.ndarray
         """
         n_test = ref_gradx.shape[0]
@@ -137,7 +137,7 @@ class QuadBilinear(FETransforamtion2D):
 
     def get_orig_from_ref_second_derivative(self, grad_xx_ref, grad_xy_ref, grad_yy_ref, xi, eta):
         """
-        This method returns the second derivatives of the original co-ordinates with respect to the reference co-ordinates.
+        This method returns the second derivatives of the original coordinates with respect to the reference coordinates.
 
         :param grad_xx_ref: The second derivative of the xi coordinate in the reference element.
         :type grad_xx_ref: numpy.ndarray
@@ -150,7 +150,7 @@ class QuadBilinear(FETransforamtion2D):
         :param eta: The eta coordinate in the reference element.
         :type eta: float
 
-        :returns: The second derivatives of the original co-ordinates [xx, xy, yy] with respect to the reference co-ordinates.
+        :returns: The second derivatives of the original coordinates [xx, xy, yy] with respect to the reference coordinates.
         :rtype: numpy.ndarray
         """
         # print(" Error : Second Derivative not implemented -- Ignore this error, if second derivative is not required ")

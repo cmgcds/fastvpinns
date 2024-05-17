@@ -3,7 +3,7 @@ FastVPINNs Module Documentation
 
 This section covers the documentation of the FastVPINNs modules. The package is divided into several subpackages, each of which is documented in its own section. The main module documentation is provided below.
 
-- :ref:`FE_2D <FE_2D>`        - Finite Element routines for 2D domains
+- :ref:`FE <FE>`        - Finite Element routines for 2D domains
 - :ref:`Geometry <Geometry>`  - Meshing and Geometry routines
 - :ref:`Model <Model>`        - Dense Neural Network Model
 - :ref:`Physics <Physics>`    - Physics classes for the problem
@@ -11,14 +11,14 @@ This section covers the documentation of the FastVPINNs modules. The package is 
 - :ref:`Utils <Utils>`        - Utility functions
 
 
-.. _FE_2D:
+.. _FE:
 
-FE_2D
+FE
 -----------
 
 ----
 
-This section holds the documentation for the FE_2D module of the FastVPINNs package. The module provides the necessary classes and functions to obtain the finite element test functions and quadrature points for the 2D domain within the FastVPINNs package. This section is broadly classified into 
+This section holds the documentation for the FE module of the FastVPINNs package. The module provides the necessary classes and functions to obtain the finite element test functions and quadrature points for the 2D domain within the FastVPINNs package. This section is broadly classified into 
 
 .. toctree::
    :maxdepth: 2
@@ -32,7 +32,7 @@ Finite Element Test Functions
    :titlesonly:
 
       Jacobi test functions <library/fe2d/fe2d_jacobi.rst>
-      Basis function 2d (Abstract) <library/fe2d/fe2d_basis_function.rst>
+      Basis function 2d(Abstract) <library/fe2d/fe2d_basis_function.rst>
 
 .. toctree::
    :maxdepth: 2
@@ -45,7 +45,8 @@ Quadrature Functions
    :maxdepth: 2
    :titlesonly:
 
-   Quadrature Functions <library/fe2d/fe2d_quadrature.rst>
+      Quadrature Functions(Abstract) <library/fe2d/fe2d_quadratureformulas.rst>
+      Quadrature Functions-2D <library/fe2d/fe2d_quadratureformulas2d.rst>
 
 .. toctree::
    :maxdepth: 2
@@ -58,9 +59,10 @@ Finite Element Transformations
    :maxdepth: 2
    :titlesonly:
 
+      FE Transformation(Abstract) <library/fe2d/fe2d_transformation.rst>
       Affine Transformations <library/fe2d/fe2d_affine_transformation.rst>
       Bilinear Transformations <library/fe2d/fe2d_bilinear_transformation.rst>
-      FE Transformation (Abstract) <library/fe2d/fe2d_transformation.rst>
+      
 
 .. toctree::
    :maxdepth: 2
@@ -72,8 +74,8 @@ Finite Element Setup
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-
-      Fespace2D <library/fe2d/fe2d_fespace2d.rst>
+   
+      Fespace2D  <library/fe2d/fe2d_fespace2d.rst>
       FE2DSetupMain <library/fe2d/fe2d_fe2d_setup.rst>
       FE2DCell <library/fe2d/fe2d_fe2d_cell.rst>
 
@@ -91,7 +93,8 @@ This section holds the documentation for the the geometry module of the FastVPIN
    :maxdepth: 2
    :titlesonly:
 
-      Geometry2D - Class for Geometry related functions <library/geometry/geometry2d.rst>
+      Geometry(Abstract)<library/geometry/geometry.rst>
+      Geometry2D <library/geometry/geometry2d.rst>
 
 
 .. _Model:
@@ -176,7 +179,8 @@ This section holds the documentation for the the datahandler module of the FastV
    :maxdepth: 2
    :titlesonly:
 
-      DataHandler2D <library/data/fe2d_data.rst>
+      DataHandler -  Abstract class for all datahandler routines <library/data/datahandler.rst>
+      DataHandler2D -  DataHandler routines for 2D <library/data/datahandler2d.rst>
 
 
 .. _Utils:

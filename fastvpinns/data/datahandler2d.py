@@ -4,12 +4,14 @@
 # @Date : 22/Sep/2023
 # @History : 22/Sep/2023 - Initial implementation with basic data handling
 
-from ..FE_2D.fespace2d import *
+from ..FE.fespace2d import *
 from ..Geometry.geometry_2d import *
 import tensorflow as tf
 
+from .datahandler import DataHandler
 
-class DataHandler2D:
+
+class DataHandler2D(DataHandler):
     """
     This class is to handle data for 2D problems, convert them into tensors using custom tf functions.
     It is responsible for all type conversions and data handling.
@@ -56,15 +58,14 @@ class DataHandler2D:
         :param dtype: The tensorflow dtype to be used for all the tensors.
         :type dtype: tf.DType
         """
+        # call the parent class constructor
+        super().__init__(fespace=fespace, domain=domain, dtype=dtype)
 
-        self.fespace = fespace
-        self.domain = domain
         self.shape_val_mat_list = []
         self.grad_x_mat_list = []
         self.grad_y_mat_list = []
         self.x_pde_list = []
         self.forcing_function_list = []
-        self.dtype = dtype
 
         # check if the given dtype is a valid tensorflow dtype
         if not isinstance(self.dtype, tf.DType):

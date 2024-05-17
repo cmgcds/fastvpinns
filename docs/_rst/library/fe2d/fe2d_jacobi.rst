@@ -1,7 +1,7 @@
-fastvpinns.FE\_2D.basis\_function\_2d module
---------------------------------------------
+fastvpinns.FE.basis\_2d\_QN\_Jacobi module
+------------------------------------------
 
-.. automodule:: fastvpinns.FE_2D.basis_function_2d
+.. automodule:: fastvpinns.FE.basis_2d_QN_Jacobi
    :members:
    :undoc-members:
    :show-inheritance:

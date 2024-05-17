@@ -46,7 +46,7 @@ def get_bound_cond_dict():
     """
     This function will return a dictionary of boundary conditions
     """
-    return {1000: "dirichlet", 1001: "dirichlet", 1002: "dirichlet", 1003: "dirichlet"}
+    return {1000: circle_boundary}
 
 
 def get_bilinear_params_dict():

@@ -2,7 +2,7 @@ Solving forward problems with FastVPINNs : Poisson - 2D
 =======================================================
 
 In this example, we will learn how to solve a 2-dimensional Poisson problem using FastVPINNs. 
-All the necesary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
+All the necessary files can be found in the examples folder of the `fastvpinns GitHub repository <https://github.com/cmgcds/fastvpinns>`_
 
 .. math::
 
@@ -71,11 +71,18 @@ The example file, ``sin_cos.py``, defines the boundary conditions and
 boundary values, the forcing function and exact function (if test error
 needs to be calculated), bilinear parameters and the actual value of the
 parameter that needs to be estimated (if the error between the actual
-and estimated parameter needs to be calculated) ### Defining boundary
-values Since this example ecforces zero Dirichlet boundary conditions
-using hard constraints, the boundary functions defined in the example
-file are not used. Instead, the ansatz function for hard boundary
-constraints is defined in the `main file <#main-file>`__
+and estimated parameter needs to be calculated) 
+
+Defining boundary values
+~~~~~~~~~~~~~~~~~~~~~~~~
+Boundary values are defined using the functions ``get_boundary_function_dict`` and ``get_bound_cond_dict``.
+
+.. figure:: rect.png
+   :alt: Unit Square
+   :align: center
+
+For internally generated geometries, the boundary id's will be hardcoded to 
+1000  for bottom, 1001 for right, 1002 for top, and 1003 for left; as shown in figure.
 
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,7 +131,7 @@ The input file, ``input.yaml``, is used to define inputs to your solver.
 These will usually parameters that will changed often throughout your
 experimentation, hence it is best practice to pass these parameters
 externally. The input file is divided based on the modules which use the
-parameter in question, as follows - ### ``experimentation`` This
+parameter in question, as follows - ``experimentation`` This
 contains ``output_path``, a string which specifies which folder will be
 used to store your outputs.
 
@@ -207,7 +214,7 @@ Import relevant FastVPINNs methods
 .. code:: python
 
    from fastvpinns.data.datahandler2d import DataHandler2D
-   from fastvpinns.FE_2D.fespace2d import Fespace2D
+   from fastvpinns.FE.fespace2d import Fespace2D
    from fastvpinns.Geometry.geometry_2d import Geometry_2D
 
 Will import the functions related to setting up the finite element
@@ -346,8 +353,8 @@ PDE.
 
 `Back to contents <#contents>`__
 
-## Solution
------------
+Solution
+--------
 .. image:: exact_solution.png
    :alt: Exact Solution
    :align: center
@@ -365,8 +372,8 @@ PDE.
 
 `Back to contents <#contents>`__
 
-## References
--------------
+References
+----------
 
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__

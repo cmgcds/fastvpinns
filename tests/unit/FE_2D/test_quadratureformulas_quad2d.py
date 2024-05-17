@@ -6,9 +6,9 @@ import pytest
 import numpy as np
 import tensorflow as tf
 
-from fastvpinns.FE_2D.fespace2d import Fespace2D
-from fastvpinns.FE_2D.fe2d_setup_main import FE2DSetupMain
-from fastvpinns.FE_2D.quadratureformulas_quad2d import Quadratureformulas_Quad2D
+from fastvpinns.FE.fespace2d import Fespace2D
+from fastvpinns.FE.fe2d_setup_main import FE2DSetupMain
+from fastvpinns.FE.quadratureformulas_quad2d import Quadratureformulas_Quad2D
 
 import pytest
 
