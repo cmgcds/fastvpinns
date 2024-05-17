@@ -89,7 +89,7 @@ The FE module is responsible for handling the Finite Element test functions and 
     \item \textbf{Finite Element Setup}: Provides the functionality to set up the test functions, quadrature rules and the transformation for every element and save them in a common wrapper class to access them. Further, it also hosts functions to plot the mesh with quadrature points, assign boundary values based on the boundary points obtained from the geometry module and calculation of the forcing term.
 \end{itemize}
 
-*Remark: The module is named FE (Finite Element) Module because of its similarities with classical FEM routines, such as test functions, numerical quadratures and transformations.  However, We would like to reiterate that our framework is not an FEM solver, but a hp-VPINNs solver*
+*Remark: The module is named FE (Finite Element) Module because of its similarities with classical FEM routines, such as test functions, numerical quadratures and transformations.  However, we would like to reiterate that our framework is not an FEM solver, but a hp-VPINNs solver*
 
 ## Data Module:
 The Data module collects data from all modules which are required for training and converts them to a tensor data type with required precision. It also assembles the test function values and gradients to form a three-dimensional tensor, which will be used during the loss computation. 

@@ -146,7 +146,7 @@ a Creative Commons Attribution 4.0 International License (CC BY
       \end{split}
   \end{aligned}]]></tex-math>
   <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>t</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mo>−</mml:mo><mml:mi>Δ</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>f</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>g</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">PINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mi>τ</mml:mi><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>.</mml:mi></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
-  <p>where <inline-formula><alternatives>
+  <p>Here, <inline-formula><alternatives>
   <tex-math><![CDATA[u_{\text{NN}}(x; W, b)]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
   is the approximate solution of the PDE obtained from neural network
@@ -279,9 +279,9 @@ a Creative Commons Attribution 4.0 International License (CC BY
   </sec>
   <sec id="fe-module">
     <title>FE Module</title>
-    <p>The FE module is responsible for handling the test functions and
-    their gradients. The module’s functionality can be broadly
-    classified into into four categories:</p>
+    <p>The FE module is responsible for handling the Finite Element test
+    functions and their gradients. The module’s functionality can be
+    broadly classified into into four categories:</p>
     <list list-type="bullet">
       <list-item>
         <p><bold>Test functions</bold>: Provides the test function
@@ -304,16 +304,16 @@ a Creative Commons Attribution 4.0 International License (CC BY
         <p><bold>Finite Element Setup</bold>: Provides the functionality
         to set up the test functions, quadrature rules and the
         transformation for every element and save them in a common
-        wrapper to access them. Further, it also hosts functions to plot
-        the mesh with quadrature points, assign boundary values based on
-        the boundary points obtained from the geometry module,
-        calculation of the forcing term etc.</p>
+        wrapper class to access them. Further, it also hosts functions
+        to plot the mesh with quadrature points, assign boundary values
+        based on the boundary points obtained from the geometry module
+        and calculation of the forcing term.</p>
       </list-item>
     </list>
     <p><italic>Remark: The module is named FE (Finite Element) Module
     because of its similarities with classical FEM routines, such as
-    test functions, numerical quadratures and transformations. We would,
-    however, like to reiterate that our framework is not an FEM solver,
+    test functions, numerical quadratures and transformations. However,
+    We would like to reiterate that our framework is not an FEM solver,
     but a hp-VPINNs solver</italic></p>
   </sec>
   <sec id="data-module">
