@@ -149,8 +149,8 @@ a Creative Commons Attribution 4.0 International License (CC BY
   <p>where <inline-formula><alternatives>
   <tex-math><![CDATA[u_{\text{NN}}(x; W, b)]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
-  is the output of the neural network with weights
-  <inline-formula><alternatives>
+  is the approximate solution of the PDE obtained from neural network
+  with weights <inline-formula><alternatives>
   <tex-math><![CDATA[W]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>W</mml:mi></mml:math></alternatives></inline-formula>
   and biases <inline-formula><alternatives>
@@ -178,16 +178,17 @@ a Creative Commons Attribution 4.0 International License (CC BY
   <tex-math><![CDATA[L_{\text{PINN}}(W,b)]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">PINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
   is the loss function of the PINNs.</p>
-  <p>Variational Physics informed neural networks(VPINNs)
+  <p>Variational Physics informed neural networks (VPINNs)
   (<xref alt="Kharazmi et al., 2019" rid="ref-kharazmi2019variational" ref-type="bibr">Kharazmi
   et al., 2019</xref>) are an extension of PINNs, where the weak form of
-  the PDE is used to train the neural network. The weak form of the PDE
-  is obtained by multiplying the PDE with a test function and
-  integrating over the domain. The method of hp-VPINNs
+  the PDE is used in the loss function of the neural network. The weak
+  form of the PDE is obtained by multiplying the PDE with a test
+  function, integrating over the domain and applying integration by
+  parts to the higher order derivative terms. The method of hp-VPINNs
   (<xref alt="Kharazmi et al., 2021" rid="ref-kharazmi2021hp" ref-type="bibr">Kharazmi
   et al., 2021</xref>) was subsequently developed to increase the
-  accuracy using h-refinement(increasing number of elements) and
-  p-refinement(increasing the number of test functions).The loss
+  accuracy using h-refinement (increasing number of elements) and
+  p-refinement (increasing the number of test functions).The loss
   function of hp-VPINNs with <inline-formula><alternatives>
   <tex-math><![CDATA[\texttt{N\_{elem}}]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mtext mathvariant="monospace">𝙽_</mml:mtext><mml:mtext mathvariant="monospace">𝚎𝚕𝚎𝚖</mml:mtext></mml:mrow></mml:math></alternatives></inline-formula>
@@ -210,19 +211,20 @@ a Creative Commons Attribution 4.0 International License (CC BY
   element in the domain, <inline-formula><alternatives>
   <tex-math><![CDATA[v_k]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
-  is the test function in the corresponding element.
+  is the test function in the respective element. Further,
   <inline-formula><alternatives>
   <tex-math><![CDATA[L_v(W,b)]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>L</mml:mi><mml:mi>v</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
-  is the loss function for the weak form of the PDE and
-  <inline-formula><alternatives>
+  is the weak form PDE residual and <inline-formula><alternatives>
   <tex-math><![CDATA[L_{\text{VPINN}}(W,b)]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">VPINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
   is the loss function of the hp-VPINNs. For more information on the
   derivation of the weak form of the PDE and the loss function of
   hp-VPINNs, refer to
   (<xref alt="Anandh et al., 2024" rid="ref-anandh2024fastvpinns" ref-type="bibr">Anandh
-  et al., 2024</xref>).</p>
+  et al., 2024</xref>) and
+  (<xref alt="Ganesan &amp; Tobiska, 2017" rid="ref-ganesan2017finite" ref-type="bibr">Ganesan
+  &amp; Tobiska, 2017</xref>)</p>
 </sec>
 <sec id="statement-of-need">
   <title>Statement of need</title>
@@ -251,38 +253,18 @@ a Creative Commons Attribution 4.0 International License (CC BY
   framework with ease. The framework also provides an API to all the
   modules for users to write their custom functionalities. With the
   current level of API abstraction, users should be able to solve PDEs
-  with less than 5 API calls as shown in the minimal working example
+  with less than five API calls as shown in the minimal working example
   section.</p>
-  <p>The ability of the framework to allow users to train an hp-VPINNs
-  to solve a PDE both faster and with minimal code, can result in
+  <p>The ability of the framework to allow users to train a hp-VPINNs to
+  solve a PDE both faster and with minimal code, can result in
   widespread application of this method on several real-world problems,
   which often require complex geometries with a large number of elements
   within the domain.</p>
 </sec>
 <sec id="modules">
   <title>Modules</title>
-  <p>The FastVPINNs framework consists of five core modules, which
-  are:</p>
-  <list list-type="bullet">
-    <list-item>
-      <p>Geometry - This module handles mesh generation.</p>
-    </list-item>
-    <list-item>
-      <p>FE - This module handles the finite element test functions and
-      their gradients.</p>
-    </list-item>
-    <list-item>
-      <p>Data - This module handles tensor assembly.</p>
-    </list-item>
-    <list-item>
-      <p>Physics - This module handles the tensor-based loss computation
-      for the weak form of the PDE.</p>
-    </list-item>
-    <list-item>
-      <p>Model - This module handles the dense neural network for
-      training the PDE.</p>
-    </list-item>
-  </list>
+  <p>The FastVPINNs framework consists of five core modules, which are
+  Geometry, FE, Data, Physics and Model.</p>
   <fig>
     <caption><p>FastVPINNs Modules</p></caption>
     <graphic mimetype="image" mime-subtype="png" xlink:href="fastvpinns_modules.png" />
@@ -297,14 +279,13 @@ a Creative Commons Attribution 4.0 International License (CC BY
   </sec>
   <sec id="fe-module">
     <title>FE Module</title>
-    <p>The FE module is responsible for handling the finite element test
-    functions and their gradients. The module’s functionality can be
-    broadly classified into into four categories:</p>
+    <p>The FE module is responsible for handling the test functions and
+    their gradients. The module’s functionality can be broadly
+    classified into into four categories:</p>
     <list list-type="bullet">
       <list-item>
-        <p><bold>Finite element test functions</bold>: Provides the test
-        function values and its gradients for a given reference
-        element.</p>
+        <p><bold>Test functions</bold>: Provides the test function
+        values and its gradients for a given reference element.</p>
       </list-item>
       <list-item>
         <p><bold>Quadrature functions</bold>: Provides the quadrature
@@ -329,6 +310,11 @@ a Creative Commons Attribution 4.0 International License (CC BY
         calculation of the forcing term etc.</p>
       </list-item>
     </list>
+    <p><italic>Remark: The module is named FE (Finite Element) Module
+    because of its similarities with classical FEM routines, such as
+    test functions, numerical quadratures and transformations. We would,
+    however, like to reiterate that our framework is not an FEM solver,
+    but a hp-VPINNs solver</italic></p>
   </sec>
   <sec id="data-module">
     <title>Data Module:</title>
@@ -564,6 +550,17 @@ for epoch in range(1000):
       <article-title>TensorFlow: Large-scale machine learning on heterogeneous systems</article-title>
       <year iso-8601-date="2015">2015</year>
       <uri>https://www.tensorflow.org/</uri>
+    </element-citation>
+  </ref>
+  <ref id="ref-ganesan2017finite">
+    <element-citation publication-type="book">
+      <person-group person-group-type="author">
+        <name><surname>Ganesan</surname><given-names>Sashikumaar</given-names></name>
+        <name><surname>Tobiska</surname><given-names>Lutz</given-names></name>
+      </person-group>
+      <source>Finite elements: Theory and algorithms</source>
+      <publisher-name>Cambridge University Press</publisher-name>
+      <year iso-8601-date="2017">2017</year>
     </element-citation>
   </ref>
 </ref-list>

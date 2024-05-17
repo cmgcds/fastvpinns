@@ -47,9 +47,9 @@ Physics-informed neural networks (PINNs), introduced by [@raissi2019physics], wo
     \end{split}
 \end{align*}
 
-where $u_{\text{NN}}(x; W, b)$ is the output of the neural network with weights $W$ and biases $b$. In addition, $N_T$ is the total number of training points in the interior of the domain $\Omega$, $N_D$ is the total number of training points on the boundary $\partial\Omega$, $\tau$ is a scaling factor applied to control the penalty on the boundary term and $L_{\text{PINN}}(W,b)$ is the loss function of the PINNs. 
+where $u_{\text{NN}}(x; W, b)$ is the approximate solution of the PDE obtained from neural network with weights $W$ and biases $b$. In addition, $N_T$ is the total number of training points in the interior of the domain $\Omega$, $N_D$ is the total number of training points on the boundary $\partial\Omega$, $\tau$ is a scaling factor applied to control the penalty on the boundary term and $L_{\text{PINN}}(W,b)$ is the loss function of the PINNs. 
 
-Variational Physics informed neural networks(VPINNs) [@kharazmi2019variational] are an extension of PINNs, where the weak form of the PDE is used to train the neural network. The weak form of the PDE is obtained by multiplying the PDE with a test function and integrating over the domain. The method of hp-VPINNs [@kharazmi2021hp] was subsequently developed to increase the accuracy using h-refinement(increasing number of elements) and p-refinement(increasing the number of test functions).The loss function of hp-VPINNs with $\texttt{N\_{elem}}$ elements in the domain can be written as follows
+Variational Physics informed neural networks (VPINNs) [@kharazmi2019variational] are an extension of PINNs, where the weak form of the PDE is used in the loss function of the neural network. The weak form of the PDE is obtained by multiplying the PDE with a test function, integrating over the domain and applying integration by parts to the higher order derivative terms. The method of hp-VPINNs [@kharazmi2021hp] was subsequently developed to increase the accuracy using h-refinement (increasing number of elements) and p-refinement (increasing the number of test functions).The loss function of hp-VPINNs with $\texttt{N\_{elem}}$ elements in the domain can be written as follows
 
 \begin{align*}
     \begin{split}
@@ -59,27 +59,20 @@ Variational Physics informed neural networks(VPINNs) [@kharazmi2019variational] 
     \end{split}
 \end{align*}
 
-Where $K_k$ is the $k^{th}$ element in the domain, $v_k$ is the test function in the corresponding element. $L_v(W,b)$ is the loss function for the weak form of the PDE and $L_{\text{VPINN}}(W,b)$ is the loss function of the hp-VPINNs. For more information on the derivation of the weak form of the PDE and the loss function of hp-VPINNs, refer to [@anandh2024fastvpinns]. 
+Where $K_k$ is the $k^{th}$ element in the domain, $v_k$ is the test function in the respective element. Further, $L_v(W,b)$ is the weak form PDE residual and $L_{\text{VPINN}}(W,b)$ is the loss function of the hp-VPINNs. For more information on the derivation of the weak form of the PDE and the loss function of hp-VPINNs, refer to [@anandh2024fastvpinns] and [@ganesan2017finite]
 
 
 # Statement of need
 
 The existing implementation of hp-VPINNs framework [@hp_vpinns_github] suffers from two major challenges. One being the inabilty of the framework to handle complex geometries and the other being the increased training time associated with the increase in number of elements within the domain. In the work [@anandh2024fastvpinns], we presented FastVPINNs, which addresses both of these challenges. FastVPINNs handles complex geometries by using bilinear transformation, and it uses a tensor-based loss computation to reduce the dependency of training time on number of elements. The current implementation of FastVPINNs can acheive an speed-up of upto a 100 times when compared with the existing implementation of hp-VPINNs. We have also shown that with proper hyperparameter selection, FastVPINNs can outperform PINNs both in terms of accuracy and training time, especially for problems with high frequency solutions. 
 
-Our FastVPINNs framework is built using TensorFlow 2 [@tensorflow2015-whitepaper], and provides an elegant API for users to solve both forward and inverse problems for PDEs like the Poisson, Helmholtz and Convection-Diffusion equations.The framework is well-documented with examples, which can enable users to get started with the framework with ease. The framework also provides an API to all the modules for users to write their custom functionalities. With the current level of API abstraction, users should be able to solve PDEs with less than 5 API calls as shown in the minimal working example section.
+Our FastVPINNs framework is built using TensorFlow 2 [@tensorflow2015-whitepaper], and provides an elegant API for users to solve both forward and inverse problems for PDEs like the Poisson, Helmholtz and Convection-Diffusion equations.The framework is well-documented with examples, which can enable users to get started with the framework with ease. The framework also provides an API to all the modules for users to write their custom functionalities. With the current level of API abstraction, users should be able to solve PDEs with less than five API calls as shown in the minimal working example section.
 
-The ability of the framework to allow users to train an hp-VPINNs to solve a PDE both faster and with minimal code, can result in widespread application of this method on several real-world problems, which often require complex geometries with a large number of elements within the domain.
+The ability of the framework to allow users to train a hp-VPINNs to solve a PDE both faster and with minimal code, can result in widespread application of this method on several real-world problems, which often require complex geometries with a large number of elements within the domain.
 
 # Modules
 
-The FastVPINNs framework consists of five core modules, which are: 
-\begin{itemize}
-    \item Geometry - This module handles mesh generation.
-    \item FE - This module handles the finite element test functions and their gradients.
-    \item Data - This module handles tensor assembly.
-    \item Physics - This module handles the tensor-based loss computation for the weak form of the PDE.
-    \item Model - This module handles the dense neural network for training the PDE.
-\end{itemize}
+The FastVPINNs framework consists of five core modules, which are Geometry, FE, Data, Physics and Model.
 
 ![FastVPINNs Modules](fastvpinns_modules.png){ height=50% }
 
@@ -87,14 +80,16 @@ The FastVPINNs framework consists of five core modules, which are:
 This module provides the functionality to define the geometry of the domain. The user can either generate a quadrilateral mesh internally or read an external \verb|.mesh| file. The module also provides the functionality to obtain boundary points for complex geometries. 
 
 ## FE Module
-The FE module is responsible for handling the finite element test functions and their gradients. The module's functionality can be broadly classified into into four categories:
+The FE module is responsible for handling the Finite Element test functions and their gradients. The module's functionality can be broadly classified into into four categories:
 
 \begin{itemize}
-    \item \textbf{Finite element test functions}: Provides the test function values and its gradients for a given reference element. 
+    \item \textbf{Test functions}: Provides the test function values and its gradients for a given reference element. 
     \item \textbf{Quadrature functions}: Provides the quadrature points and weights for a given element based on the quadrature order selected by the user. These values will be used for numerical integration of the weak form of the PDE.
     \item \textbf{Transformation functions}: Provides the implementation of transformation routines such as `Affine` transformation and `Bilinear` transformation. This can be used to transform the test function values and gradients from the reference element to the actual element.
     \item \textbf{Finite Element Setup}: Provides the functionality to set up the test functions, quadrature rules and the transformation for every element and save them in a common wrapper to access them. Further, it also hosts functions to plot the mesh with quadrature points, assign boundary values based on the boundary points obtained from the geometry module, calculation of the forcing term etc.
 \end{itemize}
+
+*Remark: The module is named FE (Finite Element) Module because of its similarities with classical FEM routines, such as test functions, numerical quadratures and transformations.  However, We would like to reiterate that our framework is not an FEM solver, but a hp-VPINNs solver*
 
 ## Data Module:
 The Data module collects data from all modules which are required for training and converts them to a tensor data type with required precision. It also assembles the test function values and gradients to form a three-dimensional tensor, which will be used during the loss computation. 
