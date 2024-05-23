@@ -27,10 +27,10 @@
   </p>
 </div>
 
-A robust tensor-based deep learning framework for solving PDE's using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the work by [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
+A robust tensor-based deep learning framework for solving partial differential equations using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the methodology presented in the [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
 
-*This library is an highly optimised version of the the initial implementation of hp-VPINNs by [kharazmi](https://github.com/ehsankharazmi/hp-VPINNs). Ref [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
+*This library is an highly optimised version of the the initial implementation of hp-VPINNs by [Kharazmi et al.](https://github.com/ehsankharazmi/hp-VPINNs). Refer the [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
 
 ## Authors 👨‍💻
 ---
@@ -42,7 +42,7 @@ STARS Lab, Department of Computational and Data Sciences, Indian Institute of Sc
 ## Installation 🛠️
 ---
 
-The build of the code is currently tested on Python versions (3.8, 3.9, 3.10, 3.11), on OS Ubuntu 20.04 and Ubuntu 22.04, Macos-latest and Windows-latest (refer compatibility build [Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)).
+The build of the code is currently tested on Python versions (3.8, 3.9, 3.10, 3.11), on OS Ubuntu 20.04 and Ubuntu 22.04, MacOS-latest and Windows-latest (refer compatibility build [Compatability check](https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml)).
 
 You can install the package using pip as follows:
 
@@ -113,7 +113,7 @@ Note : Supporting functions which define the actual solution and boundary condit
 
 ## Contributing 🤝
 ---
-This code is currently maintained by the Authors as mentioned in the section above. We welcome contributions from the community. please refer to the [documentation](https://cmgcds.github.io/fastvpinns/) for guidelines on contributing to the project.
+This code is currently maintained by the authors as mentioned in the section above. We welcome contributions from the community. Please refer to the [documentation](https://cmgcds.github.io/fastvpinns/) for guidelines on contributing to the project.
 
 ## License 📑
 ---
