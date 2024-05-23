@@ -30,7 +30,7 @@
 A robust tensor-based deep learning framework for solving partial differential equations using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is based on the methodology presented in the [FastVPINNs Paper](https://arxiv.org/abs/2404.12063).
 
 
-*This library is an highly optimised version of the the initial implementation of hp-VPINNs by [Kharazmi et al.](https://github.com/ehsankharazmi/hp-VPINNs). Refer the [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
+*This library is a highly optimised version of the the initial implementation of hp-VPINNs by [Kharazmi et al.](https://github.com/ehsankharazmi/hp-VPINNs). Refer the [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
 
 ## Authors 👨‍💻
 ---
