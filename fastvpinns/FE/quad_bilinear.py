@@ -1,11 +1,14 @@
 """
-file: quad_bilinear.py
-description: This file defines the Quad Affine transformation of the reference element.
-             The implementation is referenced from the ParMooN project (File: QuadBilineare.C).
-authors: Thivin Anandh D
-changelog: 30/Aug/2023 - Initial version
-known_issues: Second derivative Calculations are not implemented as of now. 
-dependencies: None specified.
+The file `quad_bilinear.py` defines the Quad Bilinear transformation of the reference element.
+The implementation is referenced from the ParMooN project (File: QuadBilineare.C).
+
+Author: Thivin Anandh D
+
+Changelog: 30/Aug/2023 - Initial version
+
+Known issues: Second derivative Calculations are not implemented as of now. 
+
+Dependencies: None specified
 """
 
 import numpy as np

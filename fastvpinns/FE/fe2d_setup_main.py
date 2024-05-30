@@ -1,9 +1,12 @@
-# This program will be used to setup the FE2D and quadrature rule for a given cell based on the
-# given mesh and the degree of the basis functions
+"""
+This module `fe2d_setup_main.py` will be used to setup the FE2D and quadrature rule for a given cell based on the
+given mesh and the degree of the basis functions.
 
-# Author: Thivin Anandh D
-# Date:  30/Aug/2023
+Author: Thivin Anandh D
 
+Date: 30/Aug/2023
+
+"""
 # Importing the required libraries
 from .basis_function_2d import *
 

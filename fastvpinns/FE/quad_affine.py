@@ -1,11 +1,14 @@
 """
-file: quad_affine.py
-description: This file defines the Quad Affine transformation of the reference element.
-             The implementation is referenced from the ParMooN project (File: QuadAffine.C).
-authors: Thivin Anandh D
-changelog: 30/Aug/2023 - Initial version
-known_issues: None
-dependencies: None specified.
+The file `quad_affine.py` defines the Quad Affine transformation of the reference element.
+The implementation is referenced from the ParMooN project  (File: QuadAffine.C).
+
+Author: Thivin Anandh D
+
+Changelog: 30/Aug/2023 - Initial version
+
+Known issues: None
+
+Dependencies: None specified
 """
 
 import numpy as np

@@ -1,14 +1,15 @@
 """
-file: model_hard.py
-description: This file contains the DenseModel class which is a custom model for the Neural Network
-                for solving Variational PINNs. This model is used for enforcing hard boundary constraints
-                on the solution.
-author: Thivin Anandh D, Divij Ghose, Sashikumaar Ganesan
-date: 22/01/2024
-changelog: 22/01/2024 - file created
-           22/01/2024 - 
+The file `model_hard.py` contains the DenseModel class which is a custom model for the Neural Network
+for solving Variational PINNs. This model is used for enforcing hard boundary constraints
+on the solution.
 
-known issues: None
+Author: Thivin Anandh D, Divij Ghose, Sashikumaar Ganesan
+
+Date: 22/Jan/2024
+
+Changelog: 22/Jan/2024 - file created
+
+Known issues: None
 """
 
 import copy
@@ -24,6 +25,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     The class inherits from the tf.keras.Model class and is used
     to define the neural network model architecture and the training loop for FastVPINNs.
+    
     :param layer_dims: List of integers representing the number of neurons in each layer
     :type layer_dims: list
     :param learning_rate_dict: Dictionary containing the learning rate parameters
@@ -205,6 +207,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     def call(self, inputs):
         """This method is used to define the forward pass of the model.
+        
         :param inputs: Input tensor
         :type inputs: tf.Tensor
         :return: Output tensor from the model
@@ -226,6 +229,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     def get_config(self):
         """This method is used to get the configuration of the model.
+        
         :return: Configuration of the model
         :rtype: dict
         """
@@ -254,6 +258,7 @@ class DenseModel_Hard(tf.keras.Model):
     @tf.function
     def train_step(self, beta=10, bilinear_params_dict=None):  # pragma: no cover
         """This method is used to define the training step of the mode.
+        
         :param bilinear_params_dict: Dictionary containing the bilinear parameters
         :type bilinear_params_dict: dict
         :return: Dictionary containing the loss values

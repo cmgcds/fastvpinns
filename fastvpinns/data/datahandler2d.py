@@ -1,9 +1,13 @@
-# This class is to handle data for 2D problems, convert them into tensors using custom tf functions
-# and make them available for the model to train
-# @Author : Thivin Anandh D
-# @Date : 22/Sep/2023
-# @History : 22/Sep/2023 - Initial implementation with basic data handling
+"""
+This file `datahandler2d.py` is to handle data for 2D problems, convert them into tensors using custom tf functions
+and make them available for the model to train
 
+Author : Thivin Anandh D
+
+Date : 22/Sep/2023
+
+History : 22/Sep/2023 - Initial implementation with basic data handling
+"""
 from ..FE.fespace2d import *
 from ..Geometry.geometry_2d import *
 import tensorflow as tf

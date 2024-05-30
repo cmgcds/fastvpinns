@@ -4,7 +4,8 @@ generate internal mesh for 2D problems. It supports different types of meshes an
 The class also allows for specifying the number of test points in the x and y directions, and the output folder for storing results.
 
 Author: Thivin Anandh D
-Date: 21-Sep-2023
+
+Date: 21/Sep/2023
 """
 
 from pathlib import Path

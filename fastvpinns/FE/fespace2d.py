@@ -1,11 +1,14 @@
 """
-file: fespace2d.py
-description: This file contains the main class that holds the information of all the 
-             Finite Element (FE) spaces of all the cells within the given mesh.
-authors: Thivin Anandh D
-changelog: 30/Aug/2023 - Initial version
-known_issues: None
-dependencies: None specified.
+The file `fespace2d.py` contains the main class that holds the information of all the 
+Finite Element (FE) spaces of all the cells within the given mesh.
+
+Author: Thivin Anandh D
+
+Changelog: 30/Aug/2023 - Initial version
+
+Known issues: None
+
+Dependencies: None specified
 """
 
 import numpy as np
@@ -20,7 +23,6 @@ import matplotlib.pyplot as plt
 
 # import path
 from pathlib import Path
-
 # import tensorflow
 import tensorflow as tf
 
@@ -528,38 +530,17 @@ class Fespace2D(Fespace):
         """
         Return the quadrature weights for a given cell.
 
-        Parameters
-        ----------
-        cell_index : int
-            The index of the cell for which the quadrature weights are needed.
-
-        Returns
-        -------
-        np.ndarray
-            The quadrature weights for the given cell of dimension (N_Quad_Points, 1).
-
-        Raises
-        ------
-        ValueError
-            If cell_index is greater than the number of cells.
-
-        Notes
-        -----
-        This function returns the quadrature weights associated with a specific cell.
-        The quadrature weights are stored in the `mult` attribute of the `fe_cell` object.
-
+        :param cell_index: The index of the cell for which the quadrature weights are needed.
+        :type cell_index: int
+        :return: The quadrature weights for the given cell  of dimension (N_Quad_Points, 1).
+        :rtype: np.ndarray
+        :raises ValueError: If cell_index is greater than the number of cells.
         Example
         -------
         >>> fespace = FESpace2D()
         >>> weights = fespace.get_quadrature_weights(0)
         >>> print(weights)
         [0.1, 0.2, 0.3, 0.4]
-
-        :param cell_index: The index of the cell for which the quadrature weights are needed.
-        :type cell_index: int
-        :return: The quadrature weights for the given cell.
-        :rtype: np.ndarray
-        :raises ValueError: If cell_index is greater than the number of cells.
         """
         if cell_index >= len(self.fe_cell) or cell_index < 0:
             raise ValueError(
@@ -614,7 +595,7 @@ class Fespace2D(Fespace):
                 y = self.fe_cell[cell_index].quad_actual_coordinates[q, 1]
                 # print("f_values[q] = ",f_values[q])
 
-                # the JAcobian and the quadrature weights are pre multiplied to the basis functions
+                # the Jacobian and the quadrature weights are pre multiplied to the basis functions
                 val += (self.fe_cell[cell_index].basis_at_quad[i, q]) * self.fe_cell[
                     cell_index
                 ].forcing_function(x, y)

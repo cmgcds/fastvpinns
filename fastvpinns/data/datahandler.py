@@ -1,8 +1,12 @@
-# Abstract class for Datahandler
-# @Author : Thivin Anandh D
-# @Date : 03/May/2024
-# @History : 03/May/2024 - Initial implementation with basic data handling
+"""
+The file `datahandler.py` is an abstract class for Datahandler.
 
+Author : Thivin Anandh D
+
+Date : 03/May/2024
+
+History : 03/May/2024 - Initial implementation with basic data handling
+"""
 from abc import abstractmethod
 
 
@@ -71,12 +75,6 @@ class DataHandler:
     def get_bilinear_params_dict_as_tensors(self, function):
         """
         Accepts a function from example file and converts all the values into tensors of the given dtype
-
-        Parameters:
-        - function (function): The function from the example file which returns the bilinear parameters dictionary
-
-        Returns:
-        - bilinear_params_dict (dict): The bilinear parameters dictionary with all the values converted to tensors
 
         :param function: The function from the example file which returns the bilinear parameters dictionary
         :type function: function

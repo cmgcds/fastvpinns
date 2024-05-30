@@ -1,8 +1,12 @@
 """
-This function is implemntation of our efficient tensor-based loss calculation for cd2d equation with inverse problem (Domain)
+This file `cd2d_inverse_domain.py` is implemntation of our efficient tensor-based loss calculation for cd2d equation with inverse problem (Domain).
+
 Author: Thivin Anandh D
-Date: 21-Sep-2023
+
+Date: 21/Sep/2023
+
 History: Initial implementation
+
 Refer: https://arxiv.org/abs/2404.12063
 """
 

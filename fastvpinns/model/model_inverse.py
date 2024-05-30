@@ -1,12 +1,15 @@
 """
-file: model_inverse.py
-description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
-             This focuses on training variational PINNs for inverse problems where the inverse parameter is constant on the domain.
-             The focus is on the model architecture and the training loop, and not on the loss functions.
-authors: Thivin Anandh D
-changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
-known_issues: Currently out of the box, supports only one constant inverse parameters.
-dependencies: None specified.
+The file `model_inverse.py` hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
+This focuses on training variational PINNs for inverse problems where the inverse parameter is constant on the domain.
+The focus is on the model architecture and the training loop, and not on the loss functions.
+
+Author: Thivin Anandh D
+
+Changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+
+Known issues: Currently out of the box, supports only one constant inverse parameters.
+
+Dependencies: None specified
 """
 
 import tensorflow as tf

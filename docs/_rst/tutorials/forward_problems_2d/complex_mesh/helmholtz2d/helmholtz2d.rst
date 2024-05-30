@@ -8,7 +8,7 @@ All the necessary files can be found in the examples folder of the `fastvpinns G
 
 The Poisson equation is given by
 
-.. math::  -\epsilon \nabla^2 u  + k^2u = f \quad \text{in} \quad \Omega 
+.. math::  -\varepsilon \nabla^2 u  + k^2u = f \quad \text{in} \quad \Omega 
 
 where (:math:`\Omega`) is the circular domain and (f) is the source
 term. The boundary conditions are given by
@@ -20,7 +20,7 @@ For this problem, the parameters are
 .. math:: f = 2 \pi \cos(\pi y) \sin(\pi x) + 2 \pi \cos(\pi x) \sin(\pi y) + (x+y) \sin(\pi x) \sin(\pi y) - \\
    2 \pi^2 (x+y) \sin(\pi x) \sin(\pi y)
 
-.. math:: \epsilon = 1.0
+.. math:: \varepsilon = 1.0
 
 .. math:: k = 1.0
 
@@ -41,8 +41,7 @@ Contents
 -----------
 
 -  `Steps to run the code <#steps-to-run-the-code>`__
--  `Example File -
-   helmholtz_example.py <#example-file---helmholtz_examplepy>`__
+-  `Example File <#example-file>`__
 
    -  `Defining the boundary
       conditions <#defining-the-boundary-conditions>`__
@@ -52,35 +51,30 @@ Contents
 
 -  `Input File <#input-file>`__
 
-   -  `Experimentation parameters <#experimentation>`__
-   -  `Geometry parameters <#geometry>`__
-   -  `Finite element space parameters <#fe>`__
-   -  `PDE Beta parameters <#pde>`__
-   -  `Model parameters <#model>`__
-   -  `Logging parameters <#logging>`__
+   -  `Experimentation parameters <#experimentation-parameters>`__
+   -  `Geometry parameters <#geometry-parameters>`__
+   -  `Finite element space parameters <#finite-element-space-parameters>`__
+   -  `PDE Beta parameters <#pde-beta-parameters>`__
+   -  `Model parameters <#model-parameters>`__
+   -  `Logging parameters <#logging-parameters>`__
 
--  `Main File - main_helmholtz.py <#main-file---main_helmholtzpy>`__
+-  `Main File <#main-file>`__
 
    -  `Importing the required
       libraries <#importing-the-required-libraries>`__
-   -  `imports from fastvpinns <#imports-from-fastvpinns>`__
+   -  `Imports from fastvpinns <#imports-from-fastvpinns>`__
    -  `Reading the input file <#reading-the-input-file>`__
    -  `Reading all input parameters <#reading-all-input-parameters>`__
-   -  `Set up the geometry <#set-up-the-geometry>`__
+   -  `Setup the geometry <#setup-the-geometry>`__
    -  `Setup fespace <#setup-fespace>`__
-   -  `setup datahandler <#setup-datahandler>`__
-   -  `setup model <#setup-model>`__
-   -  `pre-train setup <#pre-train-setup>`__
+   -  `Setup datahandler <#setup-datahandler>`__
+   -  `Setup model <#setup-model>`__
+   -  `Pre-train setup <#pre-train-setup>`__
    -  `Training <#training>`__
    -  `Post Training <#post-training>`__
 
 -  `Save the outputs <#save-the-outputs>`__
 -  `Solution Plots <#solution-plots>`__
-
-   -  `Exact Solution <#exact-solution>`__
-   -  `Predicted Solution <#predicted-solution>`__
-   -  `Error Plot <#error-plot>`__
-
 -  `References <#references>`__
 
 Steps to run the code
@@ -92,11 +86,15 @@ To run the code, execute the following command:
 
    python3 main_helmholtz.py input.yaml
 
-Example File - `helmholtz_example.py <cd2d_gear_example.py>`__
------------------------------------------------------------------
+`Back to Contents <#contents>`__
 
-This file hosts all the details about the bilinear parameters for the
+Example file
+------------
+
+The file ``helmholtz_example.py``  hosts all the details about the bilinear parameters for the
 PDE, boundary conditions, source term, and the exact solution.
+
+`Back to Contents <#contents>`__
 
 Defining the boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,9 +103,7 @@ The function ``circle_boundary`` returns the boundary value for a given
 component of the boundary. The function ``get_boundary_function_dict``
 returns a dictionary of boundary functions. The key of the dictionary is
 the boundary id and the value is the boundary function. The function
-``get_bound_cond_dict`` returns a dictionary of boundary conditions. The
-key of the dictionary is the boundary id and the value is the boundary
-condition.
+``get_bound_cond_dict`` returns a dictionary of boundary conditions.
 
 .. figure:: unitcircle.png
    :alt: Unit Circle
@@ -140,6 +136,8 @@ Note : As of now, only Dirichlet boundary conditions are supported.
        """
        return {1000: "dirichlet"}
 
+`Back to Contents <#contents>`__
+
 Defining the source term
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -152,8 +150,6 @@ point.
        """
        This function will return the value of the rhs at a given point
        """
-       # f_temp =  32 * (x  * (1 - x) + y * (1 - y))
-       # f_temp = 1
 
        term1 = 2 * np.pi * np.cos(np.pi * y) * np.sin(np.pi * x)
        term2 = 2 * np.pi * np.cos(np.pi * x) * np.sin(np.pi * y)
@@ -163,7 +159,7 @@ point.
        result = term1 + term2 + term3 + term4
        return result
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Defining the exact solution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,14 +176,14 @@ at a given point.
 
        return (x + y) * np.sin(np.pi * x) * np.sin(np.pi * y)
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Defining the bilinear form
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The function ``get_bilinear_params_dict`` returns a dictionary of
 bilinear parameters. The dictionary contains the values of the
-parameters (:math:`\epsilon`), (b_x), (b_y), and (c).
+parameters (:math:`\varepsilon`), (b_x), (b_y), and (c).
 
 Note : If any of the bilinear parameters are not present in the
 dictionary (for the cd2d model), then the code will throw an error.
@@ -203,17 +199,19 @@ dictionary (for the cd2d model), then the code will throw an error.
 
        return {"k": k, "eps": eps}
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Input File
--------------
+----------
 
-This is the file that contains all the details about the problem. The
+This file contains all the details about the problem. The
 input file is in the YAML format. The input file for this example is
 given below. The contents of the yaml files are as follows
 
-Experimentation
-^^^^^^^^^^^^^^^
+`Back to Contents <#contents>`__
+
+Experimentation parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Defines the output path where the results will be saved.
 
@@ -222,10 +220,10 @@ Defines the output path where the results will be saved.
    experimentation:
      output_path: "output/helmholtz/1"
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-Geometry
-^^^^^^^^
+Geometry parameters
+~~~~~~~~~~~~~~~~~~~
 
 It contains the details about the geometry of the domain. The mesh
 generation method can be either “internal” or “external”. If the mesh
@@ -242,19 +240,18 @@ parameter.
    file).
 -  ``exact_solution_generation`` is set to “internal” which means that
    the exact solution is generated using the ``exact_solution`` function
-   in the ``helmholtz_example.py`` file. For external check the other
-   examples `cd2d_gear <../cd2d_gear/>`__
+   in the ``helmholtz_example.py`` file.
 -  ``mesh_type`` is set to “quadrilateral” which means that the mesh is
-   a quadrilateral mesh. Note: As of now, only quadrilateral meshes are
-   supported.
+   a quadrilateral mesh. (Note: As of now, only quadrilateral meshes are
+   supported.)
 -  ``boundary_refinement_level`` is set to 4 which means that the
    boundary is refined 4 times. (i.e), when the mesh is read, only the
    boundary points of an edge in quadrilateral mesh are read. this
    refinement will refine the boundary points to get more boundary
    points within the edge.
 -  ``boundary_sampling_method`` is set to “uniform” which means that the
-   boundary points are sampled using the “uniform” method. (Use only
-   uniform sampling as of now.)
+   boundary points are sampled using the “uniform” method. (Note: As of now, use only
+   uniform sampling.)
 -  ``generate_mesh_plot`` is set to True which means that the mesh plot
    is generated and saved in the output directory.
 
@@ -288,10 +285,10 @@ parameter.
        boundary_refinement_level: 4  # Level of refinement for the boundary.
        boundary_sampling_method: "lhs"  # Method for sampling the boundary. Can be "uniform" or "lhs".
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-Finite Element Space
-^^^^^^^^^^^^^^^^^^^^
+Finite Element Space parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section contains the details about the finite element spaces.
 
@@ -303,9 +300,9 @@ This section contains the details about the finite element spaces.
      quad_order: 5  # Order of the quadrature rule.
      quad_type: "gauss-jacobi"  # Type of quadrature rule.  
 
-Here the ``fe_order`` is set to 6 which means it has 6 basis functions
-in each direction. The ``quad_order`` is set to 10 which means it uses a
-10-points in each direction for the quadrature rule. The supported
+Here the ``fe_order`` is set to 4 which means it has 4 basis functions
+in each direction. The ``quad_order`` is set to 5 which means it uses a
+5-points in each direction for the quadrature rule. The supported
 quadrature rules are “gauss-jacobi” and “gauss-legendre”. In this
 version of code, both “jacobi” and “legendre” refer to the same basis
 functions (to maintain backward compatibility). The basis functions are
@@ -315,10 +312,10 @@ special type of Jacobi polynomials defined by
 
 , where J :sub:`n` is the nth Jacobi polynomial.
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-pde
-^^^
+PDE beta parameters
+~~~~~~~~~~~~~~~~~~~
 
 This value provides the beta values for the Dirichlet boundary conditions. The beta values are the multipliers that are used to multiply the boundary losses. The total loss is calculated as follows: 
 
@@ -329,24 +326,24 @@ This value provides the beta values for the Dirichlet boundary conditions. The b
    pde:
      beta: 10 # Parameter for the PDE.
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-model
-^^^^^
+Model parameters
+~~~~~~~~~~~~~~~~
 
 The model section contains the details about the dense model to be used.
-The model architecture is given by the ``model_architecture`` parameter.
-The activation function used in the model is given by the ``activation``
-parameter. The ``epochs`` parameter is the number of training epochs.
-The ``dtype`` parameter is the data type used for computations. The
-``learning_rate`` section contains the parameters for learning rate
-scheduling. The ``initial_learning_rate`` parameter is the initial
-learning rate. The ``use_lr_scheduler`` parameter is a flag indicating
-whether to use the learning rate scheduler. The ``decay_steps``
-parameter is the number of steps between each learning rate decay. The
-``decay_rate`` parameter is the decay rate for the learning rate. The
-``staircase`` parameter is a flag indicating whether to use the
-staircase decay.
+
+-  The model architecture is given by the ``model_architecture`` parameter.
+-  The activation function used in the model is given by the ``activation`` parameter.
+-  The ``epochs`` parameter is the number of training epochs.
+-  The ``dtype`` parameter is the data type used for computations.
+-  The ``learning_rate`` section contains the parameters for learning rate scheduling.
+-  The ``initial_learning_rate`` parameter is the initial learning rate.
+-  The ``use_lr_scheduler`` parameter is a flag indicating whether to use the learning rate scheduler.
+-  The ``decay_steps`` parameter is the number of steps between each learning rate decay.
+-  The ``decay_rate`` parameter is the decay rate for the learning rate.
+-  The ``staircase`` parameter is a flag indicating whether to use the staircase decay.
+
 
 Any parameter which are not mentioned above are archived parameters,
 which are not used in the current version of the code. (like
@@ -370,10 +367,10 @@ which are not used in the current version of the code. (like
        staircase: False  # Flag indicating whether to use staircase decay.
      
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-logging
-^^^^^^^
+Logging parameters
+~~~~~~~~~~~~~~~~~~
 
 ``update_console_output`` defines the epochs at which you need to log
 parameters like loss, time taken, etc.
@@ -383,17 +380,19 @@ parameters like loss, time taken, etc.
    logging:
      update_console_output: 5000
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-Main File - `main_helmholtz.py <main_helmholtz.py>`__
---------------------------------------------------------
+Main File
+---------
 
-This file contains the main code to solve the Poisson equation in 2D on
+The file ``main_helmholtz.py`` contains the main code to solve the Poisson equation in 2D on
 a circular domain. The code reads the input file, sets up the problem,
 and solves the Poisson equation using the ``fastvpinns`` package.
 
+`Back to Contents <#contents>`__
+
 Importing the required libraries
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following libraries are imported in the main file.
 
@@ -414,10 +413,10 @@ The following libraries are imported in the main file.
    import copy
    import time
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
-imports from fastvpinns
-^^^^^^^^^^^^^^^^^^^^^^^
+Imports from fastvpinns
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The following imports are used from the ``fastvpinns`` package.
 
@@ -468,10 +467,10 @@ The following imports are used from the ``fastvpinns`` package.
    from fastvpinns.utils.compute_utils import compute_errors_combined
    from fastvpinns.utils.print_utils import print_table
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Reading the input file
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 The input file is read using the ``yaml`` library.
 
@@ -485,8 +484,10 @@ The input file is read using the ``yaml`` library.
        with open(sys.argv[1], 'r') as f:
            config = yaml.safe_load(f)
 
+`Back to Contents <#contents>`__
+
 Reading all input parameters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -541,14 +542,15 @@ Reading all input parameters
 
        i_update_console_output = config['logging']['update_console_output']
 
-all the variables which are named with the prefix ``i_`` are input
-parameters which are read from the input file. `Return to
-top <#contents>`__
+All the variables which are named with the prefix ``i_`` are input
+parameters which are read from the input file. 
 
-Set up the geometry
-^^^^^^^^^^^^^^^^^^^
+`Back to Contents <#contents>`__
 
-Obtain the bounndary condition and boundary values from the
+Setup the geometry
+~~~~~~~~~~~~~~~~~~~
+
+Obtain the boundary condition and boundary values from the
 ``helmholtz_example.py`` file and initialise the ``Geometry_2D`` class.
 After that use the ``domain.read_mesh`` functionality to read the
 external mesh file.
@@ -562,10 +564,10 @@ external mesh file.
            refinement_level=1,
        )
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Setup fespace
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Initialise the ``Fespace2D`` class with the required parameters.
 
@@ -588,10 +590,10 @@ Initialise the ``Fespace2D`` class with the required parameters.
            generate_mesh_plot=i_generate_mesh_plot,
        )
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Setup datahandler
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~
 
 Initialise the ``DataHandler`` class with the required parameters.
 
@@ -599,10 +601,10 @@ Initialise the ``DataHandler`` class with the required parameters.
 
        datahandler = DataHandler2D(fespace, domain, dtype=i_dtype)
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Setup model
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 Setup the necessary parameters for the model and initialise the ``Model``
 class. Before that fill the ``params`` dictionary with the required
@@ -628,10 +630,10 @@ parameters.
            hessian=False,
        )
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 Pre-train setup
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -660,10 +662,12 @@ Here the exact solution is being read from the external file. The
 external solution at the test points is computed by FEM and stored in a
 csv file. This sets up the test points and the exact solution. The
 progress bar is initialised and the loss arrays are set up. The beta
-value is set up as a constant tensor. `Return to top <#contents>`__
+value is set up as a constant tensor. 
+
+`Back to Contents <#contents>`__
 
 Training
-^^^^^^^^
+~~~~~~~~
 
 .. code:: python
 
@@ -728,10 +732,12 @@ where
 
 We will compute all the test errors and write the solution to a vtk file
 for a complex mesh. Further, the console output will be printed with the
-loss values and the test errors. `Return to top <#contents>`__
+loss values and the test errors. 
+
+`Back to Contents <#contents>`__
 
 Post Training
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -789,28 +795,29 @@ Post Training
      np.savetxt(str(Path(i_output_path) / "error.txt"), error)
      np.savetxt(str(Path(i_output_path) / "time_per_epoch.txt"), np.array(time_array))
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
 
 This part of the code saves the model weights, writes the solution to a
 vtk file, prints the error values in a table, prints the time values in
 a table, and saves all the arrays as numpy arrays.
 
-save the outputs
+Save the outputs
 ----------------
 
 All the outputs will be saved in the output directory specified in the
-input file. The output directory will contain the following files: -
-prediction_{epoch}.vtk : The solution file for each epoch. -
-loss_function.txt : The loss function values for each epoch. -
-prediction.txt : The predicted values at last epoch at the test points.
-- exact.txt : The exact values at last epoch at the test points. -
-error.txt : The error values at last epoch at the test points. -
-time_per_epoch.txt : The time taken for each epoch.
+input file. The output directory will contain the following files:
 
-`Return to top <#contents>`__
+-  prediction_{epoch}.vtk : The solution file for each epoch.
+-  loss_function.txt : The loss function values for each epoch.
+-  prediction.txt : The predicted values at last epoch at the test points.
+-  exact.txt : The exact values at last epoch at the test points.
+-  error.txt : The error values at last epoch at the test points.
+-  time_per_epoch.txt : The time taken for each epoch.
+
+`Back to Contents <#contents>`__
 
 Solution Plots
------------------
+--------------
 .. figure:: exact_solution.png
    :alt: Exact Solution
    :align: center
@@ -829,6 +836,7 @@ Solution Plots
 
    Error
 
+`Back to Contents <#contents>`__
 
 References
 -------------
@@ -836,4 +844,4 @@ References
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__
 
-`Return to top <#contents>`__
+`Back to Contents <#contents>`__
