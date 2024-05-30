@@ -13,7 +13,7 @@ from rich.table import Table
 def print_table(title, columns, col_1_values, col_2_values):
     """
     This function prints a table with two columns to the console.
-    
+
     :param title: Title of the table
     :type title: str
     :param columns: List of column names

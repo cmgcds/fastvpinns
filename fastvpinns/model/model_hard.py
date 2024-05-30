@@ -25,7 +25,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     The class inherits from the tf.keras.Model class and is used
     to define the neural network model architecture and the training loop for FastVPINNs.
-    
+
     :param layer_dims: List of integers representing the number of neurons in each layer
     :type layer_dims: list
     :param learning_rate_dict: Dictionary containing the learning rate parameters
@@ -207,7 +207,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     def call(self, inputs):
         """This method is used to define the forward pass of the model.
-        
+
         :param inputs: Input tensor
         :type inputs: tf.Tensor
         :return: Output tensor from the model
@@ -229,7 +229,7 @@ class DenseModel_Hard(tf.keras.Model):
 
     def get_config(self):
         """This method is used to get the configuration of the model.
-        
+
         :return: Configuration of the model
         :rtype: dict
         """
@@ -258,7 +258,7 @@ class DenseModel_Hard(tf.keras.Model):
     @tf.function
     def train_step(self, beta=10, bilinear_params_dict=None):  # pragma: no cover
         """This method is used to define the training step of the mode.
-        
+
         :param bilinear_params_dict: Dictionary containing the bilinear parameters
         :type bilinear_params_dict: dict
         :return: Dictionary containing the loss values

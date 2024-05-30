@@ -7,6 +7,7 @@ Date : 03/May/2024
 
 History : 03/May/2024 - Initial implementation with basic data handling
 """
+
 from abc import abstractmethod
 
 

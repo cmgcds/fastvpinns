@@ -106,7 +106,7 @@ def plot_multiple_loss_function(
 ):
     """
     This function will plot the loss function in log scale for multiple parameters.
-    
+
     :param loss_function_list: list of loss values for multiple parameters
     :type loss_function_list: list
     :param output_path: path to save the plot
@@ -147,12 +147,12 @@ def plot_multiple_loss_function(
 def plot_inverse_test_loss_function(loss_function, output_path):
     """
     This function will plot the test loss function of the inverse parameter.
-    
+
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
-    
+
     :return: None
     :rtype: None
     """
@@ -172,14 +172,14 @@ def plot_inverse_test_loss_function(loss_function, output_path):
 def plot_test_loss_function(loss_function, output_path, fileprefix=""):
     """
     This function will plot the test loss function.
-    
+
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
     :param fileprefix: prefix for the filename, defaults to ""
     :type fileprefix: str, optional
-    
+
     :return: None
     :rtype: None
     """
@@ -202,7 +202,7 @@ def plot_test_loss_function(loss_function, output_path, fileprefix=""):
 def plot_test_time_loss_function(time_array, loss_function, output_path):
     """
     This function will plot the test loss as a function of time in seconds.
-    
+
     :param time_array: array of time values
     :type time_array: numpy.ndarray
     :param loss_function: list of loss values
@@ -230,7 +230,7 @@ def plot_test_time_loss_function(time_array, loss_function, output_path):
 def plot_contour(x, y, z, output_path, filename, title):
     """
     This function will plot the contour plot.
-    
+
     :param x: x values
     :type x: numpy.ndarray
     :param y: y values
@@ -263,7 +263,7 @@ def plot_inverse_param_function(
 ):
     """
     This function will plot the predicted inverse parameter.
-    
+
     :param inverse_predicted: list of predicted inverse parameter values
     :type inverse_predicted: list
     :param inverse_param_name: name of the inverse parameter
