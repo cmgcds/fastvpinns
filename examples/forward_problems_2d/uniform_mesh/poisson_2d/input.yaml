@@ -22,7 +22,7 @@ geometry:
   
   exact_solution:
     exact_solution_generation: "internal" # whether the exact solution needs to be read from external file.
-    exact_solution_file_name: "fem_solutions/neumann_solutions/solution_problem_3.txt" # External solution file name.
+    exact_solution_file_name: "" # External solution file name (if exists from FEM)
 
   mesh_type: "quadrilateral"  # Type of mesh. Can be "quadrilateral" or other supported types.
   
