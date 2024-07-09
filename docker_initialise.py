@@ -33,7 +33,7 @@ def get_cuda_cudnn_nvidia_versions():
 
     # Get CUDA version
     try:
-        cuda_version = subprocess.run(['tnvcc', '--version'], capture_output=True, text=True)
+        cuda_version = subprocess.run(['nvcc', '--version'], capture_output=True, text=True)
         cuda_version = re.search(r'release (\d+\.\d+)', cuda_version.stdout).group(1) if cuda_version.stdout else 'Not found'
     except Exception:
         pass
