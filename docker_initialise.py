@@ -3,12 +3,14 @@ import subprocess
 import re
 
 def get_version_from_toml():
-    with open("pyproject.toml", "r") as file:
-        content = file.read()
-    version_match = re.search(r'version = "([^"]+)"', content)
-    if version_match:
-        return version_match.group(1)
-    return "Unknown"
+    try: 
+        with open("pyproject.toml", "r") as file:
+            content = file.read()
+        version_match = re.search(r'version = "([^"]+)"', content)
+        if version_match:
+            return version_match.group(1)
+    except Exception:
+        return "Unknown"
 
 def check_tensorflow():
     """
@@ -17,6 +19,7 @@ def check_tensorflow():
     tensor_flow_version = "Not Found"
     gpu_support = "Not Found"
     number_of_gpus = "Not Found"
+    
     tensorflow_version = subprocess.run(["python3", "-c", "import tensorflow as tf; print(tf.__version__)"], capture_output=True, text=True)
     gpu_support = subprocess.run(["python3", "-c", "import tensorflow as tf; print(tf.test.is_gpu_available())"], capture_output=True, text=True)
     number_of_gpus = subprocess.run(["python3", "-c", "import tensorflow as tf; print(len(tf.config.experimental.list_physical_devices('GPU')))"], capture_output=True, text=True)
@@ -25,9 +28,15 @@ def check_tensorflow():
 
 
 def get_cuda_cudnn_nvidia_versions():
+
+    cuda_version = 'Not found'
+
     # Get CUDA version
-    cuda_version = subprocess.run(['nvcc', '--version'], capture_output=True, text=True)
-    cuda_version = re.search(r'release (\d+\.\d+)', cuda_version.stdout).group(1) if cuda_version.stdout else 'Not found'
+    try:
+        cuda_version = subprocess.run(['tnvcc', '--version'], capture_output=True, text=True)
+        cuda_version = re.search(r'release (\d+\.\d+)', cuda_version.stdout).group(1) if cuda_version.stdout else 'Not found'
+    except Exception:
+        pass
 
     # Get cuDNN version
     try:
@@ -35,12 +44,16 @@ def get_cuda_cudnn_nvidia_versions():
             cudnn_version = f.read()
         cudnn_version = re.search(r'#define CUDNN_MAJOR (\d+)\n#define CUDNN_MINOR (\d+)\n#define CUDNN_PATCHLEVEL (\d+)', cudnn_version)
         cudnn_version = f"{cudnn_version.group(1)}.{cudnn_version.group(2)}.{cudnn_version.group(3)}" if cudnn_version else 'Not found'
-    except FileNotFoundError:
+    except Exception:
         cudnn_version = 'Not found'
 
     # Get NVIDIA driver version
-    nvidia_driver_version = subprocess.run(['nvidia-smi', '--query-gpu=driver_version', '--format=csv,noheader'], capture_output=True, text=True)
-    nvidia_driver_version = nvidia_driver_version.stdout.strip() if nvidia_driver_version.stdout else 'Not found'
+    nvidia_driver_version = 'Not found'
+    try:
+        nvidia_driver_version = subprocess.run(['nvidia-smi', '--query-gpu=driver_version', '--format=csv,noheader'], capture_output=True, text=True)
+        nvidia_driver_version = nvidia_driver_version.stdout.strip() if nvidia_driver_version.stdout else 'Not found'
+    except Exception:
+        pass
 
     return cuda_version, cudnn_version, nvidia_driver_version.split('\n')[0]
 
