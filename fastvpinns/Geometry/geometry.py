@@ -3,7 +3,8 @@ This module, `geometry.py`, contains the `Geometry` Abstract class which defines
 generate internal mesh for 2D and 3D geometries. 
 
 Author: Thivin Anandh D
-Date: 03-May-2024
+
+Date: 03/May/2024
 """
 
 from pathlib import Path

@@ -9,18 +9,22 @@ Welcome to FastVPINNs's documentation!
 .. image:: https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml/badge.svg
    :alt: Unit tests
    :target: https://github.com/cmgcds/fastvpinns/actions/workflows/unit-tests.yml
-
 .. image:: https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml/badge.svg
    :alt: Integration tests
    :target: https://github.com/cmgcds/fastvpinns/actions/workflows/integration-tests.yml
-
 .. image:: https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml/badge.svg
    :alt: Compatibility check
    :target: https://github.com/cmgcds/fastvpinns/actions/workflows/compatibility-tests.yml
-
 .. image:: https://codecov.io/gh/cmgcds/fastvpinns/graph/badge.svg?token=NI9G37R2Q7 
    :target: https://codecov.io/gh/cmgcds/fastvpinns
    :alt: Code coverage
+
+.. image:: https://badge.fury.io/py/fastvpinns.svg
+   :target: https://badge.fury.io/py/fastvpinns
+   :alt: Pypi
+
+.. image:: https://img.shields.io/pepy/dt/fastvpinns
+   :alt: Pepy Total Downlods
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
    :alt: MIT License

@@ -1,16 +1,19 @@
-# This program will be used to setup the FE2D and quadrature rule for a given cell based on the
-# given mesh and the degree of the basis functions
+"""
+This module `FE2D_Cell.py` will be used to setup the FE2D and quadrature rule for a given cell based on the
+given mesh and the degree of the basis functions
 
-# Author: Thivin Anandh D
-# Date:  30/Aug/2023
-# Implementation History :
-# the grad_x_orig and grad_y_orig will actually store the magnitute with which we need to multiply this grad_x_ref and grad_y_ref
-# to obtain the actual values of the gradient in the original cell
-# this is done to improve efficiency
+Author: Thivin Anandh D
 
+Date: 30/Aug/2023
+
+Implementation History : The grad_x_orig and grad_y_orig will actually store
+the magnitute with which we need to multiply this grad_x_ref and grad_y_ref
+to obtain the actual values of the gradient in the original cell
+this is done to improve efficiency
+"""
 
 # Importing the required libraries
-# from .basis_function_2d import *
+from .basis_function_2d import *
 
 # import Quadrature rules
 from .quadratureformulas_quad2d import *
@@ -19,7 +22,7 @@ from .fe2d_setup_main import *
 
 class FE2D_Cell:
     """
-    This class is used to Store the FE Values, Such as Coordinates, Basis Functions, Quadrature Rules, etc. for a given cell.
+    This class is used to Store the FE Values, such as Coordinates, Basis Functions, Quadrature Rules, etc. for a given cell.
     """
 
     def __init__(

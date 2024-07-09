@@ -1,14 +1,17 @@
 """
-file: basis_2d_QN_Jacobi.py
-description: This file contains the class Basis2DQNJacobi which is used 
-             to define the basis functions for a Jacobi Polynomial.
-             Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
-             (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)
-             available at https://github.com/ehsankharazmi/hp-VPINNs/
-authors: Thivin Anandh D
-changelog: 30/Aug/2023 - Initial version
-known_issues: None
-dependencies: Requires scipy and numpy.
+The file `basis_2d_QN_Jacobi.py` contains the class Basis2DQNJacobi which is used
+to define the basis functions for a Jacobi Polynomial. Test functions and derivatives
+are inferred from the work by Ehsan Kharazmi et.al (hp-VPINNs: Variational
+Physics-Informed Neural Networks With Domain Decomposition) available at
+https://github.com/ehsankharazmi/hp-VPINNs/
+
+Author: Thivin Anandh D
+
+Changelog: 30/Aug/2023 - Initial version
+
+Known issues: None
+
+Dependencies: scipy, numpy
 """
 
 # import the jacobi polynomials
@@ -20,7 +23,7 @@ from .basis_function_2d import BasisFunction2D
 
 class Basis2DQNJacobi(BasisFunction2D):
     """
-    This class defines the basis functions for a 2D Q1 element.
+    This class defines the basis functions for a 2D QN element.
     """
 
     def __init__(self, num_shape_functions: int):
