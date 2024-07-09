@@ -1,7 +1,7 @@
 numpy>=1.21,<=1.23.5
 pandas<1.4.4
 matplotlib
-tensorflow>=2.9.1,<=2.13.0
+tensorflow>=2.9.1,<=2.11.0
 pytest==8.0.2
 meshio==5.3.4
 pyDOE==0.3.8
