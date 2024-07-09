@@ -48,7 +48,7 @@ The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2
 
 
 hp-Variational Physics-informed neural network
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 hp-Variational Physics-Informed neural networks are special form of physics informed neural networks, which uses variational form of the loss function to train the NN. A special form of hp-Variational PINNs which uses h- & p- refinement to enhance the ability of the NN to capture higher frequency solutions. 
 For more details on the theory and implementation of hp-VPINNs, please refer to the `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_ and `hp-VPINNs Paper <https://arxiv.org/abs/2003.05385>`_.
@@ -63,6 +63,7 @@ For more details on the theory and implementation of hp-VPINNs, please refer to 
     :caption: Getting Started
 
     Installation <_rst/_installation.rst>
+    Docker Installation <_rst/_docker.rst>
 
 .. toctree::
     :maxdepth: 3
