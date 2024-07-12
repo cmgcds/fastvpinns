@@ -51,15 +51,13 @@ RUN echo "export PYTHONPATH=${PYTHONPATH}:/fastvpinns" >> ~/.bashrc
 # set alias for python as python3 in bashrc
 RUN echo "alias python=python3" >> ~/.bashrc
 
-# temporarily copy the file
-COPY docker_initialise.py /fastvpinns/docker_initialise.py
 # Change execution permission
-RUN chmod +x /fastvpinns/docker_initialise.py
+RUN chmod +x docker_initialise.py
 
 
 # set bash as the default command
 CMD ["/bin/bash"]
 
 
-ENTRYPOINT ["bash", "-c", "python3 /fastvpinns/docker_initialise.py && exec /bin/bash"]
+ENTRYPOINT ["bash", "-c", "python3 docker_initialise.py && exec /bin/bash"]
 
