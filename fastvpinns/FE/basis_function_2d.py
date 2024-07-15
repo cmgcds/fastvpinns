@@ -1,12 +1,15 @@
 """
-file: basis_function_2d.py
-description: This file contains a wrapper class for all the finite element basis functions 
-             used in the FE2D code. The 2D basis functions have methods to return the value 
-             of the basis function and its derivatives at the reference point (xi, eta).
-authors: Thivin Anandh D
-changelog: 30/Aug/2023 - First version
-known_issues: None
-dependencies: None specified.
+The file `basis_function_2d.py` contains a wrapper class for all the finite element basis functions 
+used in the FE2D code. The 2D basis functions have methods to return the value 
+of the basis function and its derivatives at the reference point (xi, eta).
+
+Author: Thivin Anandh D
+
+Changelog: 30/Aug/2023 - First version
+
+Known issues: None
+
+Dependencies: None specified
 """
 
 from abc import abstractmethod
@@ -14,18 +17,10 @@ from abc import abstractmethod
 
 class BasisFunction2D:
     """
-    Represents a basis function in 2D.
+    This class defines the basis functions for a 2D element.
 
-    Args:
-        num_shape_functions (int): The number of shape functions.
-
-    Methods:
-        value(xi, eta): Evaluates the basis function at the given xi and eta coordinates.
-        gradx(xi, eta): Computes the partial derivative of the basis function with respect to xi.
-        grady(xi, eta): Computes the partial derivative of the basis function with respect to eta.
-        gradxx(xi, eta): Computes the second partial derivative of the basis function with respect to xi.
-        gradxy(xi, eta): Computes the mixed partial derivative of the basis function with respect to xi and eta.
-        gradyy(xi, eta): Computes the second partial derivative of the basis function with respect to eta.
+    :num_shape_functions (int): The number of shape functions.
+    :value(xi, eta): Evaluates the basis function at the given xi and eta coordinates.
     """
 
     def __init__(self, num_shape_functions):

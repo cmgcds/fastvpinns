@@ -6,7 +6,7 @@ All the necessary files can be found in the examples folder of the `fastvpinns G
 
 .. math::
 
-   -\epsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2
+   -\varepsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2
 
 where
 
@@ -20,72 +20,84 @@ We begin by introducing the various files required to run this example
 Contents
 --------
 
--  `Example File - sin_cos.py <#example-file>`__: 
+-  `Steps to run the code <#steps-to-run-the-code>`__
 
-   -  `Defining boundary values <#defining-boundary-values>`__
+-  `Example File <#example-file>`__
+
+   -  `Defining the boundary values <#defining-the-boundary-values>`__
    -  `Defining the forcing function <#defining-the-forcing-function>`__
-   -  `Defining bilinear parameters <#defining-bilinear-parameters>`__
+   -  `Defining the bilinear parameters <#defining-the-bilinear-parameters>`__
 
--  `Input File - Input.yaml <#input-file>`__: 
+-  `Input File <#input-file>`__
 
-   -  `experimentation <#experimentation>`__
-   -  `geometry <#geometry>`__
-   -  `fe <#fe>`__
-   -  `pde <#pde>`__
-   -  `model <#model>`__
-   -  `logging <#logging>`__
+   -  `Experimentation parameters <#experimentation-parameters>`__
+   -  `Geometry parameters <#geometry-parameters>`__
+   -  `Finite element space parameters <#finite-element-space-parameters>`__
+   -  `PDE Beta parameters <#pde-beta-parameters>`__
+   -  `Model parameters <#model-parameters>`__
+   -  `Logging parameters <#logging-parameters>`__
 
--  `Main File - main_poisson2d_hard.py <#main-file>`__: The main file is
-   used to run the experiment.
+-  `Main File <#main-file>`__
 
    -  `Import relevant FastVPINNs
       methods <#import-relevant-fastvpinns-methods>`__
    -  `Reading the Input File <#reading-the-input-file>`__
-   -  `Setting up a Geometry2D object <#setting-up-a-geometry_2d-object>`__
+   -  `Setting up a Geometry2D object <#setting-up-a-geometry2d-object>`__
    -  `Reading the boundary conditions and
       values <#reading-the-boundary-conditions-and-values>`__
    -  `Setting up the finite element
       space <#setting-up-the-finite-element-space>`__
    -  `Defining the hard boundary constraint
       ansatz <#defining-the-hard-boundary-constraint-ansatz>`__
-   -  `Instantiating a model with hard boundary
-      constraints <#instantiating-a-model-with-hard-boundary-constraints>`__
+   -  `Instantiating the model with hard boundary
+      constraints <#instantiating-the-model-with-hard-boundary-constraints>`__
+   -  `Training the model <#training-the-model>`__
 
--  `Training the model <#training-the-model>`__
+-  `Solution <#solution>`__
+-  `References <#references>`__
 
-The code in this example can be run using
+Steps to run the code
+---------------------
+
+To run the code, execute the following command:
 
 .. code:: bash
 
    python3 main_poisson2d_hard.py input.yaml
 
-Example File
+`Back to Contents <#contents>`__
+
+Example file
 ------------
 
 The example file, ``sin_cos.py``, defines the boundary conditions and
 boundary values, the forcing function and exact function (if test error
 needs to be calculated), bilinear parameters and the actual value of the
 parameter that needs to be estimated (if the error between the actual
-and estimated parameter needs to be calculated) 
+and estimated parameter needs to be calculated).
 
-Defining boundary
-~~~~~~~~~~~~~~~~~
-values Since this example enforces zero Dirichlet boundary conditions
+`Back to Contents <#contents>`__
+
+Defining the boundary values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Since this example enforces zero Dirichlet boundary conditions
 using hard constraints, the boundary functions defined in the example
-file are not used. Instead, the ansatz function for hard boundary
+file is not used. Instead, the ansatz function for hard boundary
 constraints is defined in the `main file <#main-file>`__
 
 .. figure:: rect.png
    :alt: Unit Square
    :align: center
 
-For internally generated geometries, the boundary id's will be hardcoded to 
+For internally generated geometries, the boundary IDs will be hard-coded to 
 1000  for bottom, 1001 for right, 1002 for top, and 1003 for left; as shown in figure.
+
+`Back to Contents <#contents>`__
 
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``rhs`` can be used to define the forcing function :math:`f`.
+The function ``rhs`` can be used to define the forcing function :math:`f`.
 
 .. code:: python
 
@@ -93,8 +105,6 @@ Defining the forcing function
        """
        This function will return the value of the rhs at a given point
        """
-       # f_temp =  32 * (x  * (1 - x) + y * (1 - y))
-       # f_temp = 1
 
        omegaX = 4.0 * np.pi
        omegaY = 4.0 * np.pi
@@ -102,8 +112,10 @@ Defining the forcing function
 
        return f_temp
 
-Defining bilinear parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Defining the bilinear parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The bilinear parameters like diffusion constant can be defined by
 ``get_bilinear_params_dict``
@@ -118,93 +130,175 @@ The bilinear parameters like diffusion constant can be defined by
 
        return {"eps": eps}
 
-Here, ``eps`` denoted the diffusion constant.
+Here, ``eps`` denotes the diffusion constant.
 
 `Back to Contents <#contents>`__
 
 Input file
 ----------
 
-The input file, ``input_inverse.yaml``, is used to define inputs to your
-solver. These will usually parameters that will changed often throughout
+The input file, ``input.yaml``, is used to define inputs to your
+solver. These are the usual parameters that are changed often throughout
 your experimentation, hence it is best practice to pass these parameters
 externally. The input file is divided based on the modules which use the
-parameter in question, as follows - #``experimentation`` This
-contains ``output_path``, a string which specifies which folder will be
-used to store your outputs.
+parameter.
 
-geometry
-~~~~~~~~~~~~
+`Back to Contents <#contents>`__
 
-This section defines the geometrical parameters for your domain. 1. In
-this example, we set the ``mesh_generation_method`` as ``"internal"``.
-This generates a regular quadrilateral domain with a uniform mesh. 2.
-The parameters in ``internal_mesh_params`` define the x and y limits of
-the quadrilateral domain(\ ``xmin``, ``xmax``, ``ymin`` and ``ymax``),
-number of cells in the domain in the x and y direction (``n_cells_x``
-and ``n_cells_y``), number of total boundary points
-(``n_boundary_points``) and number of test points in x and y direction
-(``n_test_points_x`` and ``n_test_points_y``). 3. ``mesh_type`` :
-FastVPINNs currently provides support for quadrilateral elements only.
-4. ``external_mesh_params`` can be used to specify parameters for the
-external mesh, and can be ignored for this example
+Experimentation parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-fe
-~~~~~~
+Defines the output path where the results will be saved.
 
-The parameters related to the finite element space are defined here. 1.
-``fe_order`` sets the order of the finite element test functions. 2.
-``fe_type`` set which type of polynomial will be used as the finite
-element test function. 3. ``quad_order`` is the number of quadrature in
-each direction in each cell. Thus the total number of quadrature points
-in each cell will be ``quad_order``\ :math:`^2` 4. ``quad_type``
-specifies the quadrature rule to be used.
+.. code:: yaml
 
-pde
-~~~~~~~
+   experimentation:
+     output_path: "output/poisson2d/1"  # Path to the output directory where the results will be saved.
 
-``beta`` specifies the weight by which the boundary loss will be
+`Back to Contents <#contents>`__
+
+Geometry parameters
+~~~~~~~~~~~~~~~~~~~
+
+This section defines the geometrical parameters for your domain. 
+
+-  In this example, we set the ``mesh_generation_method`` as ``"internal"``. 
+   This generates a regular quadrilateral domain with a uniform mesh. 
+-  The parameters in ``internal_mesh_params`` define the x and y limits of
+   the quadrilateral domain(\ ``xmin``, ``xmax``, ``ymin`` and ``ymax``),
+   number of cells in the domain in the x and y direction (``n_cells_x``
+   and ``n_cells_y``), number of total boundary points
+   (``n_boundary_points``) and number of test points in x and y direction
+   (``n_test_points_x`` and ``n_test_points_y``).
+-  ``mesh_type`` is set to “quadrilateral” which means that the mesh is
+   a quadrilateral mesh. Note: As of now, only quadrilateral meshes are
+   supported. So, ``mesh_type`` is set to quadrilateral.
+-  ``boundary_sampling_method`` is set to “uniform” which means that the
+   boundary points are sampled using the “uniform” method. (Use only
+   uniform sampling as of now.)
+-  ``external_mesh_params`` can be used to specify parameters for the
+   external mesh, and can be ignored for this example.
+
+.. code:: yaml
+
+   geometry:
+      mesh_generation_method: "internal"  # Method for generating the mesh. Can be "internal" or "external".
+      generate_mesh_plot: True  # Flag indicating whether to generate a plot of the mesh.
+      
+      # internal mesh generated quadrilateral mesh, depending on the parameters specified below.
+
+      internal_mesh_params:  # Parameters for internal mesh generation method.
+         x_min: 0  # Minimum x-coordinate of the domain.
+         x_max: 1  # Maximum x-coordinate of the domain.
+         y_min: 0  # Minimum y-coordinate of the domain.
+         y_max: 1  # Maximum y-coordinate of the domain.
+         n_cells_x: 4  # Number of cells in the x-direction.
+         n_cells_y: 4  # Number of cells in the y-direction.
+         n_boundary_points: 400  # Number of boundary points.
+         n_test_points_x: 100  # Number of test points in the x-direction.
+         n_test_points_y: 100  # Number of test points in the y-direction.
+
+      mesh_type: "quadrilateral"  # Type of mesh. Can be "quadrilateral" or other supported types.
+      
+      external_mesh_params:  # Parameters for external mesh generation method.
+         mesh_file_name: "meshes/rect.mesh"  # Path to the external mesh file (should be a .mesh file).
+         boundary_refinement_level: 4  # Level of refinement for the boundary.
+         boundary_sampling_method: "uniform"  # Method for sampling the boundary. Can be "uniform"
+
+`Back to Contents <#contents>`__
+
+Finite Element Space parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parameters related to the finite element space are defined here.
+
+-  ``fe_order`` sets the order of the finite element test functions.
+
+-  ``fe_type`` set which type of polynomial will be used as the finite element test function.
+
+- ``quad_order`` is the number of quadrature in each direction in each cell. Thus the total number of quadrature points in each cell will be (quad_order)\ :math:`^2`
+
+-  ``quad_type`` specifies the quadrature rule to be used.
+
+.. code:: yaml
+
+   fe:
+      fe_order: 5 # Order of the finite element basis functions.
+      fe_type: "legendre"  # Type of finite element basis functions. Can be "jacobi" or other supported types.
+      quad_order: 20  # Order of the quadrature rule.
+      quad_type: "gauss-jacobi"  # Type of quadrature rule. Can be "gauss-jacobi" or other supported types.
+
+`Back to Contents <#contents>`__
+
+PDE beta parameters
+~~~~~~~~~~~~~~~~~~~
+
+The ``beta`` specifies the weight by which the boundary loss will be
 multiplied before being added to the PDE loss.
 
-model
-~~~~~~~~~
+.. code:: yaml
 
-The parameters pertaining to the neural network are specified here. 1.
-``model_architecture`` is used to specify the dimensions of the neural
-network. In this example, [2, 30, 30, 30, 1] corresponds to a neural
-network with 2 inputs (for a 2-dimensional problem), 1 output (for a
-scalar problem) and 3 hidden layers with 30 neurons each. 2.
-``activation`` specifies the activation function to be used. 3.
-``use_attention`` specifies if attnention layers are to be used in the
-model. This feature is currently under development and hence should be
-set to ``false`` for now. 4. ``epochs`` is the number of iterations for
-which the network must be trained. 5. ``dtype`` specifies which datatype
-(``float32`` or ``float64``) will be used for the tensor calculations.
-6. ``set_memory_growth``, when set to ``True`` will enable tensorflow’s
-memory growth function, restricting the memory usage on the GPU. This is
-currently under development and must be set to ``False`` for now. 7.
-``learning_rate`` sets the learning rate ``initial_learning_rate`` if a
-constant learning rate is used. A learning rate scheduler can be used by
-toggling ``use_lr_scheduler`` to True and setting the corresponding
-decay parameters below it.
+   pde:
+     beta: 10  # Parameter for the PDE.
 
-logging
-~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Model parameters
+~~~~~~~~~~~~~~~~
+
+The parameters pertaining to the neural network are specified here.
+
+-  ``model_architecture`` is used to specify the dimensions of the neural network. In this example, [2, 30, 30, 30, 1] corresponds to a neural network with 2 inputs (for a 2-dimensional problem), 1 output (for a scalar problem) and 3 hidden layers with 30 neurons each.
+-  ``activation`` specifies the activation function to be used.
+-  ``use_attention`` specifies if attention layers are to be used in the model. This feature is currently under development and hence should be set to ``false`` for now.
+-  ``epochs`` is the number of iterations for which the network must be trained.
+-  ``dtype`` specifies which datatype (``float32`` or ``float64``) will be used for the tensor calculations.
+-  ``set_memory_growth``, when set to ``True`` will enable tensorflow’s memory growth function, restricting the memory usage on the GPU. This is currently under development and must be set to ``False`` for now.
+-  ``learning_rate`` sets the learning rate ``initial_learning_rate`` if a constant learning rate is used.
+-  A learning rate scheduler can be used by toggling ``use_lr_scheduler`` to True and setting the corresponding decay parameters below it. The ``decay_steps`` parameter is the number of steps between each learning rate decay. The ``decay_rate`` parameter is the decay rate for the learning rate. The ``staircase`` parameter is a flag indicating whether to use the staircase decay.
+
+.. code:: yaml
+
+   model:
+      model_architecture: [2, 30,30,30, 1]  # Architecture of the neural network model.
+      activation: "tanh"  # Activation function used in the neural network.
+      use_attention: False  # Flag indicating whether to use attention mechanism in the model.
+      epochs: 10000  # Number of training epochs.
+      dtype: "float32"  # Data type used for computations.
+      set_memory_growth: False  # Flag indicating whether to set memory growth for GPU.
+      
+      learning_rate:  # Parameters for learning rate scheduling.
+         initial_learning_rate: 0.001  # Initial learning rate.
+         use_lr_scheduler: False  # Flag indicating whether to use learning rate scheduler.
+         decay_steps: 1000  # Number of steps between each learning rate decay.
+         decay_rate: 0.99  # Decay rate for the learning rate.
+         staircase: False  # Flag indicating whether to use staircase decay.
+
+`Back to Contents <#contents>`__
+
+Logging parameters
+~~~~~~~~~~~~~~~~~~
 
 It specifies the frequency with which the progress bar and console
 output will be updated, and at what interval will inference be carried
 out to print the solution image in the output folder.
 
-`Back to contents <#contents>`__
+.. code:: yaml
+
+   logging:
+     update_console_output: 5000  # Number of steps between each update of the console output.
+
+`Back to Contents <#contents>`__
 
 Main file
 ---------
 
-This is the main file which needs to be run for the experiment, with the
-input file as an argument. For the example, we will use the main file
-``main_poisson2d_hard.py``
+The main file ``main_poisson2d_hard.py`` which needs to be run for the experiment, with the
+input file as an argument.
 
 Following are the key components of a FastVPINNs main file
+
+`Back to Contents <#contents>`__
 
 Import relevant FastVPINNs methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -234,7 +328,7 @@ boundary loss to the PDE residual for training.
 
    from fastvpinns.physics.poisson2d import pde_loss_poisson
 
-Imports the loss function for the 2-dimensional Poisson problem.
+Will import the loss function for the 2-dimensional Poisson problem.
 
 .. code:: python
 
@@ -242,18 +336,21 @@ Imports the loss function for the 2-dimensional Poisson problem.
    from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
    from fastvpinns.utils.print_utils import print_table
 
-Imports functions to calculate the loss, plot the results and print
+Will import functions to calculate the loss, plot the results and print
 outputs to the console.
+
+`Back to Contents <#contents>`__
 
 Reading the Input File
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The input file is loaded into ``config`` and the input parameters are
+The input file is loaded into ``config``, and the input parameters are
 read and assigned to their respective variables.
 
-Setting up a ``Geometry_2D`` object
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
 
+Setting up a Geometry2D object
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code:: python
 
    domain = Geometry_2D(i_mesh_type, i_mesh_generation_method, i_n_test_points_x, i_n_test_points_y, i_output_path)
@@ -273,6 +370,8 @@ be obtained using the ``generate_quad_mesh_internal`` method.
                num_boundary_points=i_n_boundary_points,
            )
 
+`Back to Contents <#contents>`__
+
 Reading the boundary conditions and values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -283,6 +382,8 @@ file
 .. code:: python
 
    bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
+
+`Back to Contents <#contents>`__
 
 Setting up the finite element space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -307,6 +408,8 @@ Setting up the finite element space
 
 ``fespace`` will contain all the information about the finite element
 space, including those read from the `input file <#input-file>`__
+
+`Back to Contents <#contents>`__
 
 Defining the hard boundary constraint ansatz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -338,8 +441,10 @@ can be defined using ``apply_hard_boundary_constraints``
 Here, the ansatz we use is of the form
 :math:`\tanh{(4\pi x)}\times\tanh{(4\pi(x-1))}\times\tanh{(4\pi y)}\times\tanh{(4\pi(y-1))}`
 
-Instantiating a model with hard boundary constraints
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Instantiating the model with hard boundary constraints
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -364,8 +469,10 @@ Instantiating a model with hard boundary constraints
 
 ``DenseModel_Hard`` is a model written for inverse problems with
 spatially varying parameter estimation. In this problem, we pass the
-loss function ``pde_loss_poisson`` from the ``physics`` file
+loss function ``pde_loss_poisson`` from the ``physics`` file of
 ``poisson2d.py``.
+
+`Back to Contents <#contents>`__
 
 Training the model
 ~~~~~~~~~~~~~~~~~~
@@ -381,9 +488,10 @@ PDE.
            batch_start_time = time.time()
 
            loss = model.train_step(beta=beta, bilinear_params_dict=bilinear_params_dict)
+           
            ...
 
-`Back to contents <#contents>`__
+`Back to Contents <#contents>`__
 
 Solution
 -----------
@@ -408,8 +516,12 @@ Solution
    Error
 
 
+`Back to Contents <#contents>`__
+
 References
 -------------
 
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__
+
+`Back to Contents <#contents>`__

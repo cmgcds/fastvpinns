@@ -1,8 +1,12 @@
 """
-This function is implemntation of our efficient tensor-based loss calculation for cd2d equation
+This file `cd2d.py` is implementation of our efficient tensor-based loss calculation for cd2d equation
+
 Author: Thivin Anandh D
-Date: 21-Sep-2023
+
+Date: 21/Sep/2023
+
 History: Initial implementation
+
 Refer: https://arxiv.org/abs/2404.12063
 """
 

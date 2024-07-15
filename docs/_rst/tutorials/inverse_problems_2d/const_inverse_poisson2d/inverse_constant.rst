@@ -4,15 +4,15 @@ Solving Inverse Problems with FastVPINNs : Estimation of uniform diffusion param
 In this example, we will learn how to solve inverse problems using
 FastVPINNs. In particular, we will solve the 2-dimensional Poisson
 equation, as shown below, while simultaneously estimating the uniform
-diffusion parameter :math:`\epsilon` using synthetically generated
+diffusion parameter :math:`\varepsilon` using synthetically generated
 sensor data.
 
 .. math::
 
-   -\epsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2
+   -\varepsilon\Delta u(x) = f(x), \quad \ x \in \Omega = (-1, 1)^2
 
 for the actual solution
-:math:`u(x, y) = 10 \sin(x) \tanh(x) e^{-\epsilon x^2}` In this problem,
+:math:`u(x, y) = 10 \sin(x) \tanh(x) e^{-\varepsilon x^2}` In this problem,
 the actual value of the diffusion parameter,
 :math:`\epsilon_{\text{actual}}` is 0.3, and we start with an initial
 guess of :math:`\epsilon_{\text{initial}}=2.0`.
@@ -22,20 +22,49 @@ We begin by introducing the various files required to run this example
 Contents
 --------
 
--  `Example File - inverse_uniform.py <#example-file>`__: The boundary
-   conditions, forcing function :math:`f` and parameters are defined in
-   this file.
--  `Input File - input_inverse.py <#input_file>`__: The input file
-   contains parameters for the finite element space and neural networks
-   that can be tuned.
--  `Main File - main_inverse.py <#main-file>`__: The main file is the
-   file that is actually run.
+-  `Steps to run the code <#steps-to-run-the-code>`__
 
-The code in this example can be run using
+-  `Example File <#example-file>`__
+
+   -  `Defining the boundary values <#defining-the-boundary-values>`__
+   -  `Defining the boundary conditions <#defining-the-boundary-conditions>`__
+   -  `Defining the forcing function <#defining-the-forcing-function>`__
+   -  `Defining the bilinear parameters <#defining-the-bilinear-parameters>`__
+   -  `Defining the target parameter values for testing <#defining-the-target-parameter-values-for-testing>`__
+
+-  `Input File <#input-file>`__
+
+   -  `Experimentation parameters <#experimentation-parameters>`__
+   -  `Geometry parameters <#geometry-parameters>`__
+   -  `Finite element space parameters <#finite-element-space-parameters>`__
+   -  `PDE Beta parameters <#pde-beta-parameters>`__
+   -  `Model parameters <#model-parameters>`__
+   -  `Logging parameters <#logging-parameters>`__
+   -  `Inverse <#inverse>`__
+
+-  `Main File <#main-file>`__
+
+   -  `Import relevant FastVPINNs methods <#import-relevant-fastvpinns-methods>`__
+   -  `Reading the Input File <#reading-the-input-file>`__
+   -  `Setting up the Geometry2D object <#setting-up-the-geometry2d-object>`__
+   -  `Reading the boundary conditions and values <#reading-the-boundary-conditions-and-values>`__
+   -  `Setting up the finite element space <#setting-up-the-finite-element-space>`__
+   -  `Instantiating the inverse model <#instantiating-the-inverse-model>`__
+   -  `Training the model <#training-the-model>`__
+
+-  `Solution <#solution>`__
+-  `References <#references>`__
+
+Steps to run the code
+---------------------
+
+To run the code, execute the following command:
 
 .. code:: bash
 
    python3 main_inverse.py input_inverse.yaml
+
+`Back to Contents <#contents>`__
 
 Example File
 ------------
@@ -44,8 +73,14 @@ The example file, ``inverse_uniform.py``, defines the boundary
 conditions and boundary values, the forcing function and exact function
 (if test error needs to be calculated), bilinear parameters and the
 actual value of the parameter that needs to be estimated (if the error
-between the actual and estimated parameter needs to be calculated) ###
-Defining boundary values The current version of FastVPINNs only
+between the actual and estimated parameter needs to be calculated)
+
+`Back to Contents <#contents>`__
+
+Defining the boundary values 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The current version of FastVPINNs only
 implements Dirichlet boundary conditions. The boundary values can be set
 by defining a function for each boundary,
 
@@ -85,8 +120,10 @@ Here, ``1000``, ``1001``, etc. are the boundary identifiers obtained
 from the geometry. Thus, each boundary gets mapped to it boundary value
 in the dictionary.
 
-Defining boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Defining the boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As explained above, each boundary has an identifier. The function
 ``get_bound_cond_dict`` maps the boundary identifier to the boundary
@@ -101,10 +138,12 @@ point).
        """
        return {1000: "dirichlet", 1001: "dirichlet", 1002: "dirichlet", 1003: "dirichlet"}
 
+`Back to Contents <#contents>`__
+
 Defining the forcing function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``rhs`` can be used to define the forcing function :math:`f`.
+The ``rhs`` function can be used to define the forcing function :math:`f`.
 
 .. code:: python
 
@@ -130,8 +169,10 @@ Defining the forcing function
            * np.exp(-1.0 * X**2 * eps)
        )
 
-Defining bilinear parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Defining the bilinear parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The bilinear parameters like diffusion constant and convective velocity
 can be defined by ``get_bilinear_params_dict``
@@ -148,6 +189,8 @@ can be defined by ``get_bilinear_params_dict``
        return {"eps": eps}
 
 Here, ``eps`` denoted the diffusion constant.
+
+`Back to Contents <#contents>`__
 
 Defining the target parameter values for testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,85 +220,159 @@ Input file
 The input file, ``input_inverse.yaml``, is used to define inputs to your
 solver. These will usually parameters that will changed often throughout
 your experimentation, hence it is best practice to pass these parameters
-externally. The input file is divided based on the modules which use the
-parameter in question, as follows - ### ``experimentation`` This
-contains ``output_path``, a string which specifies which folder will be
-used to store your outputs.
+externally. The input file is divided based on the modules.
 
-``geometry``
-~~~~~~~~~~~~
+`Back to Contents <#contents>`__
 
-This section defines the geometrical parameters for your domain. 1. In
-this example, we set the ``mesh_generation_method`` as ``"internal"``.
-This generates a regular quadrilateral domain with a uniform mesh. 2.
-The parameters in ``internal_mesh_params`` define the x and y limits of
-the quadrilateral domain(\ ``xmin``, ``xmax``, ``ymin`` and ``ymax``),
-number of cells in the domain in the x and y direction (``n_cells_x``
-and ``n_cells_y``), number of total boundary points
-(``n_boundary_points``) and number of test points in x and y direction
-(``n_test_points_x`` and ``n_test_points_y``). 3. ``mesh_type`` :
-FastVPINNs currently provides support for quadrilateral elements only.
-4. ``external_mesh_params`` can be used to specify parameters for the
-external mesh, and can be ignored for this example
+Experimentation parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``fe``
-~~~~~~
+Defines the output path where the results will be saved.
 
-The parameters related to the finite element space are defined here. 
-1. ``fe_order`` sets the order of the finite element test functions.
+.. code:: yaml
 
-2. ``fe_type`` set which type of polynomial will be used as the finite
-element test function.
+   experimentation:
+     output_path: "output/inv_test"  # Path to the output directory where the results will be saved.
 
-3. ``quad_order`` is the number of quadrature in
-each direction in each cell. Thus the total number of quadrature points
-in each cell will be ``quad_order``\ :math:`^2` 
+`Back to Contents <#contents>`__
 
-4. ``quad_type`` specifies the quadrature rule to be used.
+Geometry parameters
+~~~~~~~~~~~~~~~~~~~
 
-``pde``
-~~~~~~~
+-  In this example, we set the ``mesh_generation_method`` as ``"internal"``. 
+   This generates a regular quadrilateral domain with a uniform mesh. 
+-  The parameters in ``internal_mesh_params`` define the x and y limits of
+   the quadrilateral domain(\ ``xmin``, ``xmax``, ``ymin`` and ``ymax``),
+   number of cells in the domain in the x and y direction (``n_cells_x``
+   and ``n_cells_y``), number of total boundary points
+   (``n_boundary_points``) and number of test points in x and y direction
+   (``n_test_points_x`` and ``n_test_points_y``).
+-  ``mesh_type`` is set to “quadrilateral” which means that the mesh is
+   a quadrilateral mesh. Note: As of now, only quadrilateral meshes are
+   supported. So, ``mesh_type`` is set to quadrilateral.
+-  ``boundary_sampling_method`` is set to “uniform” which means that the
+   boundary points are sampled using the “uniform” method. (Use only
+   uniform sampling as of now.)
+-  ``external_mesh_params`` can be used to specify parameters for the
+   external mesh, and can be ignored for this example.
 
-``beta`` specifies the weight by which the boundary loss will be
+.. code:: yaml
+
+   geometry:
+      mesh_generation_method: "internal"
+      internal_mesh_params:
+         x_min: -1
+         x_max: 1
+         y_min: -1
+         y_max: 1
+         n_cells_x: 2
+         n_cells_y: 2
+         n_boundary_points: 2000
+         n_test_points_x: 100
+         n_test_points_y: 100
+
+      mesh_type: "quadrilateral"
+      external_mesh_params:
+         mesh_file_name: "meshes/rect_quad.mesh"  # should be a .mesh file
+         boundary_refinement_level: 8
+         boundary_sampling_method: "uniform"  # "uniform" 
+   
+`Back to Contents <#contents>`__
+
+Finite element space parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parameters related to the finite element space are defined here.
+-  ``fe_order`` sets the order of the finite element test functions.
+
+-  ``fe_type`` set which type of polynomial will be used as the finite element test function.
+
+- ``quad_order`` is the number of quadrature in each direction in each cell. Thus the total number of quadrature points in each cell will be ``quad_order``\ :math:`^2`
+
+-  ``quad_type`` specifies the quadrature rule to be used.
+
+.. code:: yaml
+
+   fe:
+      fe_order: 10    
+      fe_type: "jacobi"   #"parmoon", "legendre" and "legendre".
+      quad_order:  40    
+      quad_type: "gauss-jacobi"  # "gauss-jacobi, gauss-legendre, gauss-lobatto"
+
+`Back to Contents <#contents>`__
+
+PDE beta parameters
+~~~~~~~~~~~~~~~~~~~
+
+The ``beta`` specifies the weight by which the boundary loss will be
 multiplied before being added to the PDE loss.
 
-``model``
-~~~~~~~~~
+.. code:: yaml
 
-The parameters pertaining to the neural network are specified here. 1.
-``model_architecture`` is used to specify the dimensions of the neural
-network. In this example, [2, 30, 30, 30, 1] corresponds to a neural
-network with 2 inputs (for a 2-dimensional problem), 1 output (for a
-scalar problem) and 3 hidden layers with 30 neurons each. 2.
-``activation`` specifies the activation function to be used. 3.
-``use_attention`` specifies if attnention layers are to be used in the
-model. This feature is currently under development and hence should be
-set to ``false`` for now. 4. ``epochs`` is the number of iterations for
-which the network must be trained. 5. ``dtype`` specifies which datatype
-(``float32`` or ``float64``) will be used for the tensor calculations.
-6. ``set_memory_growth``, when set to ``True`` will enable tensorflow’s
-memory growth function, restricting the memory usage on the GPU. This is
-currently under development and must be set to ``False`` for now. 7.
-``learning_rate`` sets the learning rate ``initial_learning_rate`` if a
-constant learning rate is used. A learning rate scheduler can be used by
-toggling ``use_lr_scheduler`` to True and setting the corresponding
-decay parameters below it.
+   pde:
+     beta: 10  # Parameter for the PDE.
 
-``logging``
-~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Model parameters
+~~~~~~~~~~~~~~~~
+
+The parameters pertaining to the neural network are specified here.
+
+-  ``model_architecture`` is used to specify the dimensions of the neural network. In this example, [2, 30, 30, 30, 1] corresponds to a neural network with 2 inputs (for a 2-dimensional problem), 1 output (for a scalar problem) and 3 hidden layers with 30 neurons each.
+-  ``activation`` specifies the activation function to be used.
+-  ``use_attention`` specifies if attention layers are to be used in the model. This feature is currently under development and hence should be set to ``false`` for now.
+-  ``epochs`` is the number of iterations for which the network must be trained.
+-  ``dtype`` specifies which datatype (``float32`` or ``float64``) will be used for the tensor calculations.
+-  ``set_memory_growth``, when set to ``True`` will enable tensorflow’s memory growth function, restricting the memory usage on the GPU. This is currently under development and must be set to ``False`` for now.
+-  ``learning_rate`` sets the learning rate ``initial_learning_rate`` if a constant learning rate is used.
+-  A learning rate scheduler can be used by toggling ``use_lr_scheduler`` to True and setting the corresponding decay parameters below it. The ``decay_steps`` parameter is the number of steps between each learning rate decay. The ``decay_rate`` parameter is the decay rate for the learning rate. The ``staircase`` parameter is a flag indicating whether to use the staircase decay.
+
+.. code:: yaml
+
+   model:
+      model_architecture: [2, 30,30,30, 1]
+      activation: "tanh"
+      use_attention: False
+      epochs: 10000
+      dtype: "float32"
+      set_memory_growth: False
+      learning_rate:
+         initial_learning_rate: 0.001
+         use_lr_scheduler: False
+         decay_steps: 1000
+         decay_rate: 0.9
+         staircase: False
+
+`Back to Contents <#contents>`__
+
+Logging parameters
+~~~~~~~~~~~~~~~~~~
 
 It specifies the frequency with which the progress bar and console
 output will be updated, and at what interval will inference be carried
 out to print the solution image in the output folder.
 
-``inverse``
-~~~~~~~~~~~
+.. code:: yaml
+
+   logging:
+     update_console_output: 5000  # Number of steps between each update of the console output.
+
+`Back to Contents <#contents>`__
+
+Inverse
+~~~~~~~
 
 Specific inputs only for inverse problems. ``num_sensor_points``
 specifies the number of points in the domain at which the solution is
 known (or “sensed”).
 
-`Back to contents <#contents>`__
+.. code:: yaml
+
+   inverse:
+      num_sensor_points: 50
+
+`Back to Contents <#contents>`__
 
 Main file
 ---------
@@ -265,6 +382,8 @@ input file as an argument. For the example, we will use the main file
 ``main_inverse.py``
 
 Following are the key components of a FastVPINNs main file
+
+`Back to Contents <#contents>`__
 
 Import relevant FastVPINNs methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -293,7 +412,7 @@ solution.
 
    from fastvpinns.physics.poisson2d_inverse import *
 
-Imports the loss function specifically designed for this problem, with a
+Will import the loss function specifically designed for this problem, with a
 sensor loss added to the PDE and boundary losses.
 
 .. code:: python
@@ -302,8 +421,10 @@ sensor loss added to the PDE and boundary losses.
    from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
    from fastvpinns.utils.print_utils import print_table
 
-Imports functions to calculate the loss, plot the results and print
+Will import functions to calculate the loss, plot the results and print
 outputs to the console.
+
+`Back to Contents <#contents>`__
 
 Reading the Input File
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -311,8 +432,10 @@ Reading the Input File
 The input file is loaded into ``config`` and the input parameters are
 read and assigned to their respective variables.
 
-Setting up a ``Geometry_2D`` object
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Setting up the Geometry2D object
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -333,6 +456,8 @@ be obtained using the ``generate_quad_mesh_internal`` method.
                num_boundary_points=i_n_boundary_points,
            )
 
+`Back to Contents <#contents>`__
+
 Reading the boundary conditions and values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -343,6 +468,8 @@ file
 .. code:: python
 
    bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
+
+`Back to Contents <#contents>`__
 
 Setting up the finite element space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -368,8 +495,10 @@ Setting up the finite element space
 ``fespace`` will contain all the information about the finite element
 space, including those read from the `input file <#input-file>`__
 
-Instantiating an inverse problem model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`Back to Contents <#contents>`__
+
+Instantiating the inverse model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -398,6 +527,11 @@ spatially varying parameter estimation. In this problem, we pass the
 loss function ``pde_loss_poisson_inverse`` from the ``physics`` file
 ``poisson_inverse.py``.
 
+`Back to Contents <#contents>`__
+
+Training the model
+~~~~~~~~~~~~~~~~~~
+
 We are now ready to train the model to approximate the solution of the
 PDE while estimating the unknown diffusion parameter using the sensor
 data.
@@ -412,10 +546,10 @@ data.
            loss = model.train_step(beta=beta, bilinear_params_dict=bilinear_params_dict)
            ...
 
-`Back to contents <#contents>`__
+`Back to Contents <#contents>`__
 
 Solution
------------
+--------
 
       .. figure:: exact_solution.png
          :alt: Exact Solution
@@ -447,8 +581,12 @@ Solution
 
          Train Loss
 
+`Back to Contents <#contents>`__
+
 References
 -----------
 
 1. `FastVPINNs: Tensor-Driven Acceleration of VPINNs for Complex
    Geometries. <https://arxiv.org/abs/2404.12063>`__
+
+`Back to Contents <#contents>`__
