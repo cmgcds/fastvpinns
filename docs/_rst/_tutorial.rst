@@ -4,7 +4,7 @@ FastVPINNs Tutorials
 This page contains tutorials for solving 2D Partial Differential Equations (PDEs) using the FastVPINNs library. The tutorials are organized as follows:
 
 Forward Problems
-------------------
+----------------
 Problems on Uniform Mesh
 ~~~~~~~~~~~~~~~~~~~~~~~~
 .. toctree::
@@ -43,3 +43,11 @@ Inverse Problems
    
     Inverse problems with constant inverse parameter <tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.rst>
     Inverse problems with spatially varying inverse parameter <tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.rst>
+
+Mesh Generation Tutorials
+-------------------------
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+    Mesh Generation <tutorials/mesh_generation/mesh.rst>

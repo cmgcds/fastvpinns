@@ -43,11 +43,12 @@ The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2
 
 Statement of Need
 ~~~~~~~~~~~~~~~~~
-The FastVPINNs Python package addresses critical limitations in the existing hp-VPINNs implementations, particularly for solving partial differential equations on complex geometries. Current hp-VPINNs implementations suffer from computational inefficiency, with training times scaling linearly as element counts increase. This hinders their application to real-world problems involving complex domains. 
+ The FastVPINNs Python package addresses two main challenges in existing hp-VPINNs implementations. Current hp-VPINNs implementations suffer from computational inefficiency, with training times scaling linearly as the number of elements within the domain increases. Additionally, the existing implementation cannot handle complex computational domains that consist of skewed quadrilateral elements.
 
-FastVPINNs relies on two novel contributions for its performance. Firstly, the variational loss required to train the network is calculated using tensor-based operations that significantly accelerate training, achieving up to 100x speedup compared to traditional hp-VPINNs. Secondly, by incorporating bilinear transformations, it enables efficient handling of meshes with large numbers of elements and supports skewed quadrilateral cells for modeling complex geometries. In our experiments, FastVPINNs demonstrates superior performance in both forward and inverse problems, outperforming conventional PINNs and hp-VPINNs in speed and accuracy, especially for high-frequency solutions.
+FastVPINNs relies on two novel contributions to address these limitations. First, the variational loss required to train the network is calculated using tensor-based operations that reduce the dependency on the number of elements within the domain, thereby significantly accelerating training and achieving up to *100x* speedup compared to traditional hp-VPINNs. Second, by incorporating bilinear transformations, it enables FastVPINNs to handle complex computational domains with skewed quadrilateral cells. In our experiments, FastVPINNs demonstrates superior performance in both forward and inverse problems, outperforming conventional PINNs and hp-VPINNs in speed and accuracy, especially for high-frequency solutions.
 
-By providing a computationally efficient framework for hp-VPINNs that scales well to complex domains, FastVPINNs opens new possibilities for applying scientific machine learning techniques to challenging real-world problems in fluid dynamics, solid mechanics, and other fields. This package fills an important gap in the scientific computing ecosystem, enabling researchers and engineers to leverage the power of hp-VPINNs for a wider range of practical applications.
+The enhancements provided by FastVPINNs, including faster training times and the ability to handle complex geometries, enable broader application of the hp-VPINNs framework to real-world problems in various scientific fields.
+
 
 hp-Variational Physics-informed neural network
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
