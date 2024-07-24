@@ -28,16 +28,25 @@ RUN apt-get update && apt-get install -y \
     ascii-image-converter
 
 # git clone the official repository of fastvpinns
-RUN git clone https://github.com/cmgcds/fastvpinns.git
+# RUN git clone https://github.com/cmgcds/fastvpinns.git
 
-# open the requirements.txt file and replace the "tensorflow>=2.9.1,<=2.13.0" with "tensorflow>=2.9.1,<=2.11.0"
-RUN sed -i 's/tensorflow>=2.9.1,<=2.13.0/tensorflow>=2.9.1,<=2.11.0/g' /fastvpinns/requirements.txt
+# Step 2: Create the destination directory
+RUN mkdir /fastvpinns
 
-# used for debugging
-# COPY requirements.txt /fastvpinns/requirements.txt 
+# Step 3: Copy the contents of the fastvpinns folder to /fastvpinns
+COPY . /fastvpinns
 
 # Set the working directory to the cloned repository
 WORKDIR /fastvpinns
+
+# # Step 4: Print the current working directory and its contents
+# RUN pwd && ls -la
+
+# # Step 5: Print the contents of /fastvpinns directory
+# RUN ls -la /fastvpinns
+
+# open the requirements.txt file and replace the "tensorflow>=2.9.1,<=2.13.0" with "tensorflow>=2.9.1,<=2.11.0"
+RUN sed -i 's/tensorflow>=2.9.1,<=2.13.0/tensorflow>=2.9.1,<=2.11.0/g' /fastvpinns/requirements.txt
 
 # Set the PYTHONPATH environment variable
 RUN pip install .
@@ -58,6 +67,9 @@ RUN chmod +x docker_initialise.py
 # set bash as the default command
 CMD ["/bin/bash"]
 
+# Set the working directory to the cloned repository
+WORKDIR /fastvpinns
 
-ENTRYPOINT ["bash", "-c", "python3 docker_initialise.py && exec /bin/bash"]
+
+ENTRYPOINT ["bash", "-c", "python3 /fastvpinns/docker_initialise.py && exec /bin/bash"]
 
