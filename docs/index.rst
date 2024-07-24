@@ -37,21 +37,23 @@ Welcome to FastVPINNs's documentation!
 .. image:: https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11-blue
    :alt: Python Versions
 
+FastVPINNs is a robust tensor-based framework for solving partial differential equations (PDEs) using hp-Variational Physics-Informed Neural Networks (hp-VPINNs).  The FastVPINNs framework is written using `Tensorflow 2.0 <https://www.tensorflow.org/>`_. This framework is a highly optimized version of the initial implementation of hp-VPINNs by `Kharazmi et al. <https://github.com/ehsankharazmi/hp-VPINNs>`_. The framework uses a tensorized loss computation method to accelerate the training of hp-VPINNs by up to 100x for domains with a large number of elements. Furthermore, the library supports reading external meshes (in `.mesh` format), which helps in solving practical problems on real-world domains. The library provides high-level functional APIs to define the test functions and tensor assembly, allowing users to train an hp-VPINNs problem with fewer than 6 API calls.
 
+The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_. hp-Variational PINNs were originally proposed in the `hp-VPINNs Paper <https://arxiv.org/abs/2003.05385>`_.
 
 Statement of Need
 ~~~~~~~~~~~~~~~~~
-A robust tensor-based deep learning framework for solving PDEs using hp-Variational Physics-Informed Neural Networks (hp-VPINNs). The framework is written on `Tensorflow 2.0 <https://www.tensorflow.org/>`_ and supports handling external meshes. This framework is a highly optimized version of the initial implementation of hp-VPINNs by `kharazmi <https://github.com/ehsankharazmi/hp-VPINNs>`_. Refer to `hp-VPINNs(arXiv) <https://arxiv.org/abs/2003.05385>`_. The framework uses tensor-based loss computation to accelerate the training of conventional hp-VPINNs by 100X for domains with a large number of elements. Furthermore, the library supports reading external meshes (in .mesh format), which can be used to solve problems in real-world scenarios. The library provides high-level functional APIs to define the test functions and tensor assembly, allowing users to train an hp-VPINNs problem with fewer than 6 API calls.
+The FastVPINNs Python package addresses critical limitations in the existing hp-VPINNs implementations, particularly for solving partial differential equations on complex geometries. Current hp-VPINNs implementations suffer from computational inefficiency, with training times scaling linearly as element counts increase. This hinders their application to real-world problems involving complex domains. 
 
-The framework is based on the work by `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_. 
+FastVPINNs relies on two novel contributions for its performance. Firstly, the variational loss required to train the network is calculated using tensor-based operations that significantly accelerate training, achieving up to 100x speedup compared to traditional hp-VPINNs. Secondly, by incorporating bilinear transformations, it enables efficient handling of meshes with large numbers of elements and supports skewed quadrilateral cells for modeling complex geometries. In our experiments, FastVPINNs demonstrates superior performance in both forward and inverse problems, outperforming conventional PINNs and hp-VPINNs in speed and accuracy, especially for high-frequency solutions.
 
-
+By providing a computationally efficient framework for hp-VPINNs that scales well to complex domains, FastVPINNs opens new possibilities for applying scientific machine learning techniques to challenging real-world problems in fluid dynamics, solid mechanics, and other fields. This package fills an important gap in the scientific computing ecosystem, enabling researchers and engineers to leverage the power of hp-VPINNs for a wider range of practical applications.
 
 hp-Variational Physics-informed neural network
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 hp-Variational Physics-Informed neural networks are special form of physics informed neural networks, which uses variational form of the loss function to train the NN. A special form of hp-Variational PINNs which uses h- & p- refinement to enhance the ability of the NN to capture higher frequency solutions. 
-For more details on the theory and implementation of hp-VPINNs, please refer to the `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_ and `hp-VPINNs Paper <https://arxiv.org/abs/2003.05385>`_.
+For more details on the theory and implementation of hp-VPINNs, please refer to the `FastVPINNs Paper <https://arxiv.org/abs/2404.12063>`_ and the `hp-VPINNs Paper <https://arxiv.org/abs/2003.05385>`_.
 
 .. include an image here
 .. image:: images/vpinns.png
