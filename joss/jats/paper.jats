@@ -97,13 +97,12 @@ a Creative Commons Attribution 4.0 International License (CC BY
   physical phenomena such as heat transfer, electromagnetics and fluid
   dynamics. The current progress in the field of scientific machine
   learning (SciML) has resulted in incorporating deep learning and
-  data-driven methods to solve PDEs. Physics informed neural networks
-  introduced by
-  (<xref alt="Raissi et al., 2019" rid="ref-raissi2019physics" ref-type="bibr">Raissi
-  et al., 2019</xref>) works by incorporating the governing equations of
-  the physical systems into the Neural Network’s loss function. Let us
-  consider a two-dimensional Poisson equation as an example which reads
-  as follows:</p>
+  data-driven methods to solve PDEs. Let us consider a two-dimensional
+  Poisson equation as an example, defined on the domain
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[\Omega]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>Ω</mml:mi></mml:math></alternatives></inline-formula>,
+  which reads as follows:</p>
   <p><disp-formula><alternatives>
   <tex-math><![CDATA[\begin{aligned}
       - \nabla^2 u(x) &= f(x), \quad \Omega \in \mathbb{R}^2,  \\
@@ -126,6 +125,58 @@ a Creative Commons Attribution 4.0 International License (CC BY
   <inline-formula><alternatives>
   <tex-math><![CDATA[\partial \Omega]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mi>∂</mml:mi><mml:mi>Ω</mml:mi></mml:mrow></mml:math></alternatives></inline-formula>.</p>
+  <p>A neural network is a parametric function of
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[x]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math></alternatives></inline-formula>,
+  denoted as <inline-formula><alternatives>
+  <tex-math><![CDATA[u_{\text{NN}}(x; W, b)]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>.
+  In this context, <inline-formula><alternatives>
+  <tex-math><![CDATA[W]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>W</mml:mi></mml:math></alternatives></inline-formula>
+  and <inline-formula><alternatives>
+  <tex-math><![CDATA[b]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>b</mml:mi></mml:math></alternatives></inline-formula>
+  represent the weights and biases of the network. When the neural
+  network consists of <inline-formula><alternatives>
+  <tex-math><![CDATA[h]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>h</mml:mi></mml:math></alternatives></inline-formula>
+  hidden layers, with the <inline-formula><alternatives>
+  <tex-math><![CDATA[i^{\text{th}}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>i</mml:mi><mml:mtext mathvariant="normal">th</mml:mtext></mml:msup></mml:math></alternatives></inline-formula>
+  layer containing <inline-formula><alternatives>
+  <tex-math><![CDATA[n_i]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>n</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
+  neurons, the mathematical representation of the function takes the
+  following shape:
+  <named-content id="eqU003ANN" content-type="equation"><disp-formula><alternatives>
+  <tex-math><![CDATA[u_{\text{NN}}(x; W, b) = l \circ \mathrm{T}^{(h)} \circ \mathrm{T}^{(h-1)} \hdots \circ \mathrm{T}^1(x)
+      ]]></tex-math>
+  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mi>l</mml:mi><mml:mo>∘</mml:mo><mml:msup><mml:mi mathvariant="normal">T</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>h</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup><mml:mo>∘</mml:mo><mml:msup><mml:mi mathvariant="normal">T</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>h</mml:mi><mml:mo>−</mml:mo><mml:mn>1</mml:mn><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup><mml:mi>…</mml:mi><mml:mo>∘</mml:mo><mml:msup><mml:mi mathvariant="normal">T</mml:mi><mml:mn>1</mml:mn></mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></disp-formula></named-content></p>
+  <p>Here, <inline-formula><alternatives>
+  <tex-math><![CDATA[l : \mathbb{R}^{n_h} \rightarrow \mathbb{R}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mi>l</mml:mi><mml:mo>:</mml:mo><mml:msup><mml:mi>ℝ</mml:mi><mml:msub><mml:mi>n</mml:mi><mml:mi>h</mml:mi></mml:msub></mml:msup><mml:mo>→</mml:mo><mml:mi>ℝ</mml:mi></mml:mrow></mml:math></alternatives></inline-formula>
+  is a linear mapping in the output layer and
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[\mathrm{T}^{(i)}(\cdot) = \sigma(W^{(i)} \times \cdot + b^{(i)})]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msup><mml:mi mathvariant="normal">T</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mo>⋅</mml:mo><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mi>σ</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msup><mml:mi>W</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup><mml:mo>×</mml:mo><mml:mo>⋅</mml:mo><mml:mo>+</mml:mo><mml:msup><mml:mi>b</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
+  is a non-linear mapping in the <inline-formula><alternatives>
+  <tex-math><![CDATA[i^{th}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>i</mml:mi><mml:mrow><mml:mi>t</mml:mi><mml:mi>h</mml:mi></mml:mrow></mml:msup></mml:math></alternatives></inline-formula>
+  layer <inline-formula><alternatives>
+  <tex-math><![CDATA[( i= 1, 2, \cdots , h)]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn><mml:mo>,</mml:mo><mml:mn>2</mml:mn><mml:mo>,</mml:mo><mml:mi>⋯</mml:mi><mml:mo>,</mml:mo><mml:mi>h</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:math></alternatives></inline-formula>,
+  with the non-linear activation function <inline-formula><alternatives>
+  <tex-math><![CDATA[\sigma]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>σ</mml:mi></mml:math></alternatives></inline-formula>
+  and the weights <inline-formula><alternatives>
+  <tex-math><![CDATA[W^{(i)}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>W</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup></mml:math></alternatives></inline-formula>
+  and biases <inline-formula><alternatives>
+  <tex-math><![CDATA[b^{(i)}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msup><mml:mi>b</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>i</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:msup></mml:math></alternatives></inline-formula>
+  of the respective layers.</p>
   <p>Physics-informed neural networks (PINNs), introduced by
   (<xref alt="Raissi et al., 2019" rid="ref-raissi2019physics" ref-type="bibr">Raissi
   et al., 2019</xref>), work by incorporating the governing equations of
@@ -140,23 +191,18 @@ a Creative Commons Attribution 4.0 International License (CC BY
   <p><disp-formula><alternatives>
   <tex-math><![CDATA[\begin{aligned}
       \begin{split}
-          L_p(W,b) &= \frac{1}{N_T}\sum_{t=1}^{N_T}\left|(-\Delta u_{\text{NN}}(x_t;W,b) - f(x_t))\right|^2,\\
+          L_p(W,b) &= \frac{1}{N_T}\sum_{t=1}^{N_T}\left|(-\nabla^2 u_{\text{NN}}(x_t;W,b) - f(x_t))\right|^2,\\
           L_b(W,b) &= \frac{1}{N_D}\sum_{d=1}^{N_{D}}\left|u_{\text{NN}}(x_d; W, b) - g(x_d)\right|^2,\\
           L_{\text{PINN}}(W,b) &= L_p + \tau L_b.
       \end{split}
   \end{aligned}]]></tex-math>
-  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>t</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mo>−</mml:mo><mml:mi>Δ</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>f</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>g</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">PINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mi>τ</mml:mi><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>.</mml:mi></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
-  <p>Here, <inline-formula><alternatives>
+  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>t</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mo>−</mml:mo><mml:msup><mml:mi>∇</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>f</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>g</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">PINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:msub><mml:mi>L</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mi>τ</mml:mi><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>.</mml:mi></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
+  <p>Here, the output of the neural network,
+  <inline-formula><alternatives>
   <tex-math><![CDATA[u_{\text{NN}}(x; W, b)]]></tex-math>
-  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>
-  is the approximate solution of the PDE obtained from neural network
-  with weights <inline-formula><alternatives>
-  <tex-math><![CDATA[W]]></tex-math>
-  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>W</mml:mi></mml:math></alternatives></inline-formula>
-  and biases <inline-formula><alternatives>
-  <tex-math><![CDATA[b]]></tex-math>
-  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>b</mml:mi></mml:math></alternatives></inline-formula>.
-  In addition, <inline-formula><alternatives>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>,
+  is used to approximate the unknown solution. In addition,
+  <inline-formula><alternatives>
   <tex-math><![CDATA[N_T]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>N</mml:mi><mml:mi>T</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
   is the total number of training points in the interior of the domain
@@ -188,20 +234,53 @@ a Creative Commons Attribution 4.0 International License (CC BY
   (<xref alt="Kharazmi et al., 2021" rid="ref-kharazmi2021hp" ref-type="bibr">Kharazmi
   et al., 2021</xref>) was subsequently developed to increase the
   accuracy using h-refinement (increasing number of elements) and
-  p-refinement (increasing the number of test functions).The loss
-  function of hp-VPINNs with <inline-formula><alternatives>
+  p-refinement (increasing the number of test functions). The domain
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[\Omega]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>Ω</mml:mi></mml:math></alternatives></inline-formula>
+  is divided into an array of non-overlapping cells, labeled as
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[K_k]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:math></alternatives></inline-formula>,
+  where <inline-formula><alternatives>
+  <tex-math><![CDATA[k=1,2,\ldots,\texttt{N\_{elem}}]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn><mml:mo>,</mml:mo><mml:mn>2</mml:mn><mml:mo>,</mml:mo><mml:mi>…</mml:mi><mml:mo>,</mml:mo><mml:mrow><mml:mtext mathvariant="monospace">𝙽_</mml:mtext><mml:mtext mathvariant="monospace">𝚎𝚕𝚎𝚖</mml:mtext></mml:mrow></mml:mrow></mml:math></alternatives></inline-formula>,
+  ensuring that the complete union <inline-formula><alternatives>
+  <tex-math><![CDATA[\bigcup_{k=1}^\texttt{N\_{elem}}K_k = \Omega]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msubsup><mml:mo>⋃</mml:mo><mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:mtext mathvariant="monospace">𝙽_</mml:mtext><mml:mtext mathvariant="monospace">𝚎𝚕𝚎𝚖</mml:mtext></mml:mrow></mml:msubsup><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mi>Ω</mml:mi></mml:mrow></mml:math></alternatives></inline-formula>
+  covers the entire domain <inline-formula><alternatives>
+  <tex-math><![CDATA[\Omega]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>Ω</mml:mi></mml:math></alternatives></inline-formula>.
+  The hp-VPINNs framework utilizes specific test functions
+  <inline-formula><alternatives>
+  <tex-math><![CDATA[v_k]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:math></alternatives></inline-formula>,
+  where <inline-formula><alternatives>
+  <tex-math><![CDATA[k]]></tex-math>
+  <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>k</mml:mi></mml:math></alternatives></inline-formula>
+  ranges from 1 to N_elem, that are localized and defined within
+  individual non-overlapping element across the domain.
+  <named-content id="eqnU003Atest_function_summation" content-type="equation"><disp-formula><alternatives>
+  <tex-math><![CDATA[v_k= 
+      \begin{cases}
+        v^p \neq 0, & \text{over $K_k$,} \\
+        0, & \text{elsewhere.}
+      \end{cases}
+      ]]></tex-math>
+  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mrow><mml:mo stretchy="true" form="prefix">{</mml:mo><mml:mtable><mml:mtr><mml:mtd columnalign="left" style="text-align: left"><mml:msup><mml:mi>v</mml:mi><mml:mi>p</mml:mi></mml:msup><mml:mo>≠</mml:mo><mml:mn>0</mml:mn><mml:mo>,</mml:mo></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mrow><mml:mtext mathvariant="normal">over </mml:mtext><mml:mspace width="0.333em"></mml:mspace></mml:mrow><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mtext mathvariant="normal">,</mml:mtext></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="left" style="text-align: left"><mml:mn>0</mml:mn><mml:mo>,</mml:mo></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mtext mathvariant="normal">elsewhere.</mml:mtext></mml:mtd></mml:mtr></mml:mtable></mml:mrow></mml:mrow></mml:math></alternatives></disp-formula></named-content></p>
+  <p>The loss function of hp-VPINNs with <inline-formula><alternatives>
   <tex-math><![CDATA[\texttt{N\_{elem}}]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mrow><mml:mtext mathvariant="monospace">𝙽_</mml:mtext><mml:mtext mathvariant="monospace">𝚎𝚕𝚎𝚖</mml:mtext></mml:mrow></mml:math></alternatives></inline-formula>
-  elements in the domain can be written as follows</p>
-  <p><disp-formula><alternatives>
+  elements in the domain can be written as follows.
+  <disp-formula><alternatives>
   <tex-math><![CDATA[\begin{aligned}
       \begin{split}
-          L_v(W,b) &= \frac{1}{\texttt{N\_elem}}\sum_{k=1}^{\texttt{N\_elem}}\left| \int_{K_k} \left( \nabla u_{\text{NN}}(x;W,b) \cdot \nabla v_k ~ - ~ f\,v_k\right)\,dK ~\right|^2,\\
+          L_v(W,b) &= \frac{1}{\texttt{N\_elem}}\sum_{k=1}^{\texttt{N\_elem}}\left| \int_{K_k} \left( \nabla u_{\text{NN}}(x;W,b) \cdot \nabla v_k dK  ~ - ~ \int_{K_k} f\,v_k\,dK ~\right) ~\right|^2,\\
           L_b(W,b) &= \frac{1}{N_D}\sum_{d=1}^{N_{D}}\left|u_{\text{NN}}(x; W, b) - g(x)\right|^2,\\
           L_{\text{VPINN}}(W,b) &= L_v + \tau L_b.
       \end{split}
   \end{aligned}]]></tex-math>
-  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>v</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:mtext mathvariant="monospace">𝙽_𝚎𝚕𝚎𝚖</mml:mtext></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mtext mathvariant="monospace">𝙽_𝚎𝚕𝚎𝚖</mml:mtext></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mo>∫</mml:mo><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>∇</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>⋅</mml:mo><mml:mi>∇</mml:mi><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mspace width="0.222em"></mml:mspace><mml:mo>−</mml:mo><mml:mspace width="0.222em"></mml:mspace><mml:mi>f</mml:mi><mml:mspace width="0.167em"></mml:mspace><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mspace width="0.167em"></mml:mspace><mml:mi>d</mml:mi><mml:mi>K</mml:mi><mml:mspace width="0.222em"></mml:mspace><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>g</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">VPINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:msub><mml:mi>L</mml:mi><mml:mi>v</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mi>τ</mml:mi><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>.</mml:mi></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
+  <mml:math display="block" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:mtable><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>v</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:mtext mathvariant="monospace">𝙽_𝚎𝚕𝚎𝚖</mml:mtext></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>k</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mtext mathvariant="monospace">𝙽_𝚎𝚕𝚎𝚖</mml:mtext></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mo>∫</mml:mo><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>∇</mml:mi><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>⋅</mml:mo><mml:mi>∇</mml:mi><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mi>d</mml:mi><mml:mi>K</mml:mi><mml:mspace width="0.222em"></mml:mspace><mml:mo>−</mml:mo><mml:mspace width="0.222em"></mml:mspace><mml:msub><mml:mo>∫</mml:mo><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:msub><mml:mi>f</mml:mi><mml:mspace width="0.167em"></mml:mspace><mml:msub><mml:mi>v</mml:mi><mml:mi>k</mml:mi></mml:msub><mml:mspace width="0.167em"></mml:mspace><mml:mi>d</mml:mi><mml:mi>K</mml:mi><mml:mspace width="0.222em"></mml:mspace><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mspace width="0.222em"></mml:mspace><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mfrac><mml:munderover><mml:mo>∑</mml:mo><mml:mrow><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:msub><mml:mi>N</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:munderover><mml:msup><mml:mrow><mml:mo stretchy="true" form="prefix">|</mml:mo><mml:msub><mml:mi>u</mml:mi><mml:mtext mathvariant="normal">NN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo>;</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>g</mml:mi><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>x</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow><mml:mo stretchy="true" form="postfix">|</mml:mo></mml:mrow><mml:mn>2</mml:mn></mml:msup><mml:mo>,</mml:mo></mml:mtd></mml:mtr><mml:mtr><mml:mtd columnalign="right" style="text-align: right"><mml:msub><mml:mi>L</mml:mi><mml:mtext mathvariant="normal">VPINN</mml:mtext></mml:msub><mml:mrow><mml:mo stretchy="true" form="prefix">(</mml:mo><mml:mi>W</mml:mi><mml:mo>,</mml:mo><mml:mi>b</mml:mi><mml:mo stretchy="true" form="postfix">)</mml:mo></mml:mrow></mml:mtd><mml:mtd columnalign="left" style="text-align: left"><mml:mo>=</mml:mo><mml:msub><mml:mi>L</mml:mi><mml:mi>v</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mi>τ</mml:mi><mml:msub><mml:mi>L</mml:mi><mml:mi>b</mml:mi></mml:msub><mml:mi>.</mml:mi></mml:mtd></mml:mtr></mml:mtable></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
   <p>Where <inline-formula><alternatives>
   <tex-math><![CDATA[K_k]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub><mml:mi>K</mml:mi><mml:mi>k</mml:mi></mml:msub></mml:math></alternatives></inline-formula>
@@ -244,17 +323,15 @@ a Creative Commons Attribution 4.0 International License (CC BY
   We have also shown that with proper hyperparameter selection,
   FastVPINNs can outperform PINNs both in terms of accuracy and training
   time, especially for problems with high frequency solutions.</p>
-  <p>Our FastVPINNs framework is built using TensorFlow 2
-  (<xref alt="Abadi et al., 2015" rid="ref-tensorflow2015-whitepaper" ref-type="bibr">Abadi
+  <p>Our FastVPINNs framework is built using
+  TensorFlow-v2.0(<xref alt="Abadi et al., 2015" rid="ref-tensorflow2015-whitepaper" ref-type="bibr">Abadi
   et al., 2015</xref>), and provides an elegant API for users to solve
   both forward and inverse problems for PDEs like the Poisson, Helmholtz
-  and Convection-Diffusion equations.The framework is well-documented
-  with examples, which can enable users to get started with the
-  framework with ease. The framework also provides an API to all the
-  modules for users to write their custom functionalities. With the
-  current level of API abstraction, users should be able to solve PDEs
-  with less than five API calls as shown in the minimal working example
-  section.</p>
+  and Convection-Diffusion equations. With the current level of API
+  abstraction, users should be able to solve PDEs with less than six API
+  calls as shown in the minimal working example section. The framework
+  is well-documented with examples, which can enable users to get
+  started with the framework with ease.</p>
   <p>The ability of the framework to allow users to train a hp-VPINNs to
   solve a PDE both faster and with minimal code, can result in
   widespread application of this method on several real-world problems,
@@ -279,50 +356,54 @@ a Creative Commons Attribution 4.0 International License (CC BY
   </sec>
   <sec id="fe-module">
     <title>FE Module</title>
-    <p>The FE module is responsible for handling the Finite Element test
+    <p>The FE module is responsible for handling the finite element test
     functions and their gradients. The module’s functionality can be
     broadly classified into into four categories:</p>
     <list list-type="bullet">
       <list-item>
         <p><bold>Test functions</bold>: Provides the test function
-        values and its gradients for a given reference element.</p>
+        values and its gradients for a given reference element. In our
+        framework, we use Lagrange polynomials as the test
+        functions.</p>
       </list-item>
       <list-item>
         <p><bold>Quadrature functions</bold>: Provides the quadrature
         points and weights for a given element based on the quadrature
-        order selected by the user. These values will be used for
-        numerical integration of the weak form of the PDE.</p>
+        order and the quadrature method selected by the user. This
+        method will be used for performing the numerical integration of
+        the weak form residual of the PDE.</p>
       </list-item>
       <list-item>
         <p><bold>Transformation functions</bold>: Provides the
-        implementation of transformation routines such as ‘Affine‘
-        transformation and ‘Bilinear‘ transformation. This can be used
-        to transform the test function values and gradients from the
+        implementation of transformation routines such as affine
+        transformation and bilinear transformation. This can be used to
+        transform the test function values and gradients from the
         reference element to the actual element.</p>
       </list-item>
       <list-item>
         <p><bold>Finite Element Setup</bold>: Provides the functionality
         to set up the test functions, quadrature rules and the
-        transformation for every element and save them in a common
-        wrapper class to access them. Further, it also hosts functions
-        to plot the mesh with quadrature points, assign boundary values
-        based on the boundary points obtained from the geometry module
-        and calculation of the forcing term.</p>
+        transformation for every element and save them in a common class
+        to access them. Further, it also hosts functions to plot the
+        mesh with quadrature points, assign boundary values based on the
+        boundary points obtained from the geometry module and calculate
+        the forcing term in the residual.</p>
       </list-item>
     </list>
     <p><italic>Remark: The module is named FE (Finite Element) Module
     because of its similarities with classical FEM routines, such as
     test functions, numerical quadratures and transformations. However,
-    we would like to reiterate that our framework is not an FEM solver,
-    but a hp-VPINNs solver</italic></p>
+    we would like to state that our framework is not an FEM solver, but
+    an hp-VPINNs solver</italic></p>
   </sec>
   <sec id="data-module">
     <title>Data Module:</title>
     <p>The Data module collects data from all modules which are required
-    for training and converts them to a tensor data type with required
-    precision. It also assembles the test function values and gradients
-    to form a three-dimensional tensor, which will be used during the
-    loss computation.</p>
+    for training and converts them to a tensor data type with the user
+    specified precision (for example, <monospace>tf.float32</monospace>
+    or <monospace>tf.float64</monospace>). It also assembles the test
+    function values and gradients to form a three-dimensional tensor,
+    which will be used during the loss computation.</p>
   </sec>
   <sec id="physics-module">
     <title>Physics Module:</title>
@@ -330,7 +411,7 @@ a Creative Commons Attribution 4.0 International License (CC BY
     variational loss function for different PDEs. These functions accept
     the test function tensors and the predicted gradients from the
     neural network along with the forcing matrix to compute the PDE
-    residuals.</p>
+    residuals using tensor-based operations.</p>
   </sec>
   <sec id="model-module">
     <title>Model Module:</title>
@@ -345,7 +426,7 @@ a Creative Commons Attribution 4.0 International License (CC BY
 <sec id="secU003Aminimal-working-example">
   <title>Minimal Working Example</title>
   <p>With the higher level of abstraction provided by the FastVPINNs
-  framework, users can solve a PDE with just five API calls. Shown below
+  framework, users can solve a PDE with just six API calls. Shown below
   is a minimal working example to solve the Poisson equation using the
   FastVPINNs framework.</p>
   <code language="python">#load the geometry 
@@ -420,7 +501,7 @@ for epoch in range(1000):
     </list-item>
     <list-item>
       <p><bold>Compatibility Testing</bold>: The framework is tested
-      with different versions of python such as 3.8, 3.9, 3.10, 3.11 and
+      with different versions of Python such as 3.8, 3.9, 3.10, 3.11 and
       on different versions of OS such as Ubuntu, MacOS and Windows to
       ensure the compatibility of the framework across different
       platforms.</p>
