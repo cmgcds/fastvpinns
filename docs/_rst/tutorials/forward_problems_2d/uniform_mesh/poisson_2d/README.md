@@ -39,7 +39,7 @@ We begin by introducing the various files required to run this example
 
 The code in this example can be run using
 ```bash
-python3 main_poisson2d_hard.py input.yaml
+python3 main_poisson2d.py input.yaml
 ```
 
 ## Example File

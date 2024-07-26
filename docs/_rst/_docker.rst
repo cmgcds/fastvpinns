@@ -22,17 +22,17 @@ To install the docker image, you can use the following command:
 Step by Step Guide to Run the Docker Image
 __________________________________________
 
-1. Create a new folder to mount the volume for the docker container. This is used to share the files between the host and the container. Lets create a folder named `fastvpinns` in your home directory.
+1. Create a new folder to mount the volume for the docker container. This is used to share the files between the host and the container. Lets create a folder named `fastvpinns_docker_output` in your home directory. We will use this file to save any files that we need to transfer back to the host system.
 
 .. code-block:: bash
 
-    mkdir ~/fastvpinns
+    mkdir ~/fastvpinns_docker_output
 
-2. Change the directory to the folder `fastvpinns`:
+2. Change the directory to the folder `fastvpinns_docker_output`:
 
 .. code-block:: bash
 
-    cd ~/fastvpinns
+    cd ~/fastvpinns_docker_output
 
 3. Pull the docker image using the following command:
 
@@ -44,7 +44,7 @@ __________________________________________
 
 .. code-block:: bash
 
-    docker run --gpus all -it --rm -v ~/fastvpinns:/fastvpinns thivinanandh/fastvpinns:latest
+    docker run --gpus all -it --rm -v ~/fastvpinns_docker_output:/fastvpinns/output thivinanandh/fastvpinns:latest
 
 for CPU only support, you can use the following command:
 
@@ -56,8 +56,10 @@ Explanation of the command:
 - `--gpus all` : This flag is used to enable GPU support for the container.
 - `-it` : This flag is used to run the container in interactive mode.
 - `--rm` : This flag is used to remove the container once the container is stopped.
-- `-v ~/fastvpinns:/fastvpinns` : This flag is used to mount the volume `~/fastvpinns` to the container at `/fastvpinns`.
+- `-v ~/fastvpinns_docker_output:/fastvpinns/output` : This flag is used to mount the volume `~/fastvpinns_docker_output` from the host system to the folder inside the docker container located at `/fastvpinns/output`.
 - `thivinanandh/fastvpinns:latest` : This is the docker image name and tag.
+
+**Note:** Based on current code structure within the library, the outputs are confined to their corresponding output folders present within them. For Eg: if we run the cd2d problem in the uniform mesh located at `/fastvpinns/examples/forward_problems_2d/uniform_mesh/cd2d/` , then the output for that run will be saved only within the folder `/fastvpinns/examples/forward_problems_2d/uniform_mesh/cd2d/output`. This output folder and the files within them will be deleted once the docker container is destroyed. However to keep these outputs in our host system permanently, once an example run, we can transfer the output files to the `/fastvpinns/output`` folder within the docker image. These files which are saved in `/fastvpinns/output` folder will be permanently available on the host system at `~/fastvpinns_docker_output`, even when the docker container is destroyed.
 
 5. When loaded into the container, The console will look like the image shown below. Here it shows whether the GPU is detected and the version of the installed packages. 
 
