@@ -323,8 +323,8 @@ a Creative Commons Attribution 4.0 International License (CC BY
   We have also shown that with proper hyperparameter selection,
   FastVPINNs can outperform PINNs both in terms of accuracy and training
   time, especially for problems with high frequency solutions.</p>
-  <p>Our FastVPINNs framework is built using
-  TensorFlow-v2.0(<xref alt="Abadi et al., 2015" rid="ref-tensorflow2015-whitepaper" ref-type="bibr">Abadi
+  <p>Our FastVPINNs framework is built using TensorFlow-v2.0
+  (<xref alt="Abadi et al., 2015" rid="ref-tensorflow2015-whitepaper" ref-type="bibr">Abadi
   et al., 2015</xref>), and provides an elegant API for users to solve
   both forward and inverse problems for PDEs like the Poisson, Helmholtz
   and Convection-Diffusion equations. With the current level of API
@@ -426,58 +426,13 @@ a Creative Commons Attribution 4.0 International License (CC BY
 <sec id="secU003Aminimal-working-example">
   <title>Minimal Working Example</title>
   <p>With the higher level of abstraction provided by the FastVPINNs
-  framework, users can solve a PDE with just six API calls. Shown below
-  is a minimal working example to solve the Poisson equation using the
-  FastVPINNs framework.</p>
-  <code language="python">#load the geometry 
-domain = Geometry_2D(&quot;quadrilateral&quot;, &quot;internal&quot;,
-                     100, 100, &quot;./&quot;)
-cells, boundary_points = 
-                domain.generate_quad_mesh_internal(\
-                x_limits=[0, 1], y_limits=[0, 1],\
-                n_cells_x=4, n_cells_y=4,\
-                num_boundary_points=400)
-
-# Note: Users need to provide the necessary 
-#       boundary values and the forcing function
-
-# load the FEspace
-fespace = Fespace2D(domain.mesh,cells,boundary_points,\
-    domain.mesh_type,fe_order=5,\
-    fe_type=&quot;jacobi&quot;,quad_order=5,\
-    quad_type=&quot;legendre&quot;, \
-    fe_transformation_type=&quot;bilinear&quot;\
-    bound_function_dict=bound_function_dict,\
-    bound_condition_dict=bound_condition_dict,\
-    forcing_function=rhs,\
-    output_path=i_output_path,\
-    generate_mesh_plot=True)
-
-# Instantiate Data handler 
-dh = datahandler2D(fespace, domain, dtype=tf.float32)
-
-# Instantiate the model with the loss function for the model 
-model = DenseModel(layer_dims=[2, 30, 30, 30, 1],\
-            learning_rate_dict=0.01,params_dict=params_dict,
-            ## Loss function of poisson2D
-            loss_function=pde_loss_poisson,  
-            input_tensors_list=\
-                [in_tensor, 
-                dir_in,
-                dir_out],
-            orig_factor_matrices=\
-                [dh.shape_val_mat_list,
-                dh.grad_x_mat_list,
-                dh.grad_y_mat_list],
-            force_function_list=dh.forcing_function_list,\
-            tensor_dtype=tf.float32,
-            use_attention=i_use_attention, 
-            activation=i_activation,
-            hessian=False)
-
-# Train the model
-for epoch in range(1000):
-    model.train_step()</code>
+  framework, users can solve a PDE with just six API calls. A Minimal
+  working example to solve the Poisson equation using the FastVPINNs
+  framework ca be found
+  <ext-link ext-link-type="uri" xlink:href="https://cmgcds.github.io/fastvpinns/#usage">here</ext-link>.
+  The example files with detailed documentation can be found in the
+  <ext-link ext-link-type="uri" xlink:href="https://cmgcds.github.io/fastvpinns/_rst/_tutorial.html">Tutorials
+  section</ext-link> of the documentation.</p>
 </sec>
 <sec id="testing">
   <title>Testing</title>
@@ -529,6 +484,7 @@ for epoch in range(1000):
       <publisher-name>Elsevier</publisher-name>
       <year iso-8601-date="2019">2019</year>
       <volume>378</volume>
+      <pub-id pub-id-type="doi">10.1016/j.jcp.2018.10.045</pub-id>
       <fpage>686</fpage>
       <lpage>707</lpage>
     </element-citation>
@@ -554,6 +510,7 @@ for epoch in range(1000):
       <article-title>FastVPINNs: Tensor-driven acceleration of VPINNs for complex geometries</article-title>
       <year iso-8601-date="2024">2024</year>
       <uri>https://arxiv.org/abs/2404.12063</uri>
+      <pub-id pub-id-type="doi">10.48550/arXiv.2404.12063</pub-id>
     </element-citation>
   </ref>
   <ref id="ref-kharazmi2021hp">
@@ -568,6 +525,7 @@ for epoch in range(1000):
       <publisher-name>Elsevier</publisher-name>
       <year iso-8601-date="2021">2021</year>
       <volume>374</volume>
+      <pub-id pub-id-type="doi">10.1016/j.cma.2020.113547</pub-id>
       <fpage>113547</fpage>
       <lpage></lpage>
     </element-citation>
@@ -582,6 +540,7 @@ for epoch in range(1000):
       <article-title>Variational physics-informed neural networks for solving partial differential equations</article-title>
       <source>arXiv preprint arXiv:1912.00873</source>
       <year iso-8601-date="2019">2019</year>
+      <pub-id pub-id-type="doi">10.48550/arXiv.1912.00873</pub-id>
     </element-citation>
   </ref>
   <ref id="ref-tensorflow2015-whitepaper">
@@ -631,6 +590,7 @@ for epoch in range(1000):
       <article-title>TensorFlow: Large-scale machine learning on heterogeneous systems</article-title>
       <year iso-8601-date="2015">2015</year>
       <uri>https://www.tensorflow.org/</uri>
+      <pub-id pub-id-type="doi">10.48550/arXiv.1603.04467</pub-id>
     </element-citation>
   </ref>
   <ref id="ref-ganesan2017finite">
@@ -642,6 +602,7 @@ for epoch in range(1000):
       <source>Finite elements: Theory and algorithms</source>
       <publisher-name>Cambridge University Press</publisher-name>
       <year iso-8601-date="2017">2017</year>
+      <pub-id pub-id-type="doi">10.1017/9781108235013</pub-id>
     </element-citation>
   </ref>
 </ref-list>

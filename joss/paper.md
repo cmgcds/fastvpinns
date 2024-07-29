@@ -84,7 +84,7 @@ Where $K_k$ is the $k^{th}$ element in the domain, $v_k$ is the test function in
 
 The existing implementation of hp-VPINNs framework [@hp_vpinns_github] suffers from two major challenges. One being the inabilty of the framework to handle complex geometries and the other being the increased training time associated with the increase in number of elements within the domain. In the work [@anandh2024fastvpinns], we presented FastVPINNs, which addresses both of these challenges. FastVPINNs handles complex geometries by using bilinear transformation, and it uses a tensor-based loss computation to reduce the dependency of training time on number of elements. The current implementation of FastVPINNs can acheive an speed-up of upto a 100 times when compared with the existing implementation of hp-VPINNs. We have also shown that with proper hyperparameter selection, FastVPINNs can outperform PINNs both in terms of accuracy and training time, especially for problems with high frequency solutions. 
 
-Our FastVPINNs framework is built using TensorFlow-v2.0[@tensorflow2015-whitepaper], and provides an elegant API for users to solve both forward and inverse problems for PDEs like the Poisson, Helmholtz and Convection-Diffusion equations. With the current level of API abstraction, users should be able to solve PDEs with less than six API calls as shown in the minimal working example section. The framework is well-documented with examples, which can enable users to get started with the framework with ease.
+Our FastVPINNs framework is built using TensorFlow-v2.0 [@tensorflow2015-whitepaper], and provides an elegant API for users to solve both forward and inverse problems for PDEs like the Poisson, Helmholtz and Convection-Diffusion equations. With the current level of API abstraction, users should be able to solve PDEs with less than six API calls as shown in the minimal working example section. The framework is well-documented with examples, which can enable users to get started with the framework with ease.
 
 The ability of the framework to allow users to train a hp-VPINNs to solve a PDE both faster and with minimal code, can result in widespread application of this method on several real-world problems, which often require complex geometries with a large number of elements within the domain.
 
@@ -120,59 +120,7 @@ This module contains custom subclasses of the `tensorflow.keras.Model` class, wh
 
 # Minimal Working Example {#sec:minimal-working-example}
 
-With the higher level of abstraction provided by the FastVPINNs framework, users can solve a PDE with just six API calls. Shown below is a minimal working example to solve the Poisson equation using the FastVPINNs framework.
-
-```python
-#load the geometry 
-domain = Geometry_2D("quadrilateral", "internal",
-                     100, 100, "./")
-cells, boundary_points = 
-                domain.generate_quad_mesh_internal(\
-                x_limits=[0, 1], y_limits=[0, 1],\
-                n_cells_x=4, n_cells_y=4,\
-                num_boundary_points=400)
-
-# Note: Users need to provide the necessary 
-#       boundary values and the forcing function
-
-# load the FEspace
-fespace = Fespace2D(domain.mesh,cells,boundary_points,\
-    domain.mesh_type,fe_order=5,\
-    fe_type="jacobi",quad_order=5,\
-    quad_type="legendre", \
-    fe_transformation_type="bilinear"\
-    bound_function_dict=bound_function_dict,\
-    bound_condition_dict=bound_condition_dict,\
-    forcing_function=rhs,\
-    output_path=i_output_path,\
-    generate_mesh_plot=True)
-
-# Instantiate Data handler 
-dh = datahandler2D(fespace, domain, dtype=tf.float32)
-
-# Instantiate the model with the loss function for the model 
-model = DenseModel(layer_dims=[2, 30, 30, 30, 1],\
-            learning_rate_dict=0.01,params_dict=params_dict,
-            ## Loss function of poisson2D
-            loss_function=pde_loss_poisson,  
-            input_tensors_list=\
-                [in_tensor, 
-                dir_in,
-                dir_out],
-            orig_factor_matrices=\
-                [dh.shape_val_mat_list,
-                dh.grad_x_mat_list,
-                dh.grad_y_mat_list],
-            force_function_list=dh.forcing_function_list,\
-            tensor_dtype=tf.float32,
-            use_attention=i_use_attention, 
-            activation=i_activation,
-            hessian=False)
-
-# Train the model
-for epoch in range(1000):
-    model.train_step()
-```
+With the higher level of abstraction provided by the FastVPINNs framework, users can solve a PDE with just six API calls. A Minimal working example to solve the Poisson equation using the FastVPINNs framework ca be found [here](https://cmgcds.github.io/fastvpinns/#usage). The example files with detailed documentation can be found in the [Tutorials section](https://cmgcds.github.io/fastvpinns/_rst/_tutorial.html) of the documentation.
 
 # Testing 
 
