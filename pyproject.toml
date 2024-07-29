@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fastvpinns"
-version = "1.0.1"
+version = "1.0.2"
 authors = [
   { name="Thivin Anandh", email="thivinanandh@gmail.com" },
   { name="Divij Ghose", email="divijghose@gmail.com" },
