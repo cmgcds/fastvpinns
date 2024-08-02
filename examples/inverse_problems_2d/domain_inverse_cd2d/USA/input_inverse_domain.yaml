@@ -1,6 +1,6 @@
 # input file for inverse problems (domain)
 experimentation:
-  output_path: "output/usa"
+  output_path: "output/usa_2"
 
 geometry:
   mesh_generation_method: "external"
@@ -22,7 +22,7 @@ geometry:
     boundary_sampling_method: "uniform"  # "uniform"
 
 fe:
-  fe_order: 5 
+  fe_order: 4 
   fe_type: "jacobi"   #"jacobi"
   quad_order:  5    
   quad_type: "gauss-jacobi"  # "gauss-jacobi,
@@ -30,10 +30,10 @@ fe:
 pde:
   beta: 10
 model:
-  model_architecture: [2, 30,30,30,30, 2] # output is made as 2 to accomodate the inverse param in the output
+  model_architecture: [2, 30,30,30, 2] # output is made as 2 to accomodate the inverse param in the output
   activation: "tanh"
   use_attention: False
-  epochs: 100000
+  epochs: 20000
   dtype: "float32"
   set_memory_growth: True
   learning_rate:

@@ -10,7 +10,9 @@ def usa_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 20 * np.exp(-0.1 * y) * np.cos(x)
+    # val = 20 * np.exp(-0.1 * y) * np.cos(x)
+    val = np.exp(-0.1 * y) * np.cos(x)
+
     return val
 
 
@@ -22,7 +24,17 @@ def rhs(x, y):
     # return -y * np.sin(x * y) * np.tanh(8 * x * y) + 8 * y * np.cos(x * y) / np.cosh(8 * x * y)**2 + 10 * (x**2 + y**2) * \
     #       (16 * np.sin(x * y) / np.cosh(8 * x * y)**2 + np.cos(x * y) * np.tanh(8 * x * y) + 128 * np.cos(x * y) * np.tanh(8 * x * y) / np.cosh(8 * x * y)**2) * np.sin(x) * np.cos(y)
 
-    return (196.0 - 396.0 * np.sin(x) ** 2) * np.exp(-0.2 * y)
+    # return (196.0 - 396.0 * np.sin(x) ** 2) * np.exp(-0.2 * y)
+
+    return (
+        (
+            -0.1 * x * np.sin(x * y) * np.cos(x)
+            - y * np.sin(x) * np.sin(x * y)
+            + 1.99 * np.cos(x) * np.cos(x * y)
+        )
+        * np.exp(-0.1 * y)
+        * np.sin(x)
+    )
 
 
 def exact_solution(x, y):
@@ -30,7 +42,7 @@ def exact_solution(x, y):
     This function will return the exact solution at a given point
     """
 
-    val = 20 * np.exp(-0.1 * y) * np.cos(x)
+    val = np.exp(-0.1 * y) * np.cos(x)
 
     return val
 
@@ -67,5 +79,5 @@ def get_inverse_params_actual_dict(x, y):
     This function will return a dictionary of inverse parameters
     """
     # Initial Guess
-    eps = 10 * np.exp(-0.1 * y) * np.cos(x)
+    eps = np.sin(x) * np.cos(x * y)
     return {"eps": eps}
