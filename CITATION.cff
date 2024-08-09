@@ -1,0 +1,49 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Anandh
+  given-names: Thivin
+  orcid: "https://orcid.org/0000-0003-4969-3242"
+- family-names: Ghose
+  given-names: Divij
+  orcid: "https://orcid.org/0009-0005-6295-543X"
+- family-names: Ganesan
+  given-names: Sashikumaar
+  orcid: "https://orcid.org/0000-0003-1858-3972"
+contact:
+- family-names: Anandh
+  given-names: Thivin
+  orcid: "https://orcid.org/0000-0003-4969-3242"
+- family-names: Ganesan
+  given-names: Sashikumaar
+  orcid: "https://orcid.org/0000-0003-1858-3972"
+doi: 10.5281/zenodo.13127234
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Anandh
+    given-names: Thivin
+    orcid: "https://orcid.org/0000-0003-4969-3242"
+  - family-names: Ghose
+    given-names: Divij
+    orcid: "https://orcid.org/0009-0005-6295-543X"
+  - family-names: Ganesan
+    given-names: Sashikumaar
+    orcid: "https://orcid.org/0000-0003-1858-3972"
+  date-published: 2024-07-30
+  doi: 10.21105/joss.06764
+  issn: 2475-9066
+  issue: 99
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 6764
+  title: "FastVPINNs: An efficient tensor-based Python library for
+    solving partial differential equations using hp-Variational Physics
+    Informed Neural Networks"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.06764"
+  volume: 9
+title: "FastVPINNs: An efficient tensor-based Python library for solving
+  partial differential equations using hp-Variational Physics Informed
+  Neural Networks"
