@@ -32,6 +32,8 @@ A robust tensor-based deep learning framework for solving partial differential e
 
 *This library is a highly optimised version of the the initial implementation of hp-VPINNs by [Kharazmi et al.](https://github.com/ehsankharazmi/hp-VPINNs). Refer the [hp-VPINNs Paper](https://arxiv.org/abs/2003.05385).*
 
+**Note: The NSE2D branch is currently in developmental stage and is not yet merged with the main branch. The NSE2D branch is a work in progress and is not yet ready for production use. Users might need to clone the NSE2D branch to use the Navier-Stokes solver. QC and test cases are yet to be added for the branch**
+
 ## Authors 👨‍💻
 ---
 
