@@ -44,6 +44,14 @@ Inverse Problems
     Inverse problems with constant inverse parameter <tutorials/inverse_problems_2d/const_inverse_poisson2d/inverse_constant.rst>
     Inverse problems with spatially varying inverse parameter <tutorials/inverse_problems_2d/domain_inverse_cd2d/domain_inverse.rst>
 
+..
+   Add a new badge here 
+2D Incompressible Navier-Stokes Equations
+-----------------------------------------
+
+Note: This tutorial is under development and will be available soon.
+
+
 Mesh Generation Tutorials
 -------------------------
 .. toctree::
