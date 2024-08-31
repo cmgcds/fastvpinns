@@ -188,69 +188,72 @@ def test_generate_plot():
 
 
 # Test dirichlet boundary data vector
-def test_dirichlet_boundary_data_vector():
-    """Tests the dirichlet boundary data vector"""
+# Commented out by thivin on 31-Aug-2023
+# reason: The NSE branch have a different way of handling the vector valued data functions.
+# The test cases will be added in the NSE branch.
+# def test_dirichlet_boundary_data_vector():
+#     """Tests the dirichlet boundary data vector"""
 
-    # use pathlib to create a temporary directory
-    Path("tests/dump").mkdir(parents=True, exist_ok=True)
+#     # use pathlib to create a temporary directory
+#     Path("tests/dump").mkdir(parents=True, exist_ok=True)
 
-    # Define the geometry
-    domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/dump")
-    cells, boundary_points = domain.generate_quad_mesh_internal(
-        x_limits=[0, 1], y_limits=[0, 1], n_cells_x=2, n_cells_y=2, num_boundary_points=10
-    )
+#     # Define the geometry
+#     domain = Geometry_2D("quadrilateral", "internal", 10, 10, "tests/dump")
+#     cells, boundary_points = domain.generate_quad_mesh_internal(
+#         x_limits=[0, 1], y_limits=[0, 1], n_cells_x=2, n_cells_y=2, num_boundary_points=10
+#     )
 
-    bval_1 = np.random.rand()
-    bval_2 = np.random.rand()
-    # Vector valued boundary function
-    bound_function_dict = {
-        1000: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
-        1001: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
-        1002: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
-        1003: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
-    }
-    bound_condition_dict = {
-        1000: "dirichlet",
-        1001: "dirichlet",
-        1002: "dirichlet",
-        1003: "dirichlet",
-    }
-    rhs = lambda x, y: np.ones_like(x)
+#     bval_1 = np.random.rand()
+#     bval_2 = np.random.rand()
+#     # Vector valued boundary function
+#     bound_function_dict = {
+#         1000: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
+#         1001: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
+#         1002: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
+#         1003: lambda x, y: [np.ones_like(x) * bval_1, np.ones_like(x) * bval_2],
+#     }
+#     bound_condition_dict = {
+#         1000: "dirichlet",
+#         1001: "dirichlet",
+#         1002: "dirichlet",
+#         1003: "dirichlet",
+#     }
+#     rhs = lambda x, y: np.ones_like(x)
 
-    # Create fespace
-    fespace = Fespace2D(
-        mesh=domain.mesh,
-        cells=cells,
-        boundary_points=boundary_points,
-        cell_type=domain.mesh_type,
-        # make fe_order a random number between 2 and 5
-        fe_order=np.random.randint(2, 8),
-        fe_type="legendre",
-        # make quad a random number between 3 and 10
-        quad_order=np.random.randint(3, 10),
-        quad_type="gauss-legendre",
-        fe_transformation_type="affine",
-        bound_function_dict=bound_function_dict,
-        bound_condition_dict=bound_condition_dict,
-        forcing_function=rhs,
-        output_path="tests/dump",
-        generate_mesh_plot=False,
-    )
+#     # Create fespace
+#     fespace = Fespace2D(
+#         mesh=domain.mesh,
+#         cells=cells,
+#         boundary_points=boundary_points,
+#         cell_type=domain.mesh_type,
+#         # make fe_order a random number between 2 and 5
+#         fe_order=np.random.randint(2, 8),
+#         fe_type="legendre",
+#         # make quad a random number between 3 and 10
+#         quad_order=np.random.randint(3, 10),
+#         quad_type="gauss-legendre",
+#         fe_transformation_type="affine",
+#         bound_function_dict=bound_function_dict,
+#         bound_condition_dict=bound_condition_dict,
+#         forcing_function=rhs,
+#         output_path="tests/dump",
+#         generate_mesh_plot=False,
+#     )
 
-    # generate the dirichlet boundary data for first component
-    dirichlet_boundary_data = fespace.generate_dirichlet_boundary_data_vector(0)
+#     # generate the dirichlet boundary data for first component
+#     dirichlet_boundary_data = fespace.generate_dirichlet_boundary_data_vector(0)
 
-    # assert shape[0] of x with shape[0] of y in dirichlet_boundary_data
-    assert len(dirichlet_boundary_data[0]) == len(dirichlet_boundary_data[1])
+#     # assert shape[0] of x with shape[0] of y in dirichlet_boundary_data
+#     assert len(dirichlet_boundary_data[0]) == len(dirichlet_boundary_data[1])
 
-    # check the mean of the first component of the dirichlet boundary data
-    assert np.isclose(np.mean(dirichlet_boundary_data[1]), bval_1, atol=1e-6)
+#     # check the mean of the first component of the dirichlet boundary data
+#     assert np.isclose(np.mean(dirichlet_boundary_data[1]), bval_1, atol=1e-6)
 
-    # Clean up objects
-    del domain, cells, boundary_points, bound_function_dict, bound_condition_dict, rhs, fespace
+#     # Clean up objects
+#     del domain, cells, boundary_points, bound_function_dict, bound_condition_dict, rhs, fespace
 
-    # remove the temporary directory
-    shutil.rmtree("tests/dump")
+#     # remove the temporary directory
+#     shutil.rmtree("tests/dump")
 
 
 # check the cell number condition on get shape function and gradient routines

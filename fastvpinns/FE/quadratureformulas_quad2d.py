@@ -1,15 +1,12 @@
 """
-The file `quadratureformulas_quad2d.py` defines the Quadrature Formulas for the 2D Quadrilateral elements.
-It supports both Gauss-Legendre and Gauss-Jacobi quadrature types.
-The quadrature points and weights are calculated based on the specified quadrature order and type.
-
-Author: Thivin Anandh D
-
-Changelog: Not specified
-
-Known issues: None
-
-Dependencies: numpy, scipy
+file: quadratureformulas_quad2d.py
+description: This file defines the Quadrature Formulas for the 2D Quadrilateral elements.
+             It supports both Gauss-Legendre and Gauss-Jacobi quadrature types.
+             The quadrature points and weights are calculated based on the specified quadrature order and type.
+authors: Not specified
+changelog: Not specified
+known_issues: None
+dependencies: numpy, scipy
 """
 
 import numpy as np

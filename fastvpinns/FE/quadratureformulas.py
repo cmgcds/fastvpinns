@@ -1,13 +1,10 @@
 """
-The file `quadratureformulas.py` contains class for all quadrature formulas
-
-Author: Thivin Anandh D
-
-Changelog: Not specified
-
-Known issues: None
-
-Dependencies: numpy, scipy
+file: quadratureformulas.py
+description: Abstract class for all quadrature formulas
+authors: Thivin Anandh D
+changelog: Not specified
+known_issues: None
+dependencies: numpy, scipy
 """
 
 from abc import abstractmethod

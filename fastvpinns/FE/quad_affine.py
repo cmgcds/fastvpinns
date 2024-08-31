@@ -1,14 +1,11 @@
 """
-The file `quad_affine.py` defines the Quad Affine transformation of the reference element.
-The implementation is referenced from the ParMooN project  (File: QuadAffine.C).
-
-Author: Thivin Anandh D
-
-Changelog: 30/Aug/2023 - Initial version
-
-Known issues: None
-
-Dependencies: None specified
+file: quad_affine.py
+description: This file defines the Quad Affine transformation of the reference element.
+             The implementation is referenced from the ParMooN project (File: QuadAffine.C).
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+dependencies: None specified.
 """
 
 import numpy as np
@@ -172,3 +169,27 @@ class QuadAffin(FETransforamtion2D):
             grad_yy_orig[j] = solution[2, 0] * r20 + solution[2, 1] * r11 + solution[2, 2] * r02
 
         return grad_xx_orig, grad_xy_orig, grad_yy_orig
+
+    def get_joint_normals(self, joint_id, normalised=True):
+        """
+        Obtain joint normals at the given joint_id's of the cell.
+        Attention: 2D boundary is assumed to be a line, no isoparametric mapping is assosiated.
+                So the normals are constant at the joint.
+        """
+        if joint_id == 0:
+            normals = np.array([self.y1 - self.y0, self.x0 - self.x1])
+        elif joint_id == 1:
+            normals = np.array([self.y2 - self.y1, self.x1 - self.x2])
+        elif joint_id == 2:
+            normals = np.array([self.y3 - self.y2, self.x2 - self.x3])
+        elif joint_id == 3:
+            normals = np.array([self.y0 - self.y3, self.x3 - self.x0])
+        else:
+            raise ValueError(
+                f"Invalid joint_id {joint_id} in {self.__class__.__name__} from {__name__}."
+            )
+
+        if normalised:
+            return normals / np.linalg.norm(normals)
+        else:
+            return normals

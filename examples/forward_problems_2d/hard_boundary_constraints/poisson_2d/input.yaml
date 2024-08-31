@@ -23,7 +23,7 @@ geometry:
   mesh_type: "quadrilateral"  # Type of mesh. Can be "quadrilateral" or other supported types.
   
   external_mesh_params:  # Parameters for external mesh generation method.
-    mesh_file_name: "meshes/rect.mesh"  # Path to the external mesh file (should be a .mesh file).
+    mesh_file_name: "meshes/circle.mesh"  # Path to the external mesh file (should be a .mesh file).
     boundary_refinement_level: 4  # Level of refinement for the boundary.
     boundary_sampling_method: "uniform"  # Method for sampling the boundary. Can be "uniform"
 

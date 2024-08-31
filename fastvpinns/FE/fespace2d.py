@@ -1,14 +1,11 @@
 """
-The file `fespace2d.py` contains the main class that holds the information of all the 
-Finite Element (FE) spaces of all the cells within the given mesh.
-
-Author: Thivin Anandh D
-
-Changelog: 30/Aug/2023 - Initial version
-
-Known issues: None
-
-Dependencies: None specified
+file: fespace2d.py
+description: This file contains the main class that holds the information of all the 
+             Finite Element (FE) spaces of all the cells within the given mesh.
+authors: Thivin Anandh D
+changelog: 30/Aug/2023 - Initial version
+known_issues: None
+dependencies: None specified.
 """
 
 import numpy as np
@@ -145,6 +142,9 @@ class Fespace2D(Fespace):
         # to be calculated on get_boundary_data_dirichlet function
         self.total_dirichlet_dofs = 0
 
+        # to be calculated on get_boundary_data_neumann function
+        self.total_neumann_dofs = 0
+
         # get the number of cells
         self.n_cells = self.cells.shape[0]
 
@@ -165,6 +165,7 @@ class Fespace2D(Fespace):
             "Number of Cells",
             "Number of Quadrature Points",
             "Number of Dirichlet Boundary Points",
+            # "Number of Neumann Boundary Points",
             "Quadrature Order",
             "FE Order",
             "FE Type",
@@ -174,6 +175,7 @@ class Fespace2D(Fespace):
             self.n_cells,
             self.total_dofs,
             self.total_dirichlet_dofs,
+            # self.total_neumann_dofs,
             self.quad_order,
             self.fe_order,
             self.fe_type,
@@ -355,6 +357,10 @@ class Fespace2D(Fespace):
         x = []
         y = []
         for bound_id, bound_pts in self.boundary_points.items():
+            bound_condition = self.bound_condition_dict[bound_id]
+            if bound_condition != "dirichlet":
+                continue
+
             # get the coordinates of the boundary points
             for pt in bound_pts:
                 pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
@@ -385,7 +391,12 @@ class Fespace2D(Fespace):
         """
         x = []
         y = []
+        temp_bd_ids = []
         for bound_id, bound_pts in self.boundary_points.items():
+            boundary_condition = self.bound_condition_dict[bound_id][component]
+            if boundary_condition != "dirichlet":
+                continue
+            temp_bd_ids.append(bound_id)
             # get the coordinates of the boundary points
             for pt in bound_pts:
                 pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
@@ -395,7 +406,111 @@ class Fespace2D(Fespace):
                 ).reshape(-1, 1)
                 y.append(val)
 
+        print_table(
+            f"Dirichlet Boundary - Component-{component}",
+            ["Parameter", "Values"],
+            ["Boundary Ids", "Total Points"],
+            [temp_bd_ids, len(x)],
+        )
+
         return x, y
+
+    def generate_neumann_boundary_data(self, bd_cell_info_dict, bd_joint_info_dict) -> np.ndarray:
+        """
+        Generate neumann boundary data.
+
+        This function returns the boundary points and their corresponding values.
+
+        :return: A tuple containing two arrays:
+            - The first array contains the boundary points as numpy arrays.
+            - The second array contains the values of the boundary points as numpy arrays.
+        :rtype: Tuple[np.ndarray, np.ndarray]
+        """
+        x = []
+        y = []
+        normal_x = []
+        normal_y = []
+
+        for bound_id, bound_pts in self.boundary_points.items():
+            bound_condition = self.bound_condition_dict[bound_id]
+            if bound_condition != "neumann":
+                continue
+
+            # get the coordinates of the boundary points
+            for index, pt in enumerate(bound_pts):
+                pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
+                x.append(pt_new)
+                val = np.array(
+                    self.bound_function_dict[bound_id](pt[0], pt[1]), dtype=np.float64
+                ).reshape(-1, 1)
+                y.append(val)
+
+                # Compute the normals in x-direction and y-direction for the given point
+                cell_id = bd_cell_info_dict[bound_id][index]
+                joint_id = bd_joint_info_dict[bound_id][index]
+                normals = self.fe_cell[cell_id].get_joint_normals(joint_id)
+                # print("Point = ", pt, " Cell ID = ", cell_id, " Joint ID = ", joint_id, " Normals = ", normals)
+                normal_x.append(normals[0])
+                normal_y.append(normals[1])
+
+        print(f"[INFO] : Total number of neumann boundary points = {len(x)}")
+        self.total_neumann_dofs = len(x)
+        print(f"[INFO] : Shape of neumann-X = {np.array(x).shape}")
+        print(f"[INFO] : Shape of Y = {np.array(y).shape}")
+
+        return x, y, normal_x, normal_y
+
+    def generate_neumann_boundary_data_vector(
+        self, component, bd_cell_info_dict, bd_joint_info_dict
+    ) -> np.ndarray:
+        """
+        Generate the boundary data vector for the neumann boundary condition.
+
+        This function returns the boundary points and their corresponding values for a specific component.
+
+        :param component: The component for which the boundary data vector is generated.
+        :type component: int
+
+        :return: The boundary points and their values as numpy arrays.
+        :rtype: tuple(numpy.ndarray, numpy.ndarray)
+        """
+        x = []
+        y = []
+        normal_x = []
+        normal_y = []
+        temp_bd_ids = []
+
+        for bound_id, bound_pts in self.boundary_points.items():
+            boundary_condition = self.bound_condition_dict[bound_id][component]
+            if boundary_condition.lower() != "neumann":
+                continue
+            temp_bd_ids.append(bound_id)
+            # get the coordinates of the boundary points
+            for index, pt in enumerate(bound_pts):
+                pt_new = np.array([pt[0], pt[1]], dtype=np.float64)
+                x.append(pt_new)
+                val = np.array(
+                    self.bound_function_dict[bound_id](pt[0], pt[1])[component], dtype=np.float64
+                ).reshape(-1, 1)
+                y.append(val)
+
+                # obtain the cell and joint information to compute the normals
+                cell_id = bd_cell_info_dict[bound_id][index]
+                joint_id = bd_joint_info_dict[bound_id][index]
+
+                normals = self.fe_cell[cell_id].get_joint_normals(joint_id)
+                # print("Point = ", pt, " Cell ID = ", cell_id, " Joint ID = ", joint_id, " Component = ", component, " Normals = ", normals)
+                normal_x.append(normals[0])
+                normal_y.append(normals[1])
+
+        print_table(
+            f"Neumann Boundary - Component-{component}",
+            ["Parameter", "Values"],
+            ["Boundary Ids", "Total Points"],
+            [temp_bd_ids, len(x)],
+        )
+
+        return x, y, normal_x, normal_y
 
     def get_shape_function_val(self, cell_index) -> np.ndarray:
         """
@@ -531,17 +646,38 @@ class Fespace2D(Fespace):
         """
         Return the quadrature weights for a given cell.
 
-        :param cell_index: The index of the cell for which the quadrature weights are needed.
-        :type cell_index: int
-        :return: The quadrature weights for the given cell  of dimension (N_Quad_Points, 1).
-        :rtype: np.ndarray
-        :raises ValueError: If cell_index is greater than the number of cells.
+        Parameters
+        ----------
+        cell_index : int
+            The index of the cell for which the quadrature weights are needed.
+
+        Returns
+        -------
+        np.ndarray
+            The quadrature weights for the given cell of dimension (N_Quad_Points, 1).
+
+        Raises
+        ------
+        ValueError
+            If cell_index is greater than the number of cells.
+
+        Notes
+        -----
+        This function returns the quadrature weights associated with a specific cell.
+        The quadrature weights are stored in the `mult` attribute of the `fe_cell` object.
+
         Example
         -------
         >>> fespace = FESpace2D()
         >>> weights = fespace.get_quadrature_weights(0)
         >>> print(weights)
         [0.1, 0.2, 0.3, 0.4]
+
+        :param cell_index: The index of the cell for which the quadrature weights are needed.
+        :type cell_index: int
+        :return: The quadrature weights for the given cell.
+        :rtype: np.ndarray
+        :raises ValueError: If cell_index is greater than the number of cells.
         """
         if cell_index >= len(self.fe_cell) or cell_index < 0:
             raise ValueError(
@@ -569,11 +705,6 @@ class Fespace2D(Fespace):
 
         Note: The forcing function is evaluated using the `forcing_function` method of the `fe_cell`
         object.
-
-        Example usage:
-            >>> fespace = FESpace2D()
-            >>> cell_index = 0
-            >>> forcing_values = fespace.get_forcing_function_values(cell_index)
         """
         if cell_index >= len(self.fe_cell) or cell_index < 0:
             raise ValueError(
@@ -596,7 +727,7 @@ class Fespace2D(Fespace):
                 y = self.fe_cell[cell_index].quad_actual_coordinates[q, 1]
                 # print("f_values[q] = ",f_values[q])
 
-                # the Jacobian and the quadrature weights are pre multiplied to the basis functions
+                # the JAcobian and the quadrature weights are pre multiplied to the basis functions
                 val += (self.fe_cell[cell_index].basis_at_quad[i, q]) * self.fe_cell[
                     cell_index
                 ].forcing_function(x, y)

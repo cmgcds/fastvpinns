@@ -41,4 +41,13 @@ sensor_points.png
 # examples/**/*.png # as the README.md uses png image files
 examples/**/sensor_points.png
 
+# ignore all wandb folders (recursive)
+wandb/
+
+# ignore all files that end with .log
+*.log
+
+# ignore all txt files, present within examples folder
+examples/**/*.txt
+
 

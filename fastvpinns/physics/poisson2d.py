@@ -1,12 +1,8 @@
 """
-This file `poisson2d.py` is implementation of our efficient tensor-based loss calculation for poisson equation
-
+This function is implemntation of our efficient tensor-based loss calculation for poisson equation
 Author: Thivin Anandh D
-
-Date: 21/Sep/2023
-
+Date: 21-Sep-2023
 History: Initial implementation
-
 Refer: https://arxiv.org/abs/2404.12063
 """
 

@@ -1,19 +1,21 @@
 """
-The file `plot_utils.py` contains the utility functions for
-plotting the loss functions and the predicted inverse parameters
+filename: plot_utils.py
+description: This file contains the utility functions for
+              plotting the loss functions and the predicted inverse parameters
 
-Author: Thivin Anandh D
+author: Thivin Anandh D
+date: 02/11/2023
+changelog: 02/11/2023 - file created
+           02/11/2023 - added functions to plot the loss functions and the predicted 
+                        inverse parameters
 
-Date: 02/Nov/2023
-
-Changelog: 02/Nov/2023 - file is created; and added functions to plot the loss functions and the predicted inverse parameters
-
-Known issues: None
+known_issues: None
 """
 
 import matplotlib.pyplot as plt
 from cycler import cycler
 import numpy as np
+from matplotlib.ticker import MaxNLocator
 
 
 plt.rcParams["xtick.labelsize"] = 20
@@ -40,14 +42,11 @@ plt.rcParams["axes.prop_cycle"] = cycler(
 
 # plot the loss function
 def plot_loss_function(loss_function, output_path):
-    """
-    This function will plot the loss function.
-
+    """This function will plot the loss function.
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
-
     :return: None
     :rtype: None
     """
@@ -67,9 +66,7 @@ def plot_loss_function(loss_function, output_path):
 
 
 def plot_array(array, output_path, filename, title, x_label="Epochs", y_label="Loss"):
-    """
-    This function will plot the loss function.
-
+    """This function will plot the loss function.
     :param array: list of loss values
     :type array: list
     :param output_path: path to save the plot
@@ -82,7 +79,6 @@ def plot_array(array, output_path, filename, title, x_label="Epochs", y_label="L
     :type x_label: str, optional
     :param y_label: y-axis label, defaults to "Loss"
     :type y_label: str, optional
-
     :return: None
     :rtype: None
     """
@@ -104,9 +100,7 @@ def plot_array(array, output_path, filename, title, x_label="Epochs", y_label="L
 def plot_multiple_loss_function(
     loss_function_list, output_path, filename, legend_labels, y_label, title, x_label="Epochs"
 ):
-    """
-    This function will plot the loss function in log scale for multiple parameters.
-
+    """This function will plot the loss function in log scale for multiple parameters.
     :param loss_function_list: list of loss values for multiple parameters
     :type loss_function_list: list
     :param output_path: path to save the plot
@@ -121,7 +115,6 @@ def plot_multiple_loss_function(
     :type title: str
     :param x_label: x-axis label, defaults to "Epochs"
     :type x_label: str, optional
-
     :return: None
     :rtype: None
     """
@@ -145,14 +138,11 @@ def plot_multiple_loss_function(
 
 # plot the loss function
 def plot_inverse_test_loss_function(loss_function, output_path):
-    """
-    This function will plot the test loss function of the inverse parameter.
-
+    """This function will plot the test loss function of the inverse parameter.
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
-
     :return: None
     :rtype: None
     """
@@ -170,16 +160,13 @@ def plot_inverse_test_loss_function(loss_function, output_path):
 
 
 def plot_test_loss_function(loss_function, output_path, fileprefix=""):
-    """
-    This function will plot the test loss function.
-
+    """This function will plot the test loss function.
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
     :param fileprefix: prefix for the filename, defaults to ""
     :type fileprefix: str, optional
-
     :return: None
     :rtype: None
     """
@@ -200,16 +187,13 @@ def plot_test_loss_function(loss_function, output_path, fileprefix=""):
 
 
 def plot_test_time_loss_function(time_array, loss_function, output_path):
-    """
-    This function will plot the test loss as a function of time in seconds.
-
+    """This function will plot the test loss as a function of time in seconds.
     :param time_array: array of time values
     :type time_array: numpy.ndarray
     :param loss_function: list of loss values
     :type loss_function: list
     :param output_path: path to save the plot
     :type output_path: str
-
     :return: None
     :rtype: None
     """
@@ -227,10 +211,8 @@ def plot_test_time_loss_function(time_array, loss_function, output_path):
     plt.close()
 
 
-def plot_contour(x, y, z, output_path, filename, title):
-    """
-    This function will plot the contour plot.
-
+def plot_contour(x, y, z, output_path, filename, title, modify_aspect=False):
+    """This function will plot the contour plot.
     :param x: x values
     :type x: numpy.ndarray
     :param y: y values
@@ -243,15 +225,57 @@ def plot_contour(x, y, z, output_path, filename, title):
     :type filename: str
     :param title: title of the plot
     :type title: str
-
     :return: None
     :rtype: None
     """
 
     plt.figure(figsize=(6.4, 4.8))
     plt.contourf(x, y, z, levels=100, cmap="jet")
+
+    if modify_aspect:
+        plt.gca().set_aspect("equal", adjustable="box")
+
     plt.title(title)
-    plt.colorbar()
+    # Create colorbar
+    cbar = plt.colorbar()
+
+    # Set the number of ticks in the colorbar
+    cbar.locator = MaxNLocator(nbins=6)  # Set 5 ticks
+    cbar.update_ticks()
+    plt.savefig(output_path + "/" + filename + ".png", dpi=300)
+
+    plt.close()
+
+
+def plot_contour_channel(x, y, z, output_path, filename, title, aspect_ratio=3, nbins=6):
+    """This function will plot the contour plot.
+    :param x: x values
+    :type x: numpy.ndarray
+    :param y: y values
+    :type y: numpy.ndarray
+    :param z: z values
+    :type z: numpy.ndarray
+    :param output_path: path to save the plot
+    :type output_path: str
+    :param filename: filename to save the plot
+    :type filename: str
+    :param title: title of the plot
+    :type title: str
+    :return: None
+    :rtype: None
+    """
+
+    plt.figure(figsize=(6.4, 4.8))
+    plt.contourf(x, y, z, levels=100, cmap="jet")
+
+    plt.gca().set_aspect(aspect_ratio, adjustable="box")
+
+    plt.title(title)
+    cbar = plt.colorbar(orientation='horizontal', pad=0.1, aspect=50)
+
+    # Set the number of ticks in the colorbar
+    cbar.locator = MaxNLocator(nbins=6)  # Set 5 ticks
+    cbar.update_ticks()
     plt.savefig(output_path + "/" + filename + ".png", dpi=300)
 
     plt.close()
@@ -261,9 +285,7 @@ def plot_contour(x, y, z, output_path, filename, title):
 def plot_inverse_param_function(
     inverse_predicted, inverse_param_name, actual_value, output_path, file_prefix
 ):
-    """
-    This function will plot the predicted inverse parameter.
-
+    """This function will plot the predicted inverse parameter.
     :param inverse_predicted: list of predicted inverse parameter values
     :type inverse_predicted: list
     :param inverse_param_name: name of the inverse parameter
@@ -274,7 +296,6 @@ def plot_inverse_param_function(
     :type output_path: str
     :param file_prefix: prefix for the filename
     :type file_prefix: str
-
     :return: None
     :rtype: None
     """

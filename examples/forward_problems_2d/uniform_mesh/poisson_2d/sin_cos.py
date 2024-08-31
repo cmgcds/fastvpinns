@@ -9,8 +9,7 @@ def left_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
-    return np.ones_like(x) * val
+    return 0.0
 
 
 def right_boundary(x, y):
@@ -18,7 +17,7 @@ def right_boundary(x, y):
     This function will return the boundary value for given component of a boundary
     """
     val = 0.0
-    return np.ones_like(x) * val
+    return val
 
 
 def top_boundary(x, y):
@@ -33,8 +32,7 @@ def bottom_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
-    return np.ones_like(x) * val
+    return 0.0
 
 
 def rhs(x, y):
@@ -43,12 +41,11 @@ def rhs(x, y):
     """
     # f_temp =  32 * (x  * (1 - x) + y * (1 - y))
     # f_temp = 1
-    # For a Laplace Equation, Make the f_temp = np.ones_like(x) * 0.0
 
     omegaX = 4.0 * np.pi
     omegaY = 4.0 * np.pi
     f_temp = -2.0 * (omegaX**2) * (np.sin(omegaX * x) * np.sin(omegaY * y))
-    
+
     return f_temp
 
 
@@ -56,9 +53,8 @@ def exact_solution(x, y):
     """
     This function will return the exact solution at a given point
     """
-    # If the exact Solution does not have an analytical expression, leave the value as 0(zero)
-    # it can be set using `np.ones_like(x) * 0.0` and then ignore the errors and the error plots generated. 
 
+    # val = 16 * x * (1 - x) * y * (1 - y)
     omegaX = 4.0 * np.pi
     omegaY = 4.0 * np.pi
     val = -1.0 * np.sin(omegaX * x) * np.sin(omegaY * y)

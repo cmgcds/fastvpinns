@@ -16,7 +16,7 @@ geometry:
 
   mesh_type: "quadrilateral"
   external_mesh_params:
-    mesh_file_name: "meshes/rect_quad.mesh"  # should be a .mesh file
+    mesh_file_name: "meshes/circle_quad.mesh"  # should be a .mesh file
     boundary_refinement_level: 8
     boundary_sampling_method: "uniform"  # "uniform" 
 

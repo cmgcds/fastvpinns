@@ -1,14 +1,11 @@
 """
-The file `model.py` hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
-The focus is on the model architecture and the training loop, and not on the loss functions.
-
-Author: Thivin Anandh D
-
-Changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
-
-Known issues: None
-
-Dependencies: None specified
+file: model.py
+description: This file hosts the Neural Network (NN) model and the training loop for variational Physics-Informed Neural Networks (PINNs).
+             The focus is on the model architecture and the training loop, and not on the loss functions.
+authors: Thivin Anandh D
+changelog: 22/Sep/2023 - Initial implementation with basic model architecture and training loop
+known_issues: None
+dependencies: None specified.
 """
 
 import tensorflow as tf

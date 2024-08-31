@@ -4,8 +4,7 @@ generate internal mesh for 2D problems. It supports different types of meshes an
 The class also allows for specifying the number of test points in the x and y directions, and the output folder for storing results.
 
 Author: Thivin Anandh D
-
-Date: 21/Sep/2023
+Date: 21-Sep-2023
 """
 
 from pathlib import Path
@@ -65,6 +64,10 @@ class Geometry_2D(Geometry):
         self.n_test_points_y = n_test_points_y
         self.output_folder = output_folder
 
+        # to be filled in mesh/grid generation routines
+        self.bd_cell_info_dict = None
+        self.bd_joint_info_dict = None
+
         if self.mesh_generation_method not in ["internal", "external"]:
             print(
                 f"Invalid mesh generation method {self.mesh_generation_method} in {self.__class__.__name__} from {__name__}."
@@ -89,6 +92,21 @@ class Geometry_2D(Geometry):
         self.bd_dict = None
         self.cell_points = None
         self.test_points = None
+
+    def find_cells_containing_indices(self, cells, index):
+        """
+        Helper function, which is used to identify in which cells, the current edge co-ordinates are present in the mesh
+        """
+        # Initialize an empty list to store the cell indices containing the given indices
+        containing_cells = []
+
+        # Iterate through each cell in the cells list
+        for i, cell in enumerate(cells):
+            # Check if both indices are present in the current cell
+            if all(idx in cell for idx in index):
+                containing_cells.append(i)
+
+        return containing_cells
 
     def read_mesh(
         self,
@@ -122,7 +140,7 @@ class Geometry_2D(Geometry):
             raise ValueError("Mesh file should be in .mesh format.")
 
         # Read mesh using meshio
-        self.mesh = meshio.read(mesh_file)
+        self.mesh = meshio.read(self.mesh_file_name)
 
         if self.mesh_type == "quadrilateral":
             # Extract cell information
@@ -141,8 +159,15 @@ class Geometry_2D(Geometry):
             centroid = np.mean(cell, axis=0)
             # get the angle of each point with respect to the centroid
             angles = np.arctan2(cell[:, 1] - centroid[1], cell[:, 0] - centroid[0])
+
+            # collect the sorted index based on the angles
+            sorted_index = np.argsort(angles)
+
             # sort the points based on the angles
-            cell_points[i] = cell[np.argsort(angles)]
+            cell_points[i] = cell[sorted_index]
+
+            # similarly sort the cells
+            cells[i] = cells[i][sorted_index]
 
         # Extract number of points within each cell
         print(f"[INFO] : Number of points per cell = {cell_points.shape}")
@@ -154,9 +179,9 @@ class Geometry_2D(Geometry):
         boundary_coordinates = self.mesh.points[boundary_edges]
 
         # Number of Existing Boundary points
-        print(
-            f"[INFO] : Number of Bound points before refinement = {np.unique(boundary_coordinates.reshape(-1,3)).shape[0] * 0.5 + 1}"
-        )
+        # print(
+        #     f"[INFO] : Number of Bound points before refinement = {np.unique(boundary_coordinates.reshape(-1,3)).shape[0] * 0.5 + 1}"
+        # )
 
         # now Get the physical tag of the boundary edges
         boundary_tags = self.mesh.cell_data["medit:ref"][0]
@@ -164,11 +189,72 @@ class Geometry_2D(Geometry):
         # Generate a Dictionary of boundary tags and boundary coordinates
         # Keys will be the boundary tags and values will be the list of coordinates
         boundary_dict = {}
+        boundary_cell_info_dict = {}
+        boundary_joint_info_dict = {}
 
         # refine the boundary points based on the number of boundary points needed
         for i in range(boundary_coordinates.shape[0]):
-            p1 = boundary_coordinates[i, 0, :]
-            p2 = boundary_coordinates[i, 1, :]
+
+            # obtain the point index of the boundary points
+            edge_index = self.mesh.cells_dict["line"][i]
+
+            # the index will be a list of two indices, Now check in which index, both of these index are present in list of cell indices
+            cell_index_of_edge = self.find_cells_containing_indices(cells, edge_index)
+
+            # print(f"[INFO] : Neumann Boundary Edge {i} is present in cells {cell_index_of_edge}")
+
+            # Throw error, if the boundary edge is either not present in any cell or present in more than one cell
+            if len(cell_index_of_edge) != 1:
+                print(
+                    f"[Error] : Boundary edge {i} is not present in any cell or present in more than one cell."
+                )
+                raise ValueError("Boundary edge should be present in exactly one cell.")
+
+            # get the cell index
+            cell_index_of_edge = cell_index_of_edge[0]
+
+            # now look for orientation of the edge within the given cell
+            # based on the orientation, we can assign the edge and assign the points p1 and p2
+            edge_pt_0_index_in_cell = np.where(cells[cell_index_of_edge] == edge_index[0])[0][0]
+            edge_pt_1_index_in_cell = np.where(cells[cell_index_of_edge] == edge_index[1])[0][0]
+            index_list = [edge_pt_0_index_in_cell, edge_pt_1_index_in_cell]
+
+            # the below are the valid combinations of indices for an edge based on how quad cells are arranged
+            # the Quad points are already rearranged in anticlockwise direction, to match the orientation from ParMooN.
+            valid_combinations_quad_edges = [[0, 1], [1, 2], [2, 3], [3, 0]]
+            valid_combination_inverted_quad_edges = [[1, 0], [2, 1], [3, 2], [0, 3]]
+
+            is_valid_index = False  # entry check
+            is_valid_reverse_index = False  # entry check
+
+            if index_list in valid_combinations_quad_edges:
+                is_valid_index = True
+                # joint id is where the index is present in the valid_combinations_quad_edges
+                joint_id = valid_combinations_quad_edges.index(index_list)
+            elif index_list in valid_combination_inverted_quad_edges:
+                is_valid_reverse_index = True
+                joint_id = valid_combination_inverted_quad_edges.index(index_list)
+            else:
+                is_valid_index = False
+                is_valid_reverse_index = False
+
+            if is_valid_index:
+                p1 = cell_points[cell_index_of_edge][edge_pt_0_index_in_cell, :]
+                p2 = cell_points[cell_index_of_edge][edge_pt_1_index_in_cell, :]
+            elif is_valid_reverse_index:
+                p1 = cell_points[cell_index_of_edge][edge_pt_1_index_in_cell, :]
+                p2 = cell_points[cell_index_of_edge][edge_pt_0_index_in_cell, :]
+            else:
+                print(
+                    f"[Error] : Invalid combination of Edge indices on cell number {cell_index_of_edge}"
+                )
+                print(f"[Error] : The edge indices are {index_list}")
+                print(
+                    f"[Error] : The valid combinations are {valid_combinations_quad_edges} and valid inverted indices are {valid_combination_inverted_quad_edges}"
+                )
+                raise ValueError(
+                    "Invalid combination of Edge indices on cell number {cell_index_of_edge}"
+                )
 
             if bd_sampling_method == "uniform":
                 # take the current point and next point and then perform a uniform sampling
@@ -184,24 +270,52 @@ class Geometry_2D(Geometry):
                 )
                 raise ValueError("Sampling method should be either uniform or lhs.")
 
+            # fill the Cell information and joint information
+            new_points_cells = np.ones_like(new_points[:, 0]) * cell_index_of_edge
+            new_points_joints = np.ones_like(new_points[:, 0]) * joint_id
+
+            # conver the new points cells and new points joints to int
+            new_points_cells = new_points_cells.astype(np.int64)
+            new_points_joints = new_points_joints.astype(np.int64)
+
             # get the boundary tag
             tag = boundary_tags[i]
 
             if tag not in boundary_dict:
                 boundary_dict[tag] = new_points
+                boundary_cell_info_dict[tag] = new_points_cells
+                boundary_joint_info_dict[tag] = new_points_joints
             else:
                 current_val = new_points
                 prev_val = boundary_dict[tag]
                 final = np.vstack([prev_val, current_val])
                 boundary_dict[tag] = final
 
+                # append the current cell info to the existing cell info
+                boundary_cell_info_dict[tag] = np.append(
+                    boundary_cell_info_dict[tag], new_points_cells
+                )
+
+                # append the current joint info to the existing joint info
+                boundary_joint_info_dict[tag] = np.append(
+                    boundary_joint_info_dict[tag], new_points_joints
+                )
+
         # get unique
-        for tag in boundary_dict.keys():
-            val = boundary_dict[tag]
-            val = np.unique(val, axis=0)
-            boundary_dict[tag] = val
+        for tag, val in boundary_dict.items():
+            # find the unique values and also their indices
+            unique_val, unique_idx = np.unique(val, axis=0, return_index=True)
+
+            # based on the unique indices, get the cell and joint information
+            cell_info = boundary_cell_info_dict[tag][unique_idx]
+            joint_info = boundary_joint_info_dict[tag][unique_idx]
+            boundary_dict[tag] = unique_val
+            boundary_cell_info_dict[tag] = cell_info
+            boundary_joint_info_dict[tag] = joint_info
 
         self.bd_dict = boundary_dict
+        self.bd_cell_info_dict = boundary_cell_info_dict
+        self.bd_joint_info_dict = boundary_joint_info_dict
         # print the new boundary points  on each boundary tag (key) in a tabular format
 
         total_bound_points = 0
@@ -290,6 +404,8 @@ class Geometry_2D(Geometry):
         # lets generate the boundary points, this function will return a dictionary of boundary points
         # the keys will be the boundary tags and values will be the list of boundary points
         bd_points = {}
+        bd_cells = {}
+        bd_joints = {}
 
         num_bound_per_side = int(num_boundary_points / 4)
 
@@ -314,28 +430,42 @@ class Geometry_2D(Geometry):
 
             return bd_pts.reshape(-1)
 
+        # For internal mesh generation routines, the cell values are hardcoded to be zero, as the normals are computed
+        # based on the boundary id directly.
+
         # bottom boundary
         y_bottom = (np.ones(num_bound_per_side, dtype=np.float64) * y_limits[0]).reshape(-1)
         x_bottom = _temp_bd_func(x_limits[0], x_limits[1], num_bound_per_side)
         bd_points[1000] = np.vstack([x_bottom, y_bottom]).T
+        bd_cells[1000] = np.ones_like(x_bottom, dtype=np.int64) * 0
+        bd_joints[1000] = np.ones_like(x_bottom, dtype=np.int64) * 0
 
         # right boundary
         x_right = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[1]).reshape(-1)
         y_right = _temp_bd_func(y_limits[0], y_limits[1], num_bound_per_side)
         bd_points[1001] = np.vstack([x_right, y_right]).T
+        bd_cells[1001] = np.ones_like(x_right, dtype=np.int64) * 0
+        bd_joints[1001] = np.ones_like(x_right, dtype=np.int64) * 1
 
         # top boundary
         y_top = (np.ones(num_bound_per_side, dtype=np.float64) * y_limits[1]).reshape(-1)
         x_top = _temp_bd_func(x_limits[0], x_limits[1], num_bound_per_side)
         bd_points[1002] = np.vstack([x_top, y_top]).T
+        bd_cells[1002] = np.ones_like(x_top, dtype=np.int64) * 0
+        bd_joints[1002] = np.ones_like(x_top, dtype=np.int64) * 2
 
         # left boundary
         x_left = (np.ones(num_bound_per_side, dtype=np.float64) * x_limits[0]).reshape(-1)
         y_left = _temp_bd_func(y_limits[0], y_limits[1], num_bound_per_side)
         bd_points[1003] = np.vstack([x_left, y_left]).T
+        bd_cells[1003] = np.ones_like(x_left, dtype=np.int64) * 0
+        bd_joints[1003] = np.ones_like(x_left, dtype=np.int64) * 3
 
+        # Assign local variables to class variables
         self.cell_points = cells
         self.bd_dict = bd_points
+        self.bd_cell_info_dict = bd_cells
+        self.bd_joint_info_dict = bd_joints
 
         # generate vtk
         self.generate_vtk_for_test()

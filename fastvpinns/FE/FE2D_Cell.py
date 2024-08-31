@@ -1,19 +1,16 @@
-"""
-This module `FE2D_Cell.py` will be used to setup the FE2D and quadrature rule for a given cell based on the
-given mesh and the degree of the basis functions
+# This program will be used to setup the FE2D and quadrature rule for a given cell based on the
+# given mesh and the degree of the basis functions
 
-Author: Thivin Anandh D
+# Author: Thivin Anandh D
+# Date:  30/Aug/2023
+# Implementation History :
+# the grad_x_orig and grad_y_orig will actually store the magnitute with which we need to multiply this grad_x_ref and grad_y_ref
+# to obtain the actual values of the gradient in the original cell
+# this is done to improve efficiency
 
-Date: 30/Aug/2023
-
-Implementation History : The grad_x_orig and grad_y_orig will actually store
-the magnitute with which we need to multiply this grad_x_ref and grad_y_ref
-to obtain the actual values of the gradient in the original cell
-this is done to improve efficiency
-"""
 
 # Importing the required libraries
-from .basis_function_2d import *
+# from .basis_function_2d import *
 
 # import Quadrature rules
 from .quadratureformulas_quad2d import *
@@ -22,7 +19,7 @@ from .fe2d_setup_main import *
 
 class FE2D_Cell:
     """
-    This class is used to Store the FE Values, such as Coordinates, Basis Functions, Quadrature Rules, etc. for a given cell.
+    This class is used to Store the FE Values, Such as Coordinates, Basis Functions, Quadrature Rules, etc. for a given cell.
     """
 
     def __init__(
@@ -287,3 +284,15 @@ class FE2D_Cell:
         #     f_integral[i] = val
 
         self.forcing_at_quad = f_integral
+
+    def get_joint_normals(self, joint_no) -> np.ndarray:
+        """
+        This method returns the normal vectors of the joint specified by joint_no.
+
+        :param joint_no: The joint number for which the normal vectors are to be calculated.
+        :type joint_no: int
+
+        :return: The normal vectors of the joint specified by joint_no.
+        """
+        # call the corresponding method in the FE Transformation class
+        return self.fetransformation.get_joint_normals(joint_no)
