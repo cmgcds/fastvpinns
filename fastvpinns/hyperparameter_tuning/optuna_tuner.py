@@ -21,6 +21,7 @@ Note:
 import optuna
 from .objective import objective
 
+
 class OptunaTuner:
     def __init__(self, n_trials=100, study_name="fastvpinns_optimization"):
         self.n_trials = n_trials
@@ -35,6 +36,6 @@ class OptunaTuner:
         print("  Value: ", trial.value)
         print("  Params: ")
         for key, value in trial.params.items():
-            print("    {}: {}".format(key, value))
+            print(f"    {key}: {value}")
 
         return study.best_params
