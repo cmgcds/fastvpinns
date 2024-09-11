@@ -44,9 +44,7 @@ def objective(trial):
             "fe_order": trial.suggest_int("fe_order", 2, 8),
             "fe_type": trial.suggest_categorical("fe_type", ["legendre", "jacobi"]),
             "quad_order": trial.suggest_int("quad_order", 3, 15),
-            "quad_type": trial.suggest_categorical(
-                "quad_type", ["gauss-legendre", "gauss-jacobi"]
-            ),
+            "quad_type": trial.suggest_categorical("quad_type", ["gauss-legendre", "gauss-jacobi"]),
         },
         "model": {
             "model_architecture": [2]
@@ -105,20 +103,14 @@ def objective(trial):
 
     params_dict = {"n_cells": fespace.n_cells}
     train_dirichlet_input, train_dirichlet_output = datahandler.get_dirichlet_input()
-    bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(
-        get_bilinear_params_dict
-    )
+    bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
     model = DenseModel(
         layer_dims=config["model"]["model_architecture"],
         learning_rate_dict=config["model"]["learning_rate"],
         params_dict=params_dict,
         loss_function=pde_loss_poisson,
-        input_tensors_list=[
-            datahandler.x_pde_list,
-            train_dirichlet_input,
-            train_dirichlet_output,
-        ],
+        input_tensors_list=[datahandler.x_pde_list, train_dirichlet_input, train_dirichlet_output],
         orig_factor_matrices=[
             datahandler.shape_val_mat_list,
             datahandler.grad_x_mat_list,
