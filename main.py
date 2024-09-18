@@ -12,7 +12,7 @@ from tensorflow.keras import initializers
 from rich.console import Console
 import copy
 import time
-import optuna 
+import optuna
 import argparse
 
 
@@ -32,22 +32,34 @@ from sin_cos import *
 from utility import *
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run FastVPINNs with YAML config or optimized hyperparameters")
-    parser.add_argument("config", nargs="?", default="input.yaml", help="Path to YAML config file (default: input.yaml)")
+    parser = argparse.ArgumentParser(
+        description="Run FastVPINNs with YAML config or optimized hyperparameters"
+    )
+    parser.add_argument(
+        "config",
+        nargs="?",
+        default="input.yaml",
+        help="Path to YAML config file (default: input.yaml)",
+    )
     parser.add_argument("--optimized", action="store_true", help="Use optimized hyperparameters")
     parser.add_argument("--n-trials", type=int, default=100, help="Number of optimization trials")
-    parser.add_argument("--n-epochs", type=int, default=5000, help="Number of epochs to train each model in the hyperparameter optimization")
+    parser.add_argument(
+        "--n-epochs",
+        type=int,
+        default=5000,
+        help="Number of epochs to train each model in the hyperparameter optimization",
+    )
     args = parser.parse_args()
 
     gpus = tf.config.list_physical_devices('GPU')
 
-
     if args.optimized:
         from fastvpinns.hyperparameter_tuning.optuna_tuner import OptunaTuner
+
         print("Running with optimized hyperparameters")
         print("This may take a while...")
         print("Running OptunaTuner...")
-        
+
         tuner = OptunaTuner(n_trials=args.n_trials, n_jobs=len(gpus), n_epochs=args.n_epochs)
         best_params = tuner.run()
         # Convert best_params to the format expected by your code
@@ -62,7 +74,7 @@ if __name__ == "__main__":
         if not config_path.exists():
             print(f"Config file not found: {config_path}")
             sys.exit(1)
-        
+
         with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
     else:
@@ -80,8 +92,6 @@ if __name__ == "__main__":
     # with open(sys.argv[1], 'r') as f:
     #     config = yaml.safe_load(f)
 
-
-    
     # Extract the values from the YAML file
     # Values that are not hyperparameters:
     i_output_path = config['experimentation']['output_path']
@@ -116,7 +126,6 @@ if __name__ == "__main__":
         print("[ERROR] The given dtype is not a valid tensorflow dtype")
         raise ValueError("The given dtype is not a valid tensorflow dtype")
 
-
     # Values that are hyperparameters:
     i_n_cells_x = config['geometry']['internal_mesh_params']['n_cells_x']
     i_n_cells_y = config['geometry']['internal_mesh_params']['n_cells_y']
@@ -131,11 +140,9 @@ if __name__ == "__main__":
     i_activation = config['model']['activation']
     i_use_attention = config['model']['use_attention']
 
-
     i_learning_rate_dict = config['model']['learning_rate']
 
     i_beta = config['pde']['beta']
-
 
     # use pathlib to create the folder,if it does not exist
     folder = Path(i_output_path)
