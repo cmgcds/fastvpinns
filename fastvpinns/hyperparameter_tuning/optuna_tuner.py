@@ -23,8 +23,11 @@ from .objective import objective
 import tensorflow as tf
 import os
 
+
 class OptunaTuner:
-    def __init__(self, n_trials=100, study_name="fastvpinns_optimization", n_jobs=-1, n_epochs=5000):
+    def __init__(
+        self, n_trials=100, study_name="fastvpinns_optimization", n_jobs=-1, n_epochs=5000
+    ):
         self.n_trials = n_trials
         self.study_name = study_name
         self.n_jobs = n_jobs
@@ -41,15 +44,16 @@ class OptunaTuner:
         with tf.device(f'/device:GPU:{gpu_id}'):
             return objective(trial, self.n_epochs)
 
-
     def run(self):
         study = optuna.create_study(
             study_name=self.study_name,
             direction="minimize",
             storage="sqlite:///fastvpinns_optuna.db",
-            load_if_exists=True
+            load_if_exists=True,
         )
-        study.optimize(self.objective_wrapper, n_trials=self.n_trials, n_jobs=min(len(self.gpus), self.n_jobs))
+        study.optimize(
+            self.objective_wrapper, n_trials=self.n_trials, n_jobs=min(len(self.gpus), self.n_jobs)
+        )
 
         print("Best trial:")
         trial = study.best_trial

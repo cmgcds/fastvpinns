@@ -26,6 +26,7 @@ release = '1.0.0'
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../fastvpinns'))
 sys.path.insert(0, os.path.abspath('../../fastvpinns'))
 import fastvpinns
@@ -46,7 +47,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.mathjax',
     'sphinx.ext.intersphinx',
-    'sphinx_copybutton', 
+    'sphinx_copybutton',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

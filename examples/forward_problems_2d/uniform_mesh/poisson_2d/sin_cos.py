@@ -48,7 +48,7 @@ def rhs(x, y):
     omegaX = 4.0 * np.pi
     omegaY = 4.0 * np.pi
     f_temp = -2.0 * (omegaX**2) * (np.sin(omegaX * x) * np.sin(omegaY * y))
-    
+
     return f_temp
 
 
@@ -57,7 +57,7 @@ def exact_solution(x, y):
     This function will return the exact solution at a given point
     """
     # If the exact Solution does not have an analytical expression, leave the value as 0(zero)
-    # it can be set using `np.ones_like(x) * 0.0` and then ignore the errors and the error plots generated. 
+    # it can be set using `np.ones_like(x) * 0.0` and then ignore the errors and the error plots generated.
 
     omegaX = 4.0 * np.pi
     omegaY = 4.0 * np.pi

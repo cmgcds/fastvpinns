@@ -30,6 +30,8 @@ examples/**/output/
 examples/**/output_*
 examples/**/__pycache__/
 
+output/*
+
 
 # pytest 
 *.vtk
@@ -41,4 +43,7 @@ sensor_points.png
 # examples/**/*.png # as the README.md uses png image files
 examples/**/sensor_points.png
 
+# Optuna files
+*.sqlite3
+*.db
 
