@@ -35,7 +35,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run FastVPINNs with YAML config or optimized hyperparameters")
     parser.add_argument("config", nargs="?", default="input.yaml", help="Path to YAML config file (default: input.yaml)")
     parser.add_argument("--optimized", action="store_true", help="Use optimized hyperparameters")
+    parser.add_argument("--n-trials", type=int, default=100, help="Number of optimization trials")
+    parser.add_argument("--n-epochs", type=int, default=5000, help="Number of epochs to train each model in the hyperparameter optimization")
     args = parser.parse_args()
+
+    gpus = tf.config.list_physical_devices('GPU')
+
 
     if args.optimized:
         from fastvpinns.hyperparameter_tuning.optuna_tuner import OptunaTuner
@@ -43,7 +48,7 @@ if __name__ == "__main__":
         print("This may take a while...")
         print("Running OptunaTuner...")
         
-        tuner = OptunaTuner(n_trials=5)
+        tuner = OptunaTuner(n_trials=args.n_trials, n_jobs=len(gpus), n_epochs=args.n_epochs)
         best_params = tuner.run()
         # Convert best_params to the format expected by your code
         # config = convert_best_params_to_config(best_params)
