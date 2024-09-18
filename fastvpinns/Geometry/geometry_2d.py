@@ -43,6 +43,7 @@ class Geometry_2D(Geometry):
         n_test_points_x: int,
         n_test_points_y: int,
         output_folder: str,
+        is_optimized: bool = False,
     ):
         """
         Constructor for Geometry_2D class.
@@ -64,6 +65,7 @@ class Geometry_2D(Geometry):
         self.n_test_points_x = n_test_points_x
         self.n_test_points_y = n_test_points_y
         self.output_folder = output_folder
+        self.is_optimized = is_optimized
 
         if self.mesh_generation_method not in ["internal", "external"]:
             print(
@@ -338,7 +340,8 @@ class Geometry_2D(Geometry):
         self.bd_dict = bd_points
 
         # generate vtk
-        self.generate_vtk_for_test()
+        if not self.is_optimized:
+            self.generate_vtk_for_test()
 
         return self.cell_points, self.bd_dict
 
