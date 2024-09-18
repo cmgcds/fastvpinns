@@ -30,7 +30,7 @@ from fastvpinns.utils.compute_utils import compute_errors_combined
 from sin_cos import *  # Import your example-specific functions
 
 
-def objective(trial):
+def objective(trial, num_epochs):
     # Suggest values for hyperparameters
     config = {
         "geometry": {
@@ -73,7 +73,14 @@ def objective(trial):
     if not os.path.exists(output_temp_dir):
         os.makedirs(output_temp_dir)
 
-    domain = Geometry_2D("quadrilateral", "internal", 100, 100, output_temp_dir)
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            tf.config.experimental.set_memory_growth(gpus[0], True)
+        except RuntimeError as e:
+            print(e)
+
+    domain = Geometry_2D("quadrilateral", "internal", 100, 100, output_temp_dir, is_optimized=True)
     cells, boundary_points = domain.generate_quad_mesh_internal(
         x_limits=[0, 1],
         y_limits=[0, 1],
@@ -124,13 +131,11 @@ def objective(trial):
     )
 
     # Train the model for a fixed number of epochs
-    num_epochs = 50000  # You may want to adjust this based on your computational budget
     beta = tf.constant(config["pde"]["beta"], dtype=tf.float32)
 
     for epoch in range(num_epochs):
         loss = model.train_step(beta=beta, bilinear_params_dict=bilinear_params_dict)
-
-    # Evaluate the model
+    # remove output_temp directory using os
     test_points = domain.get_test_points()
     y_exact = exact_solution(test_points[:, 0], test_points[:, 1])
     y_pred = model(test_points).numpy().reshape(-1)
