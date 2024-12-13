@@ -47,3 +47,8 @@ examples/**/sensor_points.png
 *.sqlite3
 *.db
 
+# virtual env
+bin/
+lib/
+lib64/
+include/
