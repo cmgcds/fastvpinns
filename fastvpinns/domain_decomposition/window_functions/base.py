@@ -6,7 +6,7 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 
 
-class WindowFunction():
+class WindowFunction:
     """
     Base class for window functions.
     """
@@ -35,18 +35,16 @@ class WindowFunction():
 
         if self.kernel_type not in ['cosine']:
             raise ValueError('Kernel type not recognized.')
-        
+
     def get_min_max(self):
         """
         Get the minimum and maximum values of the subdomains.
         """
-        
-        self.x_min = [mean - span/2 for mean, span in zip(self.x_mean_list, self.x_span_list)]
-        self.x_max = [mean + span/2 for mean, span in zip(self.x_mean_list, self.x_span_list)]
-        self.y_min = [mean - span/2 for mean, span in zip(self.y_mean_list, self.y_span_list)]
-        self.y_max = [mean + span/2 for mean, span in zip(self.y_mean_list, self.y_span_list)]
 
-    
+        self.x_min = [mean - span / 2 for mean, span in zip(self.x_mean_list, self.x_span_list)]
+        self.x_max = [mean + span / 2 for mean, span in zip(self.x_mean_list, self.x_span_list)]
+        self.y_min = [mean - span / 2 for mean, span in zip(self.y_mean_list, self.y_span_list)]
+        self.y_max = [mean + span / 2 for mean, span in zip(self.y_mean_list, self.y_span_list)]
 
     @abstractmethod
     def get_kernel(self):
@@ -108,7 +106,3 @@ class WindowFunction():
         Check if the partition of unity is satisfied.
         """
         pass
-
-
-
-
