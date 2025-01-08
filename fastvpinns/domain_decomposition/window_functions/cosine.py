@@ -68,4 +68,61 @@ class CosineWindowFunction(WindowFunction):
 
         return kernel
 
-      
+    def evaluate_window_function(self, x, y, block_id):
+        """
+        Evaluate the cosine window function at given coordinates.
+
+        Parameters
+        ----------
+        x : float
+            x-coordinate.
+        y : float
+            y-coordinate.
+        block_id : int
+            Block id.
+
+        Returns
+        -------
+        float
+            Value of the window function at (x, y).
+        """
+
+        x1 = self.x_min[block_id]
+        x2 = self.x_non_overlap_min[block_id]
+        x3 = self.x_non_overlap_max[block_id]
+        x4 = self.x_max[block_id]
+
+        y1 = self.y_min[block_id]
+        y2 = self.y_non_overlap_min[block_id]
+        y3 = self.y_non_overlap_max[block_id]
+        y4 = self.y_max[block_id]
+
+        return self.get_kernel(x1, x2, x3, x4)(x) * self.get_kernel(y1, y2, y3, y4)(y)
+
+    def get_partition_of_unity(self):
+        return super().get_partition_of_unity()
+
+    def check_partition_of_unity(self):
+        return super().check_partition_of_unity()
+
+    def get_non_overlap(self):
+        """
+        Get the non-overlapping part of the subdomains.
+        """
+
+        self.x_non_overlap_min = [
+            mean - span / 2 * (1 - self.overlap_factor)
+            for mean, span in zip(self.x_mean_list, self.x_span_list)
+        ]
+        self.x_non_overlap_max = [
+            mean + span / 2 * (1 - self.overlap_factor)
+            for mean, span in zip(self.x_mean_list, self.x_span_list)
+        ]
+        self.y_non_overlap_min = [
+            mean - span / 2 * (1 - self.overlap_factor)
+            for mean, span in zip(self.y_mean_list, self.y_span_list)
+        ]
+        self.y_non_overlap_max = [
+            mean + span / 2 * (1 - self.overlap_factor)
+            for mean, span in zip(self.y_mean_list, self.y_span_list)
+        ]
