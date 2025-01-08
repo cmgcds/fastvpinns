@@ -67,7 +67,11 @@ class Geometry_2D(Geometry):
         self.output_folder = output_folder
         self.is_optimized = is_optimized
 
-        if self.mesh_generation_method not in ["internal", "external"]:
+        if self.mesh_generation_method not in [
+            "internal",
+            "external",
+            "domain_decomposition_uniform",
+        ]:
             print(
                 f"Invalid mesh generation method {self.mesh_generation_method} in {self.__class__.__name__} from {__name__}."
             )
