@@ -10,7 +10,7 @@ class CosineWindowFunction(WindowFunction):
     Cosine window function.
     """
 
-    def __init__(self, subdomain_mean_list, subdomain_span_list, scaling_factor, overlap_factor):
+    def __init__(self, decomposed_domain):
         """
         Initialize the cosine window function.
 
@@ -25,7 +25,9 @@ class CosineWindowFunction(WindowFunction):
         overlap_factor : float
             Overlap factor for the subdomains.
         """
-        super().__init__(subdomain_mean_list, subdomain_span_list, 'cosine')
+        super().__init__()
+        self.subdomain_boundary_limits = decomposed_domain.subdomain_boundary_limits
+        self.subdomain_non_overlap_limits = decomposed_domain.non_overlapping_extents
 
     def get_kernel(self, x1, x2, x3, x4):
         """
@@ -53,16 +55,32 @@ class CosineWindowFunction(WindowFunction):
         clamp = lambda f: tf.clip_by_value(f, 0.0, 1.0)
 
         kernel = lambda x: clamp(
-            0
-            if x <= x1
-            else (
-                0.5 * (1 - tf.cos(pi * (x - x1) / (x2 - x1)))
-                if x1 < x < x2
-                else (
-                    1
-                    if x2 <= x <= x3
-                    else 0.5 * (1 + tf.cos(pi * (x - x3) / (x4 - x3))) if x3 < x < x4 else 0
-                )
+            tf.where(
+                x <= x1,
+                0.0,
+                tf.where(
+                    x1 < x,
+                    tf.where(
+                        x < x2,
+                        0.5 * (1 - tf.cos(pi * (x - x1) / (x2 - x1))),
+                        tf.where(
+                            x2 <= x,
+                            tf.where(
+                                x <= x3,
+                                1.0,
+                                tf.where(
+                                    x3 < x,
+                                    tf.where(
+                                        x < x4, 0.5 * (1 + tf.cos(pi * (x - x3) / (x4 - x3))), 0.0
+                                    ),
+                                    0.0,
+                                ),
+                            ),
+                            0.0,
+                        ),
+                    ),
+                    0.0,
+                ),
             )
         )
 
@@ -87,15 +105,15 @@ class CosineWindowFunction(WindowFunction):
             Value of the window function at (x, y).
         """
 
-        x1 = self.x_min[block_id]
-        x2 = self.x_non_overlap_min[block_id]
-        x3 = self.x_non_overlap_max[block_id]
-        x4 = self.x_max[block_id]
+        x1 = self.subdomain_boundary_limits[block_id][0]
+        x2 = self.subdomain_non_overlap_limits[block_id][0]
+        x3 = self.subdomain_non_overlap_limits[block_id][1]
+        x4 = self.subdomain_boundary_limits[block_id][1]
 
-        y1 = self.y_min[block_id]
-        y2 = self.y_non_overlap_min[block_id]
-        y3 = self.y_non_overlap_max[block_id]
-        y4 = self.y_max[block_id]
+        y1 = self.subdomain_boundary_limits[block_id][2]
+        y2 = self.subdomain_non_overlap_limits[block_id][2]
+        y3 = self.subdomain_non_overlap_limits[block_id][3]
+        y4 = self.subdomain_boundary_limits[block_id][3]
 
         return self.get_kernel(x1, x2, x3, x4)(x) * self.get_kernel(y1, y2, y3, y4)(y)
 
@@ -104,25 +122,3 @@ class CosineWindowFunction(WindowFunction):
 
     def check_partition_of_unity(self):
         return super().check_partition_of_unity()
-
-    def get_non_overlap(self):
-        """
-        Get the non-overlapping part of the subdomains.
-        """
-
-        self.x_non_overlap_min = [
-            mean - span / 2 * (1 - self.overlap_factor)
-            for mean, span in zip(self.x_mean_list, self.x_span_list)
-        ]
-        self.x_non_overlap_max = [
-            mean + span / 2 * (1 - self.overlap_factor)
-            for mean, span in zip(self.x_mean_list, self.x_span_list)
-        ]
-        self.y_non_overlap_min = [
-            mean - span / 2 * (1 - self.overlap_factor)
-            for mean, span in zip(self.y_mean_list, self.y_span_list)
-        ]
-        self.y_non_overlap_max = [
-            mean + span / 2 * (1 - self.overlap_factor)
-            for mean, span in zip(self.y_mean_list, self.y_span_list)
-        ]
