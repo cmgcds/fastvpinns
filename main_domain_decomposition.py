@@ -16,12 +16,15 @@ import argparse
 
 from fastvpinns.Geometry.geometry_domain_decomposition import GeometryDomainDecomposition
 from fastvpinns.FE.fespace_domain_decomposition import FESpaceDomainDecomposition
-from fastvpinns.data.datahandler2d import DataHandler2D
-from fastvpinns.model.model import DenseModel
+from fastvpinns.domain_decomposition.decompositions.uniform import UniformDomainDecomposition
+from fastvpinns.data.datahandler_domain_decomposition import DataHandlerDomainDecomposition
+from fastvpinns.domain_decomposition.window_functions.cosine import CosineWindowFunction
+from fastvpinns.domain_decomposition.model import DenseModelDomainDecomposition
 from fastvpinns.physics.poisson2d import pde_loss_poisson
 from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
 from fastvpinns.utils.compute_utils import compute_errors_combined
 from fastvpinns.utils.print_utils import print_table
+from fastvpinns.domain_decomposition.plot_utils import plot_subdomains
 
 # import the example file
 from sin_cos import *
@@ -163,6 +166,10 @@ if __name__ == "__main__":
     # get the boundary function dictionary from example file
     bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
 
+    # ---------------------------------------------------------------#
+    # ------------------------- Geometry --------------------------- #
+    # ---------------------------------------------------------------#
+
     # Initiate a GeometryDomainDecomposition object
     domain = GeometryDomainDecomposition(
         i_mesh_type, i_mesh_generation_method, i_n_test_points_x, i_n_test_points_y, i_output_path
@@ -192,57 +199,84 @@ if __name__ == "__main__":
             block, vertex_coordinates_in_cells
         )
 
-    exit()
     # get the boundary function dictionary from example file
     bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
 
-    fespace = FESpaceDomainDecomposition(
-        cells=cells,
-        boundary_points=boundary_points,
-        cell_type=domain.mesh_type,
-        fe_order=i_fe_order,
-        fe_type=i_fe_type,
-        quad_order=i_quad_order,
-        quad_type=i_quad_type,
-        fe_transformation_type="bilinear",
-        bound_function_dict=bound_function_dict,
-        bound_condition_dict=bound_condition_dict,
-        forcing_function=rhs,
-        output_path=i_output_path,
-        generate_mesh_plot=i_generate_mesh_plot,
-    )
-    exit(0)
+    # ---------------------------------------------------------------#
+    # --------------------- Domain Decomposition ------------------- #
+    # ---------------------------------------------------------------#
+    decomposed_domain = UniformDomainDecomposition(domain)
+    decomposed_domain.subdomain_boundary_limits = subdomain_boundary_limits
+    decomposed_domain.unnormalizing_factor = 1.0 / (2 * np.pi)
+
+    window_function = CosineWindowFunction(decomposed_domain)
+
+    # ---------------------------------------------------------------#
+    # -------------------------- FE Spaces ------------------------- #
+    # ---------------------------------------------------------------#
+    fe_spaces_for_subdomains = {}
+    for i in range(len(subdomains_in_domain)):
+        fe_spaces_for_subdomains[i] = FESpaceDomainDecomposition(
+            cells=cells_points_subdomain[i],
+            cell_type=domain.mesh_type,
+            fe_order=i_fe_order,
+            fe_type=i_fe_type,
+            quad_order=i_quad_order,
+            quad_type=i_quad_type,
+            fe_transformation_type="bilinear",
+            forcing_function=rhs,
+            output_path=i_output_path,
+        )
+
     # instantiate data handler
-    datahandler = DataHandler2D(fespace, domain, dtype=i_dtype)
+    datahandler = {}
+    for i in range(len(subdomains_in_domain)):
+        datahandler[i] = DataHandlerDomainDecomposition(
+            fe_spaces_for_subdomains[i], domain, i, dtype=i_dtype
+        )
 
-    params_dict = {}
-    params_dict['n_cells'] = fespace.n_cells
+    for i in range(len(subdomains_in_domain)):
+        decomposed_domain.window_function_values[i] = datahandler[i].get_window_function_values(
+            window_function
+        )
 
-    # get the input data for the PDE
-    train_dirichlet_input, train_dirichlet_output = datahandler.get_dirichlet_input()
+    # Initialise params
 
-    # get bilinear parameters
-    # this function will obtain the values of the bilinear parameters from the model
-    # and convert them into tensors of desired dtype
-    bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
+    for i in range(len(subdomains_in_domain)):
+        decomposed_domain.params_dict[i] = {}
+        decomposed_domain.params_dict[i]['n_cells'] = fe_spaces_for_subdomains[i].n_cells
 
-    model = DenseModel(
-        layer_dims=[2, 30, 30, 30, 1],
-        learning_rate_dict=i_learning_rate_dict,
-        params_dict=params_dict,
-        loss_function=pde_loss_poisson,
-        input_tensors_list=[datahandler.x_pde_list, train_dirichlet_input, train_dirichlet_output],
-        orig_factor_matrices=[
-            datahandler.shape_val_mat_list,
-            datahandler.grad_x_mat_list,
-            datahandler.grad_y_mat_list,
-        ],
-        force_function_list=datahandler.forcing_function_list,
-        tensor_dtype=i_dtype,
-        use_attention=i_use_attention,
-        activation=i_activation,
-        hessian=False,
-    )
+    # obtain the boundary points for dirichlet boundary conditions
+    train_dirichlet_input, train_dirichlet_output = {}, {}
+    for i in range(len(subdomains_in_domain)):
+        train_dirichlet_input[i], train_dirichlet_output[i] = tf.zeros(
+            datahandler[i].x_pde_list.shape
+        ), tf.zeros(datahandler[i].x_pde_list.shape)
+
+    # obtain bilinear params dict
+    for i in range(len(subdomains_in_domain)):
+        decomposed_domain.bilinear_params_dict[i] = datahandler[
+            i
+        ].get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
+
+    # ---------------------------------------------------------------#
+    # -------------------------- Model ----------------------------- #
+    # ---------------------------------------------------------------#
+    model = {}
+    for i in range(len(subdomains_in_domain)):
+        model[i] = DenseModelDomainDecomposition(
+            layer_dims=i_model_architecture,
+            learning_rate_dict=i_learning_rate_dict,
+            subdomain_id=i,
+            decomposed_domain=decomposed_domain,
+            loss_function=pde_loss_poisson,
+            datahandler=datahandler[i],
+            use_attention=i_use_attention,
+            activation=i_activation,
+            hessian=False,
+        )
+
+    exit()
 
     test_points = domain.get_test_points()
     print(f"[bold]Number of Test Points = [/bold] {test_points.shape[0]}")
