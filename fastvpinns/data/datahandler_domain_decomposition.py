@@ -56,7 +56,24 @@ class DataHandlerDomainDecomposition(DataHandler2D):
         self.subdomain_solution_gradient_x = subdomain_solution_gradient_x
         self.subdomain_solution_gradient_y = subdomain_solution_gradient_y
 
-    def get_window_function_values(self, window_function):
+    def update_overlap_solution(
+        self, overlap_solution_values, overlap_solution_gradient_x, overlap_solution_gradient_y
+    ):
+        """
+        Update the overlap solution values and gradients.
+
+        :param overlap_solution_values: The solution values on the overlap region.
+        :type overlap_solution_values: tf.Tensor
+        :param overlap_solution_gradient_x: The solution gradients with respect to x on the overlap region.
+        :type overlap_solution_gradient_x: tf.Tensor
+        :param overlap_solution_gradient_y: The solution gradients with respect to y on the overlap region.
+        :type overlap_solution_gradient_y: tf.Tensor
+        """
+        self.overlap_solution_values = overlap_solution_values
+        self.overlap_solution_gradient_x = overlap_solution_gradient_x
+        self.overlap_solution_gradient_y = overlap_solution_gradient_y
+
+    def get_window_function_values_for_training(self, window_function):
         """
         Get the window function values for the given block.
 

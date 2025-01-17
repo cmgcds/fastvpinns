@@ -1,6 +1,7 @@
 from .base import WindowFunction
 import tensorflow as tf
 import numpy as np
+from ...utils.plot_utils import plot_contour
 
 pi = tf.constant(np.pi, dtype=tf.float32)
 
@@ -28,6 +29,8 @@ class CosineWindowFunction(WindowFunction):
         super().__init__()
         self.subdomain_boundary_limits = decomposed_domain.subdomain_boundary_limits
         self.subdomain_non_overlap_limits = decomposed_domain.non_overlapping_extents
+
+        self.plot_window_function()
 
     def get_kernel(self, x1, x2, x3, x4):
         """
@@ -122,3 +125,11 @@ class CosineWindowFunction(WindowFunction):
 
     def check_partition_of_unity(self):
         return super().check_partition_of_unity()
+
+    def plot_window_function(self):
+        x = np.linspace(0, 1, 100)
+        y = np.linspace(0, 1, 100)
+        X, Y = np.meshgrid(x, y)
+        for block_id in range(len(self.subdomain_boundary_limits)):
+            z = self.evaluate_window_function(X, Y, block_id)
+            plot_contour(x=X, y=Y, z=z, title=f"Window Function subdomain {block_id}", output_path=".", filename=f"window_function_{block_id}")

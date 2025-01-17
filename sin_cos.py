@@ -4,7 +4,8 @@
 import numpy as np
 import tensorflow as tf
 
-
+omega_X = 2.0 * np.pi 
+omega_Y = 2.0 * np.pi
 def left_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
@@ -45,9 +46,11 @@ def rhs(x, y):
     # f_temp = 1
     # For a Laplace Equation, Make the f_temp = np.ones_like(x) * 0.0
 
-    omegaX = 4.0 * np.pi
-    omegaY = 4.0 * np.pi
+    omegaX = omega_X
+    omegaY = omega_Y
     f_temp = -2.0 * (omegaX**2) * (np.sin(omegaX * x) * np.sin(omegaY * y))
+
+    f_temp = -omega_X * np.sin(omega_X * x) * np.cos(omega_Y * y) - omega_X * np.cos(omega_X * x) * np.sin(omega_Y * y)
 
     return f_temp
 
@@ -59,8 +62,8 @@ def exact_solution(x, y):
     # If the exact Solution does not have an analytical expression, leave the value as 0(zero)
     # it can be set using `np.ones_like(x) * 0.0` and then ignore the errors and the error plots generated.
 
-    omegaX = 4.0 * np.pi
-    omegaY = 4.0 * np.pi
+    omegaX = omega_X
+    omegaY = omega_Y
     val = -1.0 * np.sin(omegaX * x) * np.sin(omegaY * y)
 
     return val
@@ -87,3 +90,15 @@ def get_bilinear_params_dict():
     eps = 1.0
 
     return {"eps": eps}
+
+def get_unnormalizing_factor():
+    """
+    This function will return the unnormalizing factor
+    """
+    return 1.0/(omega_X)
+
+def get_hard_constraints_factor():
+    """
+    This function will return the normalizing factor
+    """
+    return omega_X

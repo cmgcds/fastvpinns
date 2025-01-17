@@ -20,8 +20,9 @@ from fastvpinns.domain_decomposition.decompositions.uniform import UniformDomain
 from fastvpinns.data.datahandler_domain_decomposition import DataHandlerDomainDecomposition
 from fastvpinns.domain_decomposition.window_functions.cosine import CosineWindowFunction
 from fastvpinns.domain_decomposition.model import DenseModelDomainDecomposition
+from fastvpinns.domain_decomposition.inference import InferenceDomainDecomposition
 from fastvpinns.physics.poisson2d import pde_loss_poisson
-from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function
+from fastvpinns.utils.plot_utils import plot_contour, plot_loss_function, plot_test_loss_function, plot_array
 from fastvpinns.utils.compute_utils import compute_errors_combined
 from fastvpinns.utils.print_utils import print_table
 from fastvpinns.domain_decomposition.plot_utils import plot_subdomains
@@ -207,7 +208,8 @@ if __name__ == "__main__":
     # ---------------------------------------------------------------#
     decomposed_domain = UniformDomainDecomposition(domain)
     decomposed_domain.subdomain_boundary_limits = subdomain_boundary_limits
-    decomposed_domain.unnormalizing_factor = 1.0 / (2 * np.pi)
+    decomposed_domain.unnormalizing_factor = get_unnormalizing_factor()
+    decomposed_domain.hard_constraints_factor = get_hard_constraints_factor()
 
     window_function = CosineWindowFunction(decomposed_domain)
 
@@ -236,9 +238,9 @@ if __name__ == "__main__":
         )
 
     for i in range(len(subdomains_in_domain)):
-        decomposed_domain.window_function_values[i] = datahandler[i].get_window_function_values(
-            window_function
-        )
+        decomposed_domain.window_function_values[i] = datahandler[
+            i
+        ].get_window_function_values_for_training(window_function)
 
     # Initialise params
 
@@ -276,8 +278,6 @@ if __name__ == "__main__":
             hessian=False,
         )
 
-    exit()
-
     test_points = domain.get_test_points()
     print(f"[bold]Number of Test Points = [/bold] {test_points.shape[0]}")
     y_exact = exact_solution(test_points[:, 0], test_points[:, 1])
@@ -297,13 +297,25 @@ if __name__ == "__main__":
         title="Exact Solution",
     )
 
+    inference_obj = InferenceDomainDecomposition(
+        decomposed_domain=decomposed_domain,
+        model=model,
+        datahandler=datahandler,
+        window_function=window_function,
+        test_points=test_points,
+        exact_solution=exact_solution,
+        num_test_points=[i_n_test_points_x, i_n_test_points_y],
+        output_path=i_output_path,
+    )
+
+
     num_epochs = i_epochs  # num_epochs
     progress_bar = tqdm(
         total=num_epochs,
         desc='Training',
         unit='epoch',
         bar_format="{l_bar}{bar:40}{r_bar}{bar:-10b}",
-        colour="green",
+        colour="red",
         ncols=100,
     )
     loss_array = []  # total loss
@@ -315,66 +327,58 @@ if __name__ == "__main__":
     # ---------------------------------------------------------------#
     # ------------- TRAINING LOOP ---------------------------------- #
     # ---------------------------------------------------------------#
+    time_array_pretrain = []
+    time_array_train = []
+    loss_subdomain = {}
+    for i in range(len(subdomains_in_domain)):
+        loss_subdomain[i] = []
     for epoch in range(num_epochs):
 
         # Train the model
-        batch_start_time = time.time()
-        loss = model.train_step(beta=beta, bilinear_params_dict=bilinear_params_dict)
-        elapsed = time.time() - batch_start_time
+        time_val = time.time()
+        for i in range(len(subdomains_in_domain)):
+            val, grad_x, grad_y = model[i].pretrain_step()
+            datahandler[i].update_subdomain_solution(val, grad_x, grad_y)
+            # console.print(f"[bold]Subdomain {i} Solution Values:[/bold]")
+            # console.print(datahandler[i].subdomain_solution_values)
+            # console.print("\n")
 
-        # print(elapsed)
-        time_array.append(elapsed)
 
-        loss_array.append(loss['loss'])
 
-        # ------ Intermediate results update ------ #
-        if (epoch + 1) % i_update_console_output == 0 or epoch == num_epochs - 1:
-            y_pred = model(test_points).numpy()
-            y_pred = y_pred.reshape(-1)
+        time_array_pretrain.append(time.time() - time_val)
 
-            error = np.abs(y_exact - y_pred)
+        decomposed_domain.update_overlap_values(datahandler, fe_spaces_for_subdomains)
+        # for i in range(len(subdomains_in_domain)):
+        #     console.print(f"[bold]Overlap Solution Values:[/bold]")
+        #     console.print(datahandler[i].overlap_solution_values)
+        #     console.print("\n")
+        
 
-            # get errors
-            (
-                l2_error,
-                linf_error,
-                l2_error_relative,
-                linf_error_relative,
-                l1_error,
-                l1_error_relative,
-            ) = compute_errors_combined(y_exact, y_pred)
 
-            loss_pde = float(loss['loss_pde'].numpy())
-            loss_dirichlet = float(loss['loss_dirichlet'].numpy())
-            total_loss = float(loss['loss'].numpy())
 
-            # Append test loss
-            test_loss_array.append(l1_error)
 
-            console.print(f"\nEpoch [bold]{epoch+1}/{num_epochs}[/bold]")
-            console.print("[bold]--------------------[/bold]")
-            console.print("[bold]Beta : [/bold]", beta.numpy(), end=" ")
-            console.print(
-                f"Variational Losses || Pde Loss : [red]{loss_pde:.3e}[/red] Dirichlet Loss : [red]{loss_dirichlet:.3e}[/red] Total Loss : [red]{total_loss:.3e}[/red]"
-            )
-            console.print(
-                f"Test Losses        || L1 Error : {l1_error:.3e} L2 Error : {l2_error:.3e} Linf Error : {linf_error:.3e}"
+
+        for i in range(len(subdomains_in_domain)):
+            loss = model[i].train_step(
+                bilinear_params_dict=decomposed_domain.bilinear_params_dict[i],
+                overlap_val=datahandler[i].overlap_solution_values,
+                overlap_grad_x=datahandler[i].overlap_solution_gradient_x,
+                overlap_grad_y=datahandler[i].overlap_solution_gradient_y,
             )
 
-            plot_results(
-                loss_array,
-                test_loss_array,
-                y_pred,
-                X,
-                Y,
-                Y_Exact_Matrix,
-                i_output_path,
-                epoch,
-                i_n_test_points_x,
-                i_n_test_points_y,
-            )
+            loss_subdomain[i].append(loss["loss"])
+        time_array_train.append(time.time() - time_val)
+
+        
 
         progress_bar.update(1)
+        if epoch % 1000 == 0:
+            inference_obj.compute_solution_nd_error()
+            for i in range(len(subdomains_in_domain)):
+                plot_array(loss_subdomain[i], i_output_path, f"loss_subdomain_{i}", title=f"Loss Subdomain {i}")
+
+
+    exit()
 
     # Save the model
     model.save_weights(str(Path(i_output_path) / "model_weights"))

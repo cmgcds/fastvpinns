@@ -81,7 +81,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
 
         self.tensor_dtype = datahandler.dtype
 
-        self.window_func_vals = decomposed_domain.window_function_values
+        self.window_func_vals = decomposed_domain.window_function_values[self.subdomain_id]
         self.x_min_limit = decomposed_domain.subdomain_boundary_limits[self.subdomain_id][0]
         self.x_max_limit = decomposed_domain.subdomain_boundary_limits[self.subdomain_id][1]
         self.y_min_limits = decomposed_domain.subdomain_boundary_limits[self.subdomain_id][2]
@@ -115,6 +115,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
         self.force_matrix = self.force_function_list
 
         self.unnormalizing_factor = decomposed_domain.unnormalizing_factor
+        self.hard_constraints_factor = decomposed_domain.hard_constraints_factor
 
         print(f"{'-'*74}")
         print(f"| {'PARAMETER':<25} | {'SHAPE':<25} |")
@@ -245,7 +246,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
         return base_config
 
     @tf.function
-    def pretrain_step(self, domain_decomposition, datahandler):
+    def pretrain_step(self):
         """
         This function is used to compute the values and gradients of the subdomains and store them in the dictionary
         These values will be used in main train step as an update parameter
@@ -270,13 +271,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
 
             predicted_values = predicted_values * self.window_func_vals
 
-            predicted_values = (
-                tf.tanh((1 / self.unnormalizing_factor) * x_values)
-                * tf.tanh((1 / self.unnormalizing_factor) * y_values)
-                * tf.tanh((1 / self.unnormalizing_factor) * (x_values - 1.0))
-                * tf.tanh((1 / self.unnormalizing_factor) * (y_values - 1.0))
-                * predicted_values
-            )
+   
 
             # compute the gradients of the predicted values wrt the input which is (x, y)
         gradients = pretrain_tape.gradient(predicted_values, self.input_tensor)
@@ -298,14 +293,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
 
     @tf.function
     def train_step(
-        self,
-        beta=10,
-        bilinear_params_dict=None,
-        overlap_val=None,
-        overlap_grad_x=None,
-        overlap_grad_y=None,
-        overlap_grad_grad_x=None,
-        overlap_grad_grad_y=None,
+        self, bilinear_params_dict=None, overlap_val=None, overlap_grad_x=None, overlap_grad_y=None
     ):
 
         with tf.GradientTape(persistent=True) as optimizer_tape:
@@ -321,6 +309,7 @@ class DenseModelDomainDecomposition(tf.keras.Model):
                 normalized_x_values = (x_values - self.mean_x) / self.std_x
                 normalized_y_values = (y_values - self.mean_y) / self.std_y
 
+
                 normalized_input_tensor = tf.concat(
                     [normalized_x_values, normalized_y_values], axis=1
                 )
@@ -332,22 +321,16 @@ class DenseModelDomainDecomposition(tf.keras.Model):
 
                 predicted_values = predicted_values * self.window_func_vals
 
-                # predicted_values = tf.tanh(x_values/self.std_x)*tf.tanh((1.0-x_values)/self.std_x)*tf.tanh(y_values/self.std_y)*tf.tanh((1.0-y_values)/self.std_y)*predicted_values
-                predicted_values = (
-                    tf.tanh((1 / self.unnormalizing_factor) * x_values)
-                    * tf.tanh((1 / self.unnormalizing_factor) * y_values)
-                    * tf.tanh((1 / self.unnormalizing_factor) * (x_values - 1.0))
-                    * tf.tanh((1 / self.unnormalizing_factor) * (y_values - 1.0))
-                    * predicted_values
-                )
 
-                # compute the gradients of the predicted values wrt the input which is (x, y)
+
+            # compute the gradients of the predicted values wrt the input which is (x, y)
             gradients = training_tape.gradient(predicted_values, self.input_tensor)
             # tf.print("Shape of gradients : ", gradients.shape)
             pred_grad_x = gradients[:, 0:1]
             # tf.print("Shape of pred_grad_x : ", pred_grad_x.shape)
             pred_grad_y = gradients[:, 1:2]
             # tf.print("Shape of pred_grad_y : ", pred_grad_y.shape)
+
 
             # # Split the gradients into x and y components and reshape them to (-1, 1)
             # # the reshaping is done for the tensorial operations purposes (refer Notebook)
@@ -369,6 +352,136 @@ class DenseModelDomainDecomposition(tf.keras.Model):
             pred_val = pred_val + tf.stop_gradient(overlap_val)
             pred_grad_x = pred_grad_x + tf.stop_gradient(overlap_grad_x)
             pred_grad_y = pred_grad_y + tf.stop_gradient(overlap_grad_y)
+
+            pred_val= tf.reshape(pred_val, [-1, 1])
+            pred_grad_x = tf.reshape(pred_grad_x, [-1, 1])
+            pred_grad_y = tf.reshape(pred_grad_y, [-1, 1])
+
+            pred_val = (
+                    tf.tanh((self.hard_constraints_factor) * x_values)
+                    * tf.tanh((self.hard_constraints_factor) * y_values)
+                    * tf.tanh((self.hard_constraints_factor) * (x_values - 1.0))
+                    * tf.tanh((self.hard_constraints_factor) * (y_values - 1.0))
+                    * pred_val
+                )
+            
+            ansatz = tf.tanh((self.hard_constraints_factor) * x_values) * tf.tanh((self.hard_constraints_factor) * y_values) * tf.tanh((self.hard_constraints_factor) * (x_values - 1.0)) * tf.tanh((self.hard_constraints_factor) * (y_values - 1.0))
+
+            c = self.hard_constraints_factor
+            
+            diff_ansatz_x = self.hard_constraints_factor * (1 - tf.tanh(self.hard_constraints_factor * x_values)**2) * tf.tanh(self.hard_constraints_factor * y_values) * tf.tanh(self.hard_constraints_factor * (1 - x_values)) * tf.tanh(self.hard_constraints_factor * (1 - y_values)) - self.hard_constraints_factor * (1 - tf.tanh(self.hard_constraints_factor * (1 - x_values))**2) * tf.tanh(self.hard_constraints_factor * x_values) * tf.tanh(self.hard_constraints_factor * y_values) * tf.tanh(self.hard_constraints_factor * (1 - y_values))
+            
+
+            diff_ansatz_y = self.hard_constraints_factor * (1 - tf.tanh(self.hard_constraints_factor * y_values)**2) * tf.tanh(self.hard_constraints_factor * x_values) * tf.tanh(self.hard_constraints_factor * (x_values - 1)) * tf.tanh(self.hard_constraints_factor * (y_values - 1)) + self.hard_constraints_factor * (1 - tf.tanh(self.hard_constraints_factor * (y_values - 1))**2) * tf.tanh(self.hard_constraints_factor * x_values) * tf.tanh(self.hard_constraints_factor * y_values) * tf.tanh(self.hard_constraints_factor * (x_values - 1))
+
+
+            pred_grad_x = pred_grad_x * ansatz + pred_val * diff_ansatz_x
+            pred_grad_y = pred_grad_y * ansatz + pred_val * diff_ansatz_y
+            
+            # pred_val = tf.reshape(pred_val, [self.n_cells, self.pre_multiplier_val.shape[-1]])
+            # pred_grad_x = tf.reshape(pred_grad_x, [self.n_cells, self.pre_multiplier_grad_x.shape[-1]])
+            # pred_grad_y = tf.reshape(pred_grad_y, [self.n_cells, self.pre_multiplier_grad_y.shape[-1]])
+
+            # # # # sum the gradients with the overlap values
+            # # # # the overlap values should not be involved in the gradient tape
+            # cells_residual = self.loss_function(
+            #     test_shape_val_mat=self.pre_multiplier_val,
+            #     test_grad_x_mat=self.pre_multiplier_grad_x,
+            #     test_grad_y_mat=self.pre_multiplier_grad_y,
+            #     pred_nn=pred_val,
+            #     pred_grad_x_nn=pred_grad_x,
+            #     pred_grad_y_nn=pred_grad_y,
+            #     forcing_function=self.force_matrix,
+            #     bilinear_params=bilinear_params_dict,
+            # )
+
+            residual = pred_grad_x + pred_grad_y
+            
+            residual = tf.reduce_mean(tf.square(residual))
+
+            # Compute the total loss for the PDE
+            total_pde_loss = total_pde_loss + residual
+
+            # Compute Total Loss
+            total_loss = total_pde_loss
+
+        trainable_vars = self.trainable_variables
+        self.gradients = optimizer_tape.gradient(total_loss, trainable_vars)
+        self.optimizer.apply_gradients(zip(self.gradients, trainable_vars))
+
+        return {"loss_pde": total_pde_loss, "loss": total_loss}
+
+    @tf.function
+    def train_step_new(
+        self, bilinear_params_dict=None, overlap_val=None, overlap_grad_x=None, overlap_grad_y=None,
+        solution_values=None, solution_grad_x=None, solution_grad_y=None
+    ):
+
+        with tf.GradientTape(persistent=True) as optimizer_tape:
+            total_pde_loss = 0.0
+            with tf.GradientTape(persistent=True) as training_tape:
+                # tape gradient
+                training_tape.watch(self.input_tensor)
+
+                # Compute the predicted values from the model
+                x_values = self.input_tensor[:, 0:1]
+                y_values = self.input_tensor[:, 1:2]
+
+                # normalized_x_values = (x_values - self.mean_x) / self.std_x
+                # normalized_y_values = (y_values - self.mean_y) / self.std_y
+
+                normalized_x_values = x_values
+                normalized_y_values = y_values
+
+                normalized_input_tensor = tf.concat(
+                    [normalized_x_values, normalized_y_values], axis=1
+                )
+
+                predicted_values = self(normalized_input_tensor)
+
+                # unnormalisation - perform element wise multiplication with the scalar value
+                predicted_values = self.unnormalizing_factor * predicted_values
+
+                predicted_values = predicted_values * self.window_func_vals
+
+            # compute the gradients of the predicted values
+            gradients = training_tape.gradient(predicted_values, self.input_tensor)
+            pred_grad_x = gradients[:, 0:1]
+            pred_grad_y = gradients[:, 1:2]
+
+            
+            # # Split the gradients into x and y components and reshape them to (-1, 1)
+            # # the reshaping is done for the tensorial operations purposes (refer Notebook)
+            pred_grad_x = tf.reshape(
+                pred_grad_x, [self.n_cells, self.pre_multiplier_grad_x.shape[-1]]
+            )  # shape : (N_cells , N_quadrature_points)
+            pred_grad_y = tf.reshape(
+                pred_grad_y, [self.n_cells, self.pre_multiplier_grad_y.shape[-1]]
+            )  # shape : (N_cells , N_quadrature_points)
+
+            pred_val = tf.reshape(
+                predicted_values, [self.n_cells, self.pre_multiplier_val.shape[-1]]
+            )  # shape : (N_cells , N_quadrature_points)
+
+            # # tf.print("Shape of pred_val Final : ", pred_val.shape)
+            # # tf.print("Shape of pred_grad_x Final : ", pred_grad_x.shape)
+            # # tf.print("Shape of pred_grad_y Final : ", pred_grad_y.shape)
+
+            pred_val = pred_val + tf.stop_gradient(overlap_val)
+            pred_grad_x = pred_grad_x + tf.stop_gradient(overlap_grad_x)
+            pred_grad_y = pred_grad_y + tf.stop_gradient(overlap_grad_y)
+
+            pred_val= tf.reshape(pred_val, [-1, 1])
+
+            pred_val = (
+                    tf.tanh((self.hard_constraints_factor) * x_values)
+                    * tf.tanh((self.hard_constraints_factor) * y_values)
+                    * tf.tanh((self.hard_constraints_factor) * (x_values - 1.0))
+                    * tf.tanh((self.hard_constraints_factor) * (y_values - 1.0))
+                    * pred_val
+                )
+            
+            pred_val = tf.reshape(pred_val, [self.n_cells, self.pre_multiplier_val.shape[-1]])
 
             # # # sum the gradients with the overlap values
             # # # the overlap values should not be involved in the gradient tape

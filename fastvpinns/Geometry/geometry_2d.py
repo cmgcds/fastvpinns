@@ -430,7 +430,10 @@ class Geometry_2D(Geometry):
         test_points (numpy.ndarray): The test points for the given domain
         """
 
-        if self.mesh_generation_method == "internal":
+        if (
+            self.mesh_generation_method == "internal"
+            or self.mesh_generation_method == "domain_decomposition_uniform"
+        ):
             # vtk_file_name  = Path(self.output_folder) / "internal.vtk"
             # code over written to plot from np.linspace instead of vtk file
             # generate linspace of points in x and y direction based on x and y limits

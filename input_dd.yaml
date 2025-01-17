@@ -1,7 +1,7 @@
 # This YAML file contains configuration parameters for a variational physics-informed neural network (VarPINN) experimentation.
 
 experimentation:
-  output_path: "output/poisson2d/1"  # Path to the output directory where the results will be saved.
+  output_path: "output/domain_decomposition/poisson2d/1"  # Path to the output directory where the results will be saved.
 
 geometry:
   mesh_generation_method: "domain_decomposition_uniform"  # Method for generating the mesh. Can be "internal" or "external".
@@ -14,8 +14,8 @@ geometry:
     x_max: 1  # Maximum x-coordinate of the domain.
     y_min: 0  # Minimum y-coordinate of the domain.
     y_max: 1  # Maximum y-coordinate of the domain.
-    n_cells_x: 4  # Number of cells in the x-direction.
-    n_cells_y: 4  # Number of cells in the y-direction.
+    n_cells_x: 3  # Number of cells in the x-direction.
+    n_cells_y: 1 # Number of cells in the y-direction.
     n_boundary_points: 400  # Number of boundary points.
     n_test_points_x: 100  # Number of test points in the x-direction.
     n_test_points_y: 100  # Number of test points in the y-direction.
@@ -35,14 +35,13 @@ geometry:
 fe:
   fe_order: 6 # Order of the finite element basis functions.
   fe_type: "legendre"  # Type of finite element basis functions. Can be "jacobi" or other supported types.
-  quad_order: 10  # Order of the quadrature rule.
+  quad_order: 30  # Order of the quadrature rule.
   quad_type: "gauss-jacobi"  # Type of quadrature rule. Can be "gauss-jacobi" or other supported types.
 
 domain_decomposition:
-
   domain_decomposition_mesh_params:
     kernel_size_x: 2  # Size of the kernel in the x-direction.
-    kernel_size_y: 2  # Size of the kernel in the y-direction.
+    kernel_size_y: 1  # Size of the kernel in the y-direction.
     stride_x: 1  # Stride in the x-direction.
     stride_y: 1  # Stride in the y-direction.
   
@@ -60,7 +59,7 @@ model:
   model_architecture: [2, 50,50,50,50, 1]  # Architecture of the neural network model.
   activation: "tanh"  # Activation function used in the neural network.
   use_attention: False  # Flag indicating whether to use attention mechanism in the model.
-  epochs: 10000  # Number of training epochs.
+  epochs: 20000  # Number of training epochs.
   dtype: "float32"  # Data type used for computations.
   set_memory_growth: False  # Flag indicating whether to set memory growth for GPU.
   
