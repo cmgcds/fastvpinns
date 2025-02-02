@@ -1,0 +1,892 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.FE.fespace2d &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_docker.html">Docker Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/fastvpinns.html">fastvpinns</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_licence.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_cite.html">Cite FastVPINNs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_team.html">Team &amp; Fundings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fastvpinns.FE.fespace2d</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fastvpinns.FE.fespace2d</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The file `fespace2d.py` contains the main class that holds the information of all the</span>
+<span class="sd">Finite Element (FE) spaces of all the cells within the given mesh.</span>
+
+<span class="sd">Author: Thivin Anandh D</span>
+
+<span class="sd">Changelog: 30/Aug/2023 - Initial version</span>
+
+<span class="sd">Known issues: None</span>
+
+<span class="sd">Dependencies: None specified</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">meshio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.FE2D_Cell</span><span class="w"> </span><span class="kn">import</span> <span class="n">FE2D_Cell</span>
+
+<span class="c1"># from rich.progress import Progress, TextColumn, BarColumn, TimeElapsedColumn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># import plotting</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># import path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># import tensorflow</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.print_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_table</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyDOE</span><span class="w"> </span><span class="kn">import</span> <span class="n">lhs</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">rc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cycler</span><span class="w"> </span><span class="kn">import</span> <span class="n">cycler</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labelsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.titlesize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.labelsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;legend.fontsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;ytick.labelsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cycler</span><span class="p">(</span>
+    <span class="n">color</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;darkblue&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#d62728&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#2ca02c&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#ff7f0e&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#bcbd22&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#8c564b&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#17becf&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#9467bd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#e377c2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#7f7f7f&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fespace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fespace</span>
+
+
+<div class="viewcode-block" id="Fespace2D">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Fespace2D</span><span class="p">(</span><span class="n">Fespace</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a finite element space in 2D.</span>
+
+<span class="sd">    :param mesh: The mesh object.</span>
+<span class="sd">    :type mesh: Mesh</span>
+<span class="sd">    :param cells: The array of cell indices.</span>
+<span class="sd">    :type cells: ndarray</span>
+<span class="sd">    :param boundary_points: The dictionary of boundary points.</span>
+<span class="sd">    :type boundary_points: dict</span>
+<span class="sd">    :param cell_type: The type of cell.</span>
+<span class="sd">    :type cell_type: str</span>
+<span class="sd">    :param fe_order: The order of the finite element.</span>
+<span class="sd">    :type fe_order: int</span>
+<span class="sd">    :param fe_type: The type of finite element.</span>
+<span class="sd">    :type fe_type: str</span>
+<span class="sd">    :param quad_order: The order of the quadrature.</span>
+<span class="sd">    :type quad_order: int</span>
+<span class="sd">    :param quad_type: The type of quadrature.</span>
+<span class="sd">    :type quad_type: str</span>
+<span class="sd">    :param fe_transformation_type: The type of finite element transformation.</span>
+<span class="sd">    :type fe_transformation_type: str</span>
+<span class="sd">    :param bound_function_dict: The dictionary of boundary functions.</span>
+<span class="sd">    :type bound_function_dict: dict</span>
+<span class="sd">    :param bound_condition_dict: The dictionary of boundary conditions.</span>
+<span class="sd">    :type bound_condition_dict: dict</span>
+<span class="sd">    :param forcing_function: The forcing function.</span>
+<span class="sd">    :type forcing_function: function</span>
+<span class="sd">    :param output_path: The output path.</span>
+<span class="sd">    :type output_path: str</span>
+<span class="sd">    :param generate_mesh_plot: Whether to generate a plot of the mesh. Defaults to False.</span>
+<span class="sd">    :type generate_mesh_plot: bool, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">,</span>
+        <span class="n">cells</span><span class="p">,</span>
+        <span class="n">boundary_points</span><span class="p">,</span>
+        <span class="n">cell_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">fe_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">fe_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">quad_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">quad_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">fe_transformation_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bound_function_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">bound_condition_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">forcing_function</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">generate_mesh_plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The constructor of the Fespace2D class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># call the constructor of the parent class</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
+            <span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span>
+            <span class="n">boundary_points</span><span class="o">=</span><span class="n">boundary_points</span><span class="p">,</span>
+            <span class="n">cell_type</span><span class="o">=</span><span class="n">cell_type</span><span class="p">,</span>
+            <span class="n">fe_order</span><span class="o">=</span><span class="n">fe_order</span><span class="p">,</span>
+            <span class="n">fe_type</span><span class="o">=</span><span class="n">fe_type</span><span class="p">,</span>
+            <span class="n">quad_order</span><span class="o">=</span><span class="n">quad_order</span><span class="p">,</span>
+            <span class="n">quad_type</span><span class="o">=</span><span class="n">quad_type</span><span class="p">,</span>
+            <span class="n">fe_transformation_type</span><span class="o">=</span><span class="n">fe_transformation_type</span><span class="p">,</span>
+            <span class="n">bound_function_dict</span><span class="o">=</span><span class="n">bound_function_dict</span><span class="p">,</span>
+            <span class="n">bound_condition_dict</span><span class="o">=</span><span class="n">bound_condition_dict</span><span class="p">,</span>
+            <span class="n">forcing_function</span><span class="o">=</span><span class="n">forcing_function</span><span class="p">,</span>
+            <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s2">&quot;triangle&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Triangle Mesh is not supported yet&quot;</span>
+            <span class="p">)</span>  <span class="c1"># added by thivin - to remove support for triangular mesh</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_mesh_plot</span> <span class="o">=</span> <span class="n">generate_mesh_plot</span>
+
+        <span class="c1"># to be calculated in the plot function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_dofs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_boundary_dofs</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># to be calculated on get_boundary_data_dirichlet function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_dirichlet_dofs</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get the number of cells</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Function which assigns the fe_cell for each cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_finite_elements</span><span class="p">()</span>
+
+        <span class="c1"># generate the plot of the mesh</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_mesh_plot</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generate_plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
+        <span class="c1"># self.generate_plot(self.output_path)</span>
+
+        <span class="c1"># Obtain boundary Data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirichlet_boundary_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_dirichlet_boundary_data</span><span class="p">()</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Number of Cells&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Number of Quadrature Points&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Number of Dirichlet Boundary Points&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Quadrature Order&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;FE Order&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;FE Type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;FE Transformation Type&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_dofs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_dirichlet_dofs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quad_order</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_order</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_type</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_transformation_type</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c1"># print the table</span>
+        <span class="n">print_table</span><span class="p">(</span><span class="s2">&quot;FE Space Information&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">],</span> <span class="n">title</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Fespace2D.set_finite_elements">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.set_finite_elements">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_finite_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns the finite elements to each cell.</span>
+
+<span class="sd">        This method initializes the finite element objects for each cell in the mesh.</span>
+<span class="sd">        It creates an instance of the `FE2D_Cell` class for each cell, passing the necessary parameters.</span>
+<span class="sd">        The finite element objects store information about the basis functions, gradients, Jacobians,</span>
+<span class="sd">        quadrature points, weights, actual coordinates, and forcing functions associated with each cell.</span>
+
+<span class="sd">        After initializing the finite element objects, this method prints the shape details of various matrices</span>
+<span class="sd">        and updates the total number of degrees of freedom (dofs) for the entire mesh.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">,</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Fe2D_cell Setup&quot;</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;cells_assembled&quot;</span><span class="p">,</span>
+            <span class="n">bar_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{l_bar}{bar:40}{r_bar}{bar:-10b}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="n">ncols</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dof</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">FE2D_Cell</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cell_type</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fe_order</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fe_type</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">quad_order</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">quad_type</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fe_transformation_type</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">forcing_function</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># obtain the shape of the basis function (n_test, N_quad)</span>
+            <span class="n">dof</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># print the Shape details of all the matrices from cell 0 using print_table function</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Shape function Matrix Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Shape function Gradient Matrix Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Jacobian Matrix Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Quadrature Points Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Quadrature Weights Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Quadrature Actual Coordinates Shape&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Forcing Function Shape&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">basis_gradx_at_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">quad_xi</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">quad_weight</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_at_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">print_table</span><span class="p">(</span><span class="s2">&quot;FE Matrix Shapes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Matrix&quot;</span><span class="p">,</span> <span class="s2">&quot;Shape&quot;</span><span class="p">],</span> <span class="n">title</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># update the total number of dofs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_dofs</span> <span class="o">=</span> <span class="n">dof</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.generate_plot">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.generate_plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a plot of the mesh.</span>
+
+<span class="sd">        :param output_path: The path to save the generated plot.</span>
+<span class="sd">        :type output_path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_quad</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">marker_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;o&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;P&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;d&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;^&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;p&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;h&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;H&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Generating the plot of the mesh&quot;</span><span class="p">)</span>
+        <span class="c1"># Plot the mesh</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+        <span class="c1"># label flag ( to add the label only once)</span>
+        <span class="n">label_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># plot every cell as a quadrilateral</span>
+        <span class="c1"># loop over all the cells</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="p">):</span>
+            <span class="c1"># get the coordinates of the cell</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cell_coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cell_coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># add the first point to the end of the array</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;k-&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+            <span class="c1"># plot the quadrature points</span>
+            <span class="n">x_quad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y_quad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">total_quad</span> <span class="o">+=</span> <span class="n">x_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">label_set</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_quad</span><span class="p">,</span> <span class="n">y_quad</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quad Pts&quot;</span><span class="p">)</span>
+                <span class="n">label_set</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_quad</span><span class="p">,</span> <span class="n">y_quad</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_dofs</span> <span class="o">=</span> <span class="n">total_quad</span>
+
+        <span class="n">bound_dof</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># plot the boundary points</span>
+        <span class="c1"># loop over all the boundary tags</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">bound_id</span><span class="p">,</span> <span class="n">bound_pts</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_points</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="c1"># get the coordinates of the boundary points</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">bound_pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">bound_pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># add the first point to the end of the array</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">bound_dof</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Bd-id : </span><span class="si">{</span><span class="n">bound_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_boundary_dofs</span> <span class="o">=</span> <span class="n">bound_dof</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;mesh.png&quot;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;mesh.svg&quot;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+
+        <span class="c1"># print the total number of quadrature points</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plots generated&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Total number of cells = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Total number of quadrature points = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_dofs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Total number of boundary points = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_boundary_dofs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.generate_dirichlet_boundary_data">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.generate_dirichlet_boundary_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_dirichlet_boundary_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate Dirichlet boundary data.</span>
+
+<span class="sd">        This function returns the boundary points and their corresponding values.</span>
+
+<span class="sd">        :return: A tuple containing two arrays:</span>
+<span class="sd">            - The first array contains the boundary points as numpy arrays.</span>
+<span class="sd">            - The second array contains the values of the boundary points as numpy arrays.</span>
+<span class="sd">        :rtype: Tuple[np.ndarray, np.ndarray]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bound_id</span><span class="p">,</span> <span class="n">bound_pts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_points</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># get the coordinates of the boundary points</span>
+            <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">bound_pts</span><span class="p">:</span>
+                <span class="n">pt_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt_new</span><span class="p">)</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">bound_function_dict</span><span class="p">[</span><span class="n">bound_id</span><span class="p">](</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Total number of Dirichlet boundary points = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_dirichlet_dofs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Shape of Dirichlet-X = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Shape of Y = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.generate_dirichlet_boundary_data_vector">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.generate_dirichlet_boundary_data_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_dirichlet_boundary_data_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the boundary data vector for the Dirichlet boundary condition.</span>
+
+<span class="sd">        This function returns the boundary points and their corresponding values for a specific component.</span>
+
+<span class="sd">        :param component: The component for which the boundary data vector is generated.</span>
+<span class="sd">        :type component: int</span>
+
+<span class="sd">        :return: The boundary points and their values as numpy arrays.</span>
+<span class="sd">        :rtype: tuple(numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bound_id</span><span class="p">,</span> <span class="n">bound_pts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary_points</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># get the coordinates of the boundary points</span>
+            <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">bound_pts</span><span class="p">:</span>
+                <span class="n">pt_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt_new</span><span class="p">)</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">bound_function_dict</span><span class="p">[</span><span class="n">bound_id</span><span class="p">](</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="n">component</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_shape_function_val">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_shape_function_val">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_function_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the actual values of the shape functions on a given cell.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: An array containing the actual values of the shape functions.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If the cell_index is greater than the number of cells.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_shape_function_grad_x">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_shape_function_grad_x">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_function_grad_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the gradient of the shape function with respect to the x-coordinate.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: An array containing the gradient of the shape function with respect to the x-coordinate.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If the cell_index is greater than the number of cells.</span>
+
+<span class="sd">        This function returns the actual values of the gradient of the shape function on a given cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_gradx_at_quad</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_shape_function_grad_x_ref">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_shape_function_grad_x_ref">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_function_grad_x_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the gradient of the shape function with respect to the x-coordinate on the reference element.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: An array containing the gradient of the shape function with respect to the x-coordinate.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If the cell_index is greater than the number of cells.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_gradx_at_quad_ref</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_shape_function_grad_y">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_shape_function_grad_y">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_function_grad_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the gradient of the shape function with respect to y at the given cell index.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: The gradient of the shape function with respect to y.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If the cell_index is greater than the total number of cells.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_grady_at_quad</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_shape_function_grad_y_ref">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_shape_function_grad_y_ref">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_function_grad_y_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the gradient of the shape function with respect to y at the reference element.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+<span class="sd">        :return: The gradient of the shape function with respect to y at the reference element.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        :raises ValueError: If cell_index is greater than the number of cells.</span>
+
+<span class="sd">        This function returns the gradient of the shape function with respect to y at the reference element</span>
+<span class="sd">        for a given cell. The shape function gradient values are stored in the `basis_grady_at_quad_ref` array</span>
+<span class="sd">        of the corresponding finite element cell. The `cell_index` parameter specifies the index of the cell</span>
+<span class="sd">        for which the shape function gradient is required. If the `cell_index` is greater than the total number</span>
+<span class="sd">        of cells, a `ValueError` is raised.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The returned gradient values are copied from the `basis_grady_at_quad_ref` array to ensure immutability.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_grady_at_quad_ref</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_quadrature_actual_coordinates">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_quadrature_actual_coordinates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_quadrature_actual_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the actual coordinates of the quadrature points for a given cell.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: An array containing the actual coordinates of the quadrature points.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If the cell_index is greater than the number of cells.</span>
+
+<span class="sd">        :example:</span>
+<span class="sd">        &gt;&gt;&gt; fespace = FESpace2D()</span>
+<span class="sd">        &gt;&gt;&gt; fespace.get_quadrature_actual_coordinates(0)</span>
+<span class="sd">        array([[0.1, 0.2],</span>
+<span class="sd">                [0.3, 0.4],</span>
+<span class="sd">                [0.5, 0.6]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_quadrature_weights">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_quadrature_weights">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_quadrature_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the quadrature weights for a given cell.</span>
+
+<span class="sd">        :param cell_index: The index of the cell for which the quadrature weights are needed.</span>
+<span class="sd">        :type cell_index: int</span>
+<span class="sd">        :return: The quadrature weights for the given cell  of dimension (N_Quad_Points, 1).</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        :raises ValueError: If cell_index is greater than the number of cells.</span>
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; fespace = FESpace2D()</span>
+<span class="sd">        &gt;&gt;&gt; weights = fespace.get_quadrature_weights(0)</span>
+<span class="sd">        &gt;&gt;&gt; print(weights)</span>
+<span class="sd">        [0.1, 0.2, 0.3, 0.4]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">mult</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_forcing_function_values">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_forcing_function_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_forcing_function_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the forcing function values at the quadrature points.</span>
+
+<span class="sd">        :param cell_index: The index of the cell.</span>
+<span class="sd">        :type cell_index: int</span>
+
+<span class="sd">        :return: The forcing function values at the quadrature points.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises ValueError: If cell_index is greater than the number of cells.</span>
+
+<span class="sd">        This function computes the forcing function values at the quadrature points for a given cell.</span>
+<span class="sd">        It loops over all the basis functions and computes the integral using the actual coordinates</span>
+<span class="sd">        and the basis functions at the quadrature points. The resulting values are stored in the</span>
+<span class="sd">        `forcing_at_quad` attribute of the corresponding `fe_cell` object.</span>
+
+<span class="sd">        Note: The forcing function is evaluated using the `forcing_function` method of the `fe_cell`</span>
+<span class="sd">        object.</span>
+
+<span class="sd">        Example usage:</span>
+<span class="sd">            &gt;&gt;&gt; fespace = FESpace2D()</span>
+<span class="sd">            &gt;&gt;&gt; cell_index = 0</span>
+<span class="sd">            &gt;&gt;&gt; forcing_values = fespace.get_forcing_function_values(cell_index)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Changed by Thivin: To assemble the forcing function at the quadrature points here in the fespace</span>
+        <span class="c1"># so that it can be used to handle multiple dimensions on a vector valud problem</span>
+
+        <span class="c1"># get number of shape functions</span>
+        <span class="n">n_shape_functions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_function</span><span class="o">.</span><span class="n">num_shape_functions</span>
+
+        <span class="c1"># Loop over all the basis functions and compute the integral</span>
+        <span class="n">f_integral</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_shape_functions</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_shape_functions</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># print(&quot;f_values[q] = &quot;,f_values[q])</span>
+
+                <span class="c1"># the Jacobian and the quadrature weights are pre multiplied to the basis functions</span>
+                <span class="n">val</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">q</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span>
+                    <span class="n">cell_index</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">forcing_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="c1"># print(&quot;val = &quot;, val)</span>
+
+            <span class="n">f_integral</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_at_quad</span> <span class="o">=</span> <span class="n">f_integral</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_at_quad</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_forcing_function_values_vector">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_forcing_function_values_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_forcing_function_values_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_index</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function will return the forcing function values at the quadrature points</span>
+<span class="sd">        based on the Component of the RHS Needed, for vector valued problems</span>
+
+<span class="sd">        :param cell_index: The index of the cell</span>
+<span class="sd">        :type cell_index: int</span>
+<span class="sd">        :param component: The component of the RHS needed</span>
+<span class="sd">        :type component: int</span>
+<span class="sd">        :return: The forcing function values at the quadrature points</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        :raises ValueError: If cell_index is greater than the number of cells</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cell_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cell_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cell_index should be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cells</span><span class="si">}</span><span class="s2"> and greater than or equal to 0&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># get the coordinates</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">quad_actual_coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># compute the forcing function values</span>
+        <span class="n">f_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)[</span><span class="n">component</span><span class="p">]</span>
+
+        <span class="c1"># compute the integral</span>
+        <span class="n">f_integral</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">basis_at_quad</span> <span class="o">*</span> <span class="n">f_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_at_quad</span> <span class="o">=</span> <span class="n">f_integral</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fe_cell</span><span class="p">[</span><span class="n">cell_index</span><span class="p">]</span><span class="o">.</span><span class="n">forcing_at_quad</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_sensor_data">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_sensor_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exact_solution</span><span class="p">,</span> <span class="n">num_points</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain sensor data (actual solution) at random points.</span>
+
+<span class="sd">        This method is used in the inverse problem to obtain the sensor data at random points within the domain.</span>
+<span class="sd">        Currently, it only works for problems with an analytical solution.</span>
+<span class="sd">        Methodologies to obtain sensor data for problems from a file are not implemented yet.</span>
+<span class="sd">        It is also not implemented for external or complex meshes.</span>
+
+<span class="sd">        :param exact_solution: A function that computes the exact solution at a given point.</span>
+<span class="sd">        :type exact_solution: function</span>
+<span class="sd">        :param num_points: The number of random points to generate.</span>
+<span class="sd">        :type num_points: int</span>
+<span class="sd">        :return: A tuple containing the generated points and the exact solution at those points.</span>
+<span class="sd">        :rtype: tuple(numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># generate random points within the bounds of the domain</span>
+        <span class="c1"># get the bounds of the domain</span>
+        <span class="n">x_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">y_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">y_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># sample n random points within the bounds of the domain</span>
+        <span class="c1"># Generate points in the unit square</span>
+
+        <span class="n">num_internal_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_points</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+
+        <span class="n">points</span> <span class="o">=</span> <span class="n">lhs</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="n">num_internal_points</span><span class="p">)</span>
+        <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># get the exact solution at the points</span>
+        <span class="n">exact_sol</span> <span class="o">=</span> <span class="n">exact_solution</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># print the shape of the points and the exact solution</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Number of sensor points = </span><span class="si">{</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] : Shape of sensor points = </span><span class="si">{</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># plot the points</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Sensor Points&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;sensor_points.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">points</span><span class="p">,</span> <span class="n">exact_sol</span></div>
+
+
+<div class="viewcode-block" id="Fespace2D.get_sensor_data_external">
+<a class="viewcode-back" href="../../../_rst/library/fe2d/fe2d_fespace2d.html#fastvpinns.FE.fespace2d.Fespace2D.get_sensor_data_external">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_data_external</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exact_sol</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is used to obtain the sensor data from an external file.</span>
+
+<span class="sd">        :param exact_sol: The exact solution values.</span>
+<span class="sd">        :type exact_sol: array-like</span>
+<span class="sd">        :param num_points: The number of points to sample from the data.</span>
+<span class="sd">        :type num_points: int</span>
+<span class="sd">        :param file_name: The path to the file containing the sensor data.</span>
+<span class="sd">        :type file_name: str</span>
+
+<span class="sd">        :return: A tuple containing two arrays:</span>
+<span class="sd">            - points (ndarray): The sampled points from the data.</span>
+<span class="sd">            - exact_sol (ndarray): The corresponding exact solution values.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># use pandas to read the file</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">exact_sol</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># now sample num_points from the data</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num_points</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="n">exact_sol</span> <span class="o">=</span> <span class="n">exact_sol</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+        <span class="c1"># stack them together</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">points</span><span class="p">,</span> <span class="n">exact_sol</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesh Generation from External CAD Files &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="FastVPINNs Module Documentation" href="../../fastvpinns.html" />
+    <link rel="prev" title="Solving Inverse Problems with FastVPINNs : Estimation of spatially varying parameter on a complex geometry." href="../inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_docker.html">Docker Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../_tutorial.html">  Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../_tutorial.html#forward-problems">Forward Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_tutorial.html#custom-training">Custom Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_tutorial.html#inverse-problems">Inverse Problems</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../_tutorial.html#mesh-generation-tutorials">Mesh Generation Tutorials</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Mesh Generation from External CAD Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#loading-the-cad-file-in-gmsh">Loading the CAD File in Gmsh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-physical-groups-for-the-geometry">Creating Physical Groups for the Geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-information-on-generating-quad-mesh-with-gmsh">General Information on generating quad mesh with Gmsh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generating-quad-mesh-in-gmsh">Generating Quad Mesh in Gmsh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exporting-the-mesh">Exporting the Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#checking-the-mesh">Checking the Mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-generation-from-geo-files">Mesh generation from GEO files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-the-geometry-in-geo-file">Creating the Geometry in GEO file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fastvpinns.html">fastvpinns</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_licence.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cite.html">Cite FastVPINNs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_team.html">Team &amp; Fundings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../_tutorial.html">FastVPINNs Tutorials</a></li>
+      <li class="breadcrumb-item active">Mesh Generation from External CAD Files</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/_rst/tutorials/mesh_generation/mesh.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>This section covers the mesh generation process for FastVPINNs library using the Gmsh software. The Gmsh software is an open-source mesh generator that can be used to generate 2D and 3D meshes for complex geometries. The Gmsh software can be downloaded from the <a class="reference external" href="https://gmsh.info/">Gmsh website</a>.</p>
+<p><strong>Types of External Mesh Generation</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="#mesh-generation-from-external-cad-files">Mesh Generation from External CAD Files</a> : The Gmsh software allows users to import external CAD files in the <cite>.stp</cite> format and generate the mesh.</p></li>
+<li><p><a class="reference external" href="#mesh-generation-from-geo-files">Mesh generation from GEO files</a> : Generate the geometry internally within the GEO file, and then generate the mesh.</p></li>
+</ul>
+<section id="mesh-generation-from-external-cad-files">
+<span id="id1"></span><h1>Mesh Generation from External CAD Files<a class="headerlink" href="#mesh-generation-from-external-cad-files" title="Link to this heading"></a></h1>
+<p>In this example, we will create the mesh from externally generated CAD files. The CAD files can be generated using any CAD software, such as <a class="reference external" href="https://www.freecadweb.org/">FreeCAD</a>. For this tutorial, we have exported the CAD file for the gear geometry in the <cite>.stp</cite> format. The sample <cite>.stp</cite> file used for this tutorial can be found <a class="reference download internal" download="" href="../../../_downloads/951533f04d211468d939e61498d3fa42/Gear.stp"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.</p>
+<section id="loading-the-cad-file-in-gmsh">
+<h2>Loading the CAD File in Gmsh<a class="headerlink" href="#loading-the-cad-file-in-gmsh" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Open the Gmsh software and click on the <cite>File</cite> menu.</p></li>
+<li><p>Select the <cite>Open</cite> option and navigate to the location where the CAD file is saved.</p></li>
+<li><p>Select the CAD file and click on the <cite>Open</cite> button.</p></li>
+<li><p>The CAD file will be loaded in the Gmsh software and we should see the geometry in the main window as shown below.</p></li>
+</ol>
+<img alt="Gear Geometry" class="align-center" src="../../../_images/gear_geometry.png" />
+</section>
+<section id="creating-physical-groups-for-the-geometry">
+<h2>Creating Physical Groups for the Geometry<a class="headerlink" href="#creating-physical-groups-for-the-geometry" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>To create the physical groups for the geometry, click on the <cite>Geometry</cite> menu.</p></li>
+<li><p>Select the <cite>Physical Groups</cite> <cite>-&gt;</cite> <cite>Add</cite> <cite>-&gt;</cite> <cite>Curve</cite> option.</p></li>
+<li><p>Select the curves that form the outer boundary of the gear geometry, which will form the physical group for the outer boundary.</p></li>
+<li><p>Once all the curves are selected (selected curves will appear in red color), Enter the Name and tag for the physical group. Its advisable to use a numerical value for both name and the tag. Further provide a same value for both the fields for easy identification. In FastVPINNs, we generally start the numbering from 1000 and increment it by 1 for each new physical group. Its important to note that the name and tag should be unique for each physical group and what ever value is provided here should be used in the example file for providing the boundary conditions and boundary values.</p></li>
+</ol>
+<img alt="Physical Group" class="align-center" src="../../../_images/physical_group.png" />
+<p>5. Once selection is made and the name and tag are filled in the dialog box, press <cite>e</cite> to end the selection. This will add all the selected curves to the physical group.
+5. Repeat the above steps to create physical groups for the inner boundary of the gear geometry.
+6. Once its done, you can check the <cite>Tools</cite> <cite>-&gt;</cite> <cite>Visibility</cite> <cite>-&gt;</cite> <cite>Physical Groups</cite> to see the physical groups created for the geometry. Or, you can open the created .GEO file in a text editor to see the physical groups created. Make sure that the physical groups are created correctly and the tags are unique for each physical group.</p>
+<p><strong>Additional:</strong>
+- Refer to the <a class="reference external" href="https://gmsh.info/doc/texinfo/gmsh.html">Gmsh documentation</a> for more details on creating physical groups in Gmsh. While trying to create physical groups, gmsh will ask if you to save the existing file as a new .GEO file. In this scenario, it is advisable to save the file as a new .GEO file and use the new file for further mesh generation.</p>
+<img alt="Physical Group" class="align-center" src="../../../_images/warning.png" />
+</section>
+<section id="general-information-on-generating-quad-mesh-with-gmsh">
+<h2>General Information on generating quad mesh with Gmsh<a class="headerlink" href="#general-information-on-generating-quad-mesh-with-gmsh" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>To generate the quad mesh in gmsh is quite tricky when compared to generating a triangular mesh. The quad mesh generation needs to be done using the <cite>Transfinite</cite> algorithm. It typically involves decomposing your geometry into subregions which is bounded by 4 curves and then specify each curve as a transfinite curve and the region as a transfinite surface. This process is quite complex and requires a carefull decomposition of the geometry into subregions so that it can be bounded by 4 curves. This method is beyond the scope of this tutorial and we recommend the users to refer to the <a class="reference external" href="https://gmsh.info/doc/texinfo/gmsh.html">Gmsh documentation</a> for more details on generating quad mesh using the transfinite algorithm. The users can also refer to the youtube tutorial on <a class="reference external" href="https://www.youtube.com/watch?v=bekRbU7rtZE">Youtube: Generating quad mesh on Flow over airfoil</a> for more details on generating quad mesh using the transfinite algorithm.</p></li>
+<li><p>However, we can generate the quad mesh without decomposing the surface by using different Meshing algorithms and recombination algorithms available within the Gmsh software.</p></li>
+<li><p>The below tutorial is based on the gmsh version <cite>4.11.1</cite> on Mac OS. Some of the mesh generation and recombination methods mentioned below might not be available for users with different OS or different versions of Gmsh. However, there are other equivalent meshing and recombination algorithms available in Gmsh which can be used to generate quad meshes. Users are advised to refer to documentation and to try out different meshing and recombination algorithms to generate the necessary quad meshes.</p></li>
+</ol>
+</section>
+<section id="generating-quad-mesh-in-gmsh">
+<h2>Generating Quad Mesh in Gmsh<a class="headerlink" href="#generating-quad-mesh-in-gmsh" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Now, lets change the default meshing algorithm to generate <cite>quad</cite> meshes in Gmsh. To change the meshing algorithm, click on the <cite>Tools</cite> <cite>-&gt;</cite> <cite>Options</cite> <cite>-&gt;</cite> <cite>Mesh</cite> tab. In the <cite>General</cite> section, change the <cite>Meshing algorithm</cite> to <cite>Frontal-Delaunay for Quads (experimental)</cite> and change the 2D recombination algorithm to <cite>Blossom</cite> and also check the checkbox for <cite>Recombine all triangular elements</cite>. Press <cite>OK</cite> to save the changes.</p></li>
+</ol>
+<img alt="Meshing Algorithm" class="align-center" src="../../../_images/meshing_algorithm.png" />
+<p>Note: As mentioned earlier, the exact meshing algorithms and recombination algorithms might vary based on the version of Gmsh and the OS. Users are advised to refer to the Gmsh documentation for more details on the meshing and recombination algorithms available in Gmsh.</p>
+<ol class="arabic simple" start="2">
+<li><p>Now, lets generate the mesh by clicking on the <cite>Mesh</cite> <cite>-&gt;</cite> <cite>2D</cite> option. This will generate the quad mesh for the gear geometry.</p></li>
+<li><p>The generated mesh can be refined by clicking on the <cite>Mesh</cite> <cite>-&gt;</cite> <cite>Refine by splitting</cite> option. This will refine the mesh by splitting the elements.</p></li>
+<li><p>The mesh can be visualized in the main window as shown below. Note: Once the mesh is generated, check the <cite>Tools</cite> <cite>-&gt;</cite> <cite>Statistics</cite> to see the number of elements and nodes in the mesh. Ensure that there are no triangular meshes within the domain. <strong>Note: If the mesh elements are not visible, then double click on the empty window and select mesh visibility and turn on 2D mesh elements</strong></p></li>
+</ol>
+<img alt="Quad Mesh" class="align-center" src="../../../_images/quad_mesh_new.png" />
+<img alt="Quad Mesh" class="align-center" src="../../../_images/mesh_stat.png" />
+</section>
+<section id="exporting-the-mesh">
+<h2>Exporting the Mesh<a class="headerlink" href="#exporting-the-mesh" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>To export the mesh, click on the <cite>File</cite> menu. Then click on the <cite>Export</cite> option. There are multiple formats available to export the mesh. For this tutorial and to use the mesh in FastVPINNs, we will export the mesh in the <cite>.mesh</cite> format. In the save as dropdown, select the <cite>Guess from Extension (*.*)</cite> option and provide the file name with the <cite>.mesh</cite> extension. Click on the <cite>Save</cite> button to save the mesh as shown below.</p></li>
+</ol>
+<img alt="Export Mesh" class="align-center" src="../../../_images/export_mesh.png" />
+<ol class="arabic simple" start="2">
+<li><p>While exporting the mesh, It will ask for MESH options as shown below. Select the <cite>Physical Entity</cite> on the Element type dropdown and check the <cite>Save all Elements</cite> checkbox. This will save the physical groups created in the .GEO file as physical entities in the .mesh file. Click on the <cite>OK</cite> button to save the mesh as shown below.</p></li>
+</ol>
+<img alt="Mesh Options" class="align-center" src="../../../_images/mesh_options.png" />
+</section>
+<section id="checking-the-mesh">
+<h2>Checking the Mesh<a class="headerlink" href="#checking-the-mesh" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>To check the mesh, open the exported <cite>.mesh</cite> file in a text editor. The mesh file will contain the information about the nodes, elements, and physical entities. Check the physical entities to ensure that the physical groups are saved correctly in the mesh file. Search for <cite>Edges</cite> in the text editor and you should see the physical groups for the boundaries at the last column as shown below.</p></li>
+</ol>
+<img alt="Mesh File" class="align-center" src="../../../_images/mesh_file.png" />
+<ol class="arabic simple" start="2">
+<li><p>Ensure that the physical groups you have entered appear in the Edges for mesh file. If the physical groups are not saved correctly, then the boundary conditions and boundary values will not be applied correctly in the FastVPINNs code. Further, Sometimes the values will be exported as <cite>1</cite> and <cite>0</cite>, instead of <cite>1000</cite> and <cite>1001</cite>. In this case, delete the current mesh file and export the mesh file again from Gmsh using the correct configurations.</p></li>
+<li><p>Search for <cite>Quadrilaterals</cite> and it should show the number of elements within the mesh file. Ensure that the mesh is generated correctly and there are no triangular elements within the mesh file. This can be done by checking for the presence of <cite>Triangles</cite> within the mesh file. If there are triangular elements, then the meshing algorithm needs to be changed to generate quad meshes.</p></li>
+</ol>
+</section>
+</section>
+<section id="mesh-generation-from-geo-files">
+<span id="id3"></span><h1>Mesh generation from GEO files<a class="headerlink" href="#mesh-generation-from-geo-files" title="Link to this heading"></a></h1>
+<p>In this example, we will generate the geometry internally within the GEO file and then generate the mesh. The GEO file is a text file that contains the information about the geometry information for the mesh generation within gmsh file. The syntax and available commands for the GEO file are out of the scope of this tutorial. However, we will provide a simple example of generating a geometry within the GEO file and generating the mesh.</p>
+<section id="creating-the-geometry-in-geo-file">
+<h2>Creating the Geometry in GEO file<a class="headerlink" href="#creating-the-geometry-in-geo-file" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Open a text editor and create a new file with the <cite>.geo</cite> extension. For this tutorial, we will create a simple geometry of a circular hole inside a rectangular domain. The domain starts at (-3,-3) and has length of 12 units in x-direction and 6 units in y-direction. The circular hole is centered at (0,0) and has a radius of 1 unit. The GEO file for this geometry is shown below.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>//<span class="w"> </span>Gmsh<span class="w"> </span>.geo<span class="w"> </span>file<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>rectangular<span class="w"> </span>domain<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>circular<span class="w"> </span>hole
+
+//<span class="w"> </span>Parameters
+<span class="nv">x_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-3<span class="p">;</span>
+<span class="nv">y_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-3<span class="p">;</span>
+<span class="nv">x_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>-3<span class="w"> </span>+<span class="w"> </span><span class="nv">12</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span>
+<span class="nv">y_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>-3<span class="w"> </span>+<span class="w"> </span><span class="nv">6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span>
+<span class="nv">radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">;</span>
+<span class="nv">lc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.1<span class="p">;</span><span class="w">  </span>//<span class="w"> </span>Characteristic<span class="w"> </span>length<span class="w"> </span><span class="k">for</span><span class="w"> </span>mesh<span class="w"> </span>size<span class="w"> </span>control
+
+//<span class="w"> </span>Points<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>rectangle
+Point<span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>x_min,<span class="w"> </span>y_min,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>x_max,<span class="w"> </span>y_min,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>x_max,<span class="w"> </span>y_max,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">4</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>x_min,<span class="w"> </span>y_max,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Points<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>circle
+Point<span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>Center
+Point<span class="o">(</span><span class="m">6</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>radius,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">7</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">0</span>,<span class="w"> </span>radius,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">8</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>-radius,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+Point<span class="o">(</span><span class="m">9</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">0</span>,<span class="w"> </span>-radius,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>lc<span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Lines<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>rectangle
+Line<span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>,<span class="w"> </span><span class="m">2</span><span class="o">}</span><span class="p">;</span>
+Line<span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">2</span>,<span class="w"> </span><span class="m">3</span><span class="o">}</span><span class="p">;</span>
+Line<span class="o">(</span><span class="m">3</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">3</span>,<span class="w"> </span><span class="m">4</span><span class="o">}</span><span class="p">;</span>
+Line<span class="o">(</span><span class="m">4</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">4</span>,<span class="w"> </span><span class="m">1</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Circle<span class="w"> </span>arcs
+Circle<span class="o">(</span><span class="m">5</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">6</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">7</span><span class="o">}</span><span class="p">;</span>
+Circle<span class="o">(</span><span class="m">6</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">7</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">8</span><span class="o">}</span><span class="p">;</span>
+Circle<span class="o">(</span><span class="m">7</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">8</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">9</span><span class="o">}</span><span class="p">;</span>
+Circle<span class="o">(</span><span class="m">8</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">9</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Curve<span class="w"> </span>loops
+Curve<span class="w"> </span>Loop<span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>,<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">4</span><span class="o">}</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>Outer<span class="w"> </span>rectangle
+Curve<span class="w"> </span>Loop<span class="o">(</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="m">7</span>,<span class="w"> </span><span class="m">8</span><span class="o">}</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>Inner<span class="w"> </span>circle
+
+//<span class="w"> </span>Plane<span class="w"> </span>surface<span class="w"> </span><span class="o">(</span>with<span class="w"> </span>hole<span class="o">)</span>
+Plane<span class="w"> </span>Surface<span class="o">(</span><span class="m">1</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>,<span class="w"> </span><span class="m">2</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Assign<span class="w"> </span>physical<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>bottom<span class="w"> </span>wall<span class="w"> </span>as<span class="w"> </span><span class="m">1000</span>
+Physical<span class="w"> </span>Line<span class="o">(</span><span class="m">1000</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">1</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Assign<span class="w"> </span>physical<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>right<span class="w"> </span>wall<span class="w"> </span>as<span class="w"> </span><span class="m">1001</span>
+Physical<span class="w"> </span>Line<span class="o">(</span><span class="m">1001</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">2</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Assign<span class="w"> </span>physical<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>top<span class="w"> </span>wall<span class="w"> </span>as<span class="w"> </span><span class="m">1002</span>
+Physical<span class="w"> </span>Line<span class="o">(</span><span class="m">1002</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">3</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Assign<span class="w"> </span>physical<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>left<span class="w"> </span>wall<span class="w"> </span>as<span class="w"> </span><span class="m">1003</span>
+Physical<span class="w"> </span>Line<span class="o">(</span><span class="m">1003</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">4</span><span class="o">}</span><span class="p">;</span>
+
+//<span class="w"> </span>Assign<span class="w"> </span>physical<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>circle<span class="w"> </span>as<span class="w"> </span><span class="m">1004</span>
+Physical<span class="w"> </span>Curve<span class="o">(</span><span class="m">1004</span><span class="o">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="m">7</span>,<span class="w"> </span><span class="m">8</span><span class="o">}</span><span class="p">;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Save this file as <cite>rectangular_domain.geo</cite> in a folder and then open the Gmsh software. Click on the <cite>File</cite> menu and select the <cite>Open</cite> option. Navigate to the location where the <cite>rectangular_domain.geo</cite> file is saved and select the file. Click on the <cite>Open</cite> button to load the geometry in Gmsh. The geometry will be displayed in the main window as shown below.</p></li>
+</ol>
+<img alt="Rectangular Domain" class="align-center" src="../../../_images/rectangular_domain.png" />
+<ol class="arabic simple" start="3">
+<li><p>The physical groups for the boundaries and the circle are created in the GEO file. The physical groups can be viewed by clicking on the <cite>Tools</cite> <cite>-&gt;</cite> <cite>Visibility</cite> <cite>-&gt;</cite> <cite>Physical Groups</cite> option. The physical groups will be displayed in the main window as shown below.</p></li>
+</ol>
+<p>4, Follow the same steps as mentioned in the previous section to generate the mesh for the geometry. The mesh can be generated by clicking on the <cite>Mesh</cite> <cite>-&gt;</cite> <cite>2D</cite> option. The mesh can be refined by clicking on the <cite>Mesh</cite> <cite>-&gt;</cite> <cite>Refine by splitting</cite> option. The mesh can be visualized in the main window as shown below.</p>
+<img alt="Rectangular Domain Mesh" class="align-center" src="../../../_images/rectangular_domain_mesh.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../inverse_problems_2d/domain_inverse_cd2d/domain_inverse.html" class="btn btn-neutral float-left" title="Solving Inverse Problems with FastVPINNs : Estimation of spatially varying parameter on a complex geometry." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../fastvpinns.html" class="btn btn-neutral float-right" title="FastVPINNs Module Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

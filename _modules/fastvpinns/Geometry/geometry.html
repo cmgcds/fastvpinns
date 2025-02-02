@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.Geometry.geometry &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_docker.html">Docker Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/fastvpinns.html">fastvpinns</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_licence.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_cite.html">Cite FastVPINNs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_rst/_team.html">Team &amp; Fundings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fastvpinns.Geometry.geometry</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fastvpinns.Geometry.geometry</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module, `geometry.py`, contains the `Geometry` Abstract class which defines functions to read mesh from Gmsh and</span>
+<span class="sd">generate internal mesh for 2D and 3D geometries.</span>
+
+<span class="sd">Author: Thivin Anandh D</span>
+
+<span class="sd">Date: 03/May/2024</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">meshio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyDOE</span><span class="w"> </span><span class="kn">import</span> <span class="n">lhs</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+
+
+<div class="viewcode-block" id="Geometry">
+<a class="viewcode-back" href="../../../_rst/library/geometry/geometry.html#fastvpinns.Geometry.geometry.Geometry">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Geometry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class which defines functions to read mesh from Gmsh and internal mesh for 2D problems.</span>
+
+<span class="sd">    :param mesh_type: The type of mesh to be used.</span>
+<span class="sd">    :type mesh_type: str</span>
+<span class="sd">    :param mesh_generation_method: The method used to generate the mesh.</span>
+<span class="sd">    :type mesh_generation_method: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">mesh_generation_method</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_type</span> <span class="o">=</span> <span class="n">mesh_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_generation_method</span> <span class="o">=</span> <span class="n">mesh_generation_method</span>
+
+<div class="viewcode-block" id="Geometry.read_mesh">
+<a class="viewcode-back" href="../../../_rst/library/geometry/geometry.html#fastvpinns.Geometry.geometry.Geometry.read_mesh">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_mesh</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mesh_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">boundary_point_refinement_level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">bd_sampling_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">refinement_level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to read mesh from Gmsh.</span>
+
+<span class="sd">        :param mesh_file: The path to the mesh file.</span>
+<span class="sd">        :type mesh_file: str</span>
+<span class="sd">        :param boundary_point_refinement_level: The refinement level of the boundary points.</span>
+<span class="sd">        :type boundary_point_refinement_level: int</span>
+<span class="sd">        :param bd_sampling_method: The method used to sample the boundary points.</span>
+<span class="sd">        :type bd_sampling_method: str</span>
+<span class="sd">        :param refinement_level: The refinement level of the mesh.</span>
+<span class="sd">        :type refinement_level: int</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Geometry.generate_vtk_for_test">
+<a class="viewcode-back" href="../../../_rst/library/geometry/geometry.html#fastvpinns.Geometry.geometry.Geometry.generate_vtk_for_test">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_vtk_for_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a VTK from Mesh file (External) or using gmsh (for Internal).</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Geometry.get_test_points">
+<a class="viewcode-back" href="../../../_rst/library/geometry/geometry.html#fastvpinns.Geometry.geometry.Geometry.get_test_points">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_test_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function is used to extract the test points from the given mesh</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        test_points (numpy.ndarray): The test points for the given domain</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

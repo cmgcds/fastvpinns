@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fastvpinns.utils.print_utils module &mdash; fastvpinns 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="fastvpinns.utils.compute_utils module" href="compute_utils.html" />
+    <link rel="prev" title="fastvpinns.utils.plot_utils module" href="plot_utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/Fastvpinns_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_docker.html">Docker Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example-Problems</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_tutorial.html">  Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../fastvpinns.html">fastvpinns</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#fe">FE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#physics">Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastvpinns.html#data">Data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../fastvpinns.html#utils">Utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plot_utils.html">   Plotting utils</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">   Printing utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fastvpinns.utils.print_utils.print_table"><code class="docutils literal notranslate"><span class="pre">print_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="compute_utils.html">   Compute utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_licence.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cite.html">Cite FastVPINNs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_team.html">Team &amp; Fundings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fastvpinns</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../fastvpinns.html">FastVPINNs Module Documentation</a></li>
+      <li class="breadcrumb-item active">fastvpinns.utils.print_utils module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/_rst/library/utils/print_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fastvpinns.utils.print_utils">
+<span id="fastvpinns-utils-print-utils-module"></span><h1>fastvpinns.utils.print_utils module<a class="headerlink" href="#module-fastvpinns.utils.print_utils" title="Link to this heading"></a></h1>
+<p>This file <cite>print_utils.py</cite> is for Printing utilities of all the cells within the given mesh</p>
+<p>Author: Thivin Anandh D</p>
+<p>Date:  02/Nov/2023</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fastvpinns.utils.print_utils.print_table">
+<span class="sig-prename descclassname"><span class="pre">fastvpinns.utils.print_utils.</span></span><span class="sig-name descname"><span class="pre">print_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_1_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_2_values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fastvpinns/utils/print_utils.html#print_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fastvpinns.utils.print_utils.print_table" title="Link to this definition"></a></dt>
+<dd><p>This function prints a table with two columns to the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Title of the table</p></li>
+<li><p><strong>columns</strong> (<em>list</em>) – List of column names</p></li>
+<li><p><strong>col_1_values</strong> (<em>list</em>) – List of values for column 1</p></li>
+<li><p><strong>col_2_values</strong> (<em>list</em>) – List of values for column 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plot_utils.html" class="btn btn-neutral float-left" title="fastvpinns.utils.plot_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compute_utils.html" class="btn btn-neutral float-right" title="fastvpinns.utils.compute_utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thivin Anandh, Divij Ghose, Sashikumaar Ganesan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
