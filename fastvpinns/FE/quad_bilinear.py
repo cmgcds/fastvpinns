@@ -6,7 +6,7 @@ Author: Thivin Anandh D
 
 Changelog: 30/Aug/2023 - Initial version
 
-Known issues: Second derivative Calculations are not implemented as of now. 
+Known issues: Second derivative Calculations are not implemented as of now.
 
 Dependencies: None specified
 """

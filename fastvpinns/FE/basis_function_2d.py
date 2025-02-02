@@ -1,6 +1,6 @@
 """
-The file `basis_function_2d.py` contains a wrapper class for all the finite element basis functions 
-used in the FE2D code. The 2D basis functions have methods to return the value 
+The file `basis_function_2d.py` contains a wrapper class for all the finite element basis functions
+used in the FE2D code. The 2D basis functions have methods to return the value
 of the basis function and its derivatives at the reference point (xi, eta).
 
 Author: Thivin Anandh D

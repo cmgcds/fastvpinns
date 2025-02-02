@@ -1,6 +1,6 @@
 """
 file: basis_2d_QN_Chebyshev_2.py
-description: This file contains the class Basis2DQNChebyshev2 which defines the basis functions for a 
+description: This file contains the class Basis2DQNChebyshev2 which defines the basis functions for a
               2D Q1 element using Chebyshev polynomials.
               Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
              (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)

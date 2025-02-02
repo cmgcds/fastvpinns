@@ -1,5 +1,5 @@
 """
-The file `fespace2d.py` contains the main class that holds the information of all the 
+The file `fespace2d.py` contains the main class that holds the information of all the
 Finite Element (FE) spaces of all the cells within the given mesh.
 
 Author: Thivin Anandh D

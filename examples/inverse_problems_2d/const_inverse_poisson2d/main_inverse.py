@@ -1,4 +1,4 @@
-""" 
+"""
 file: main_inverse.py
 description: This file is the main file for solving the inverse problem for the 2D Poisson equation with uniform parameters.
 author: Thivin Anandh D, Divij Ghose, Sashikumaar Ganesan

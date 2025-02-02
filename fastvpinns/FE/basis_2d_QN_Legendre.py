@@ -1,6 +1,6 @@
 """
 file: basis_2d_QN_Legendre.py
-description: This file contains the class Basis2DQNLegendre which is used 
+description: This file contains the class Basis2DQNLegendre which is used
              to define the basis functions for a Legendre Polynomial.
              Test functions and derivatives are inferred from the work by Ehsan Kharazmi et.al
              (hp-VPINNs: Variational Physics-Informed Neural Networks With Domain Decomposition)

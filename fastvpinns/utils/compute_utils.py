@@ -1,5 +1,5 @@
 """
-This file `compute_utils.py` contains the utility functions for 
+This file `compute_utils.py` contains the utility functions for
 computing the errors between the exact and predicted solutions.
 
 Author: Thivin Anandh D

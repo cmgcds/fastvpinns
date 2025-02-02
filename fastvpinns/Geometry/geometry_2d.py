@@ -1,6 +1,6 @@
 """
-This module, `geometry_2d.py`, contains the `Geometry_2D` class which defines functions to read mesh from Gmsh and 
-generate internal mesh for 2D problems. It supports different types of meshes and mesh generation methods. 
+This module, `geometry_2d.py`, contains the `Geometry_2D` class which defines functions to read mesh from Gmsh and
+generate internal mesh for 2D problems. It supports different types of meshes and mesh generation methods.
 The class also allows for specifying the number of test points in the x and y directions, and the output folder for storing results.
 
 Author: Thivin Anandh D

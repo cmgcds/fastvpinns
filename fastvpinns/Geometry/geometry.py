@@ -1,6 +1,6 @@
 """
-This module, `geometry.py`, contains the `Geometry` Abstract class which defines functions to read mesh from Gmsh and 
-generate internal mesh for 2D and 3D geometries. 
+This module, `geometry.py`, contains the `Geometry` Abstract class which defines functions to read mesh from Gmsh and
+generate internal mesh for 2D and 3D geometries.
 
 Author: Thivin Anandh D
 

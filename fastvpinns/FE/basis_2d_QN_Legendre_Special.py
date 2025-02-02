@@ -1,6 +1,6 @@
 """
 file: basis_2d_QN_Legendre_Special.py
-description: This file contains the class Basis2DQNLegendreSpecial which is used 
+description: This file contains the class Basis2DQNLegendreSpecial which is used
              to define the basis functions for a 2D Quad element using a Legendre polynomial.
 authors: Thivin Anandh D
 changelog: 30/Aug/2023 - Initial version
