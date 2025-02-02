@@ -35,6 +35,14 @@ Problems with Hard boundary constraints
 
     Poisson Equation with hard boundary constraints on unit square <tutorials/forward_problems_2d/hard_boundary_constraints/poisson_2d/poisson2d_hard.rst>
 
+Custom Training
+---------------
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+    Constructing the tensor-based loss formulation for Custom PDE's (without using the inbuilt routines) : Poisson - 2D <tutorials/custom_training/custom_training.rst>
+
 Inverse Problems
 ----------------
 .. toctree::
